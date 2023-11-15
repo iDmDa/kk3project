@@ -1,0 +1,188 @@
+.autotable { 
+	width: 100%; /* Ширина таблицы */
+	/*border: 4px double black; /* Рамка вокруг таблицы */
+	border-collapse: collapse; /* Отображать только одинарные линии */
+	font-family: "Trebuchet MS", Helvetica, sans-serif; 
+	/*border: solid 1px orange;  */
+	/*background: #FDE7A1;/*
+	/*box-shadow: 0 0 0px;*/
+}
+
+.autotable td {
+	border: solid 1px black; /* */	
+}
+
+.simplefield, .notsimplefield { 
+	padding: 5px; /* Поля вокруг содержимого ячеек */
+	/*border: 1px solid #D19405; /* Граница вокруг ячеек */
+	/*font-family: "Trebuchet MS", Helvetica, sans-serif; */
+	/*font-family: Georgia, serif; */
+	/*font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif; */
+	/*font-family: "Times New Roman", Times, serif; */
+	/*font-family: Arial, Helvetica, sans-serif; */
+	/*font-family: "Arial Black", Gadget, sans-serif; */
+	/*font-family: "Comic Sans MS", cursive, sans-serif; */
+	/*font-family: Impact, Charcoal, sans-serif; */
+	/*font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif; */
+	/*font-family: Tahoma, Geneva, sans-serif; */
+	/*font-family: "Lucida Console", Monaco, monospace; */
+	/*font-family: Verdana, Geneva, sans-serif; */
+	/*font-family: "Courier New", Courier, monospace; */
+	font-size:13px;
+	font-weight: 400;
+}
+
+.table_header_block1 {
+	position: sticky;
+	top: 0px;
+	/*border: solid 2px black;*/
+	background: black;
+	border-top:2px solid #AAD8EB; /* защита от съедания верхней полосой */
+	position: -webkit-sticky;
+}
+
+table, tbody {
+/*display: block;*/
+}
+
+.table_body_block {
+	/*height: 100vh;
+	overflow: auto;*/
+}
+
+.table_big_header { 
+	padding: 5px;
+	text-align: center;
+	font-size:15px;
+	font-weight: bold;
+	/* background: #F2AD53; */
+	background: linear-gradient(to top, #55ABFF, #AAD8EB);  /*цвет низ, верх (to top) */
+	/*position: sticky;
+	top: 0;*/
+   }
+
+.table_header { 
+	padding: 5px;
+	text-align: center;
+	font-size:12px;
+	font-weight: bold;
+	vertical-align: top;
+	background: linear-gradient(to top, #AAD8EB, #AAD8EB);
+}
+
+.table_nomeric_col { 
+	padding: 5px;
+	text-align: center;
+	font-size:12px;
+	font-weight: bold;
+	vertical-align: top;
+	background: linear-gradient(to top, #AAD8EB, #AAD8EB);*/
+}
+
+.table_colspan_header { 
+	padding: 5px;
+	text-align: center;
+	font-size:12px;
+	font-weight: bold;
+	vertical-align: top;
+	background: linear-gradient(to top, #8ac5ff, #8ac5ff);*/
+}
+
+
+
+   .tablebox1 { 
+    width: 100%; /* Ширина таблицы */
+    //border: 4px double black; /* Рамка вокруг таблицы */
+    border-collapse: collapse; /* Отображать только одинарные линии */
+    background: #FDE7A1;
+    box-shadow: 0 0 3px;
+   }
+   th1 { 
+    text-align: left; /* Выравнивание по левому краю */
+    //background: #ccc; /* Цвет фона ячеек */
+    padding: 5px; /* Поля вокруг содержимого ячеек */
+    border: 1px solid black; /* Граница вокруг ячеек */
+   }
+
+
+   .table_title_header1 { 
+    text-align: center;
+    font-size:16px;
+    font-weight: bold;
+    vertical-align: top;
+    /* background: linear-gradient(to top, #FDDF81, #FDDF81); */
+    }
+
+   .table_mini_header1 { 
+    text-align: center;
+    font-size:18px;
+    font-weight: 600;
+    /*background: linear-gradient(to top, #EFC083, #f1da36); */
+   }
+   .table_field1 { 
+    text-align: left;
+    vertical-align: top;
+   }
+
+.button_layer {
+	padding: 0px;
+	float:right;
+}
+
+.dateinput {
+	/*display: inline-block !important;*/
+	/*width: auto !important;*/
+	width:68px;
+	border: none;
+	outline: none;
+	background:inherit;
+}
+
+.dateinput:hover {
+	/*display: inline-block !important;*/
+	/*width: auto !important;*/
+	width:65px;
+	border: dashed 1px black;
+	/*outline: none;*/
+	background:inherit;
+}
+
+.tab_line_ready {
+	background:#CEEDCE;
+	font-style: italic;
+	text-shadow: 0 0 1px lime;
+}
+
+.tab_line_notready {
+	background:#EDDDDD;
+	text-shadow: 0 0 1px red;
+}
+
+.printer_layer {
+	display: none;
+	background:inherit;
+	width:40px;
+	position:absolute;
+	right:26px;
+}
+
+.table_big_header:hover .printer_layer {
+	display: block;
+}
+
+.mg_table_button {
+	position:absolute;
+	right:0px;
+	width:60px;
+}
+
+#eco_pass_field {
+	position:absolute;
+	right:5px;
+	width:16px;
+}
+
+#pagesfield {
+	margin: auto;
+}
+

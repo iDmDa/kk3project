@@ -1,0 +1,321 @@
+div1 {
+	padding: 5px;	/*поля внутри элемента; */
+	border: dashed 1px orange;  /* окантовка*/
+}
+
+table1 {
+	border: dashed 1px orange; /* */
+}
+
+td1 {
+	border: dashed 1px orange; /* */	}
+
+
+body{
+	margin: 0;
+	padding: 0;
+	background: #DDEEEE;
+	display: flex;
+	flex-direction: row;
+	scrollbar-width: thin;
+}
+
+html, body{ 
+	height: 100%; 
+}
+
+
+/* слои внутри базовой таблицы*/
+#leftmenu_box {
+	/*position: fixed;*/
+	width: 150px;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+#right_box {
+	display: flex;
+	flex-direction: column;
+	width: 100vw;
+	margin-left: 5px;
+	overflow: auto;
+}
+
+#menuframe {  /*  div поле со списком изделий (внутри ячейки izdeliecell) */
+	height:100vh; 
+	overflow: auto;
+	overflow-y: scroll;
+}
+
+#varframe { /* поле для загрузки (внутри ячейки cellforload)*/
+	font-family: "Trebuchet MS", Helvetica, sans-serif; 
+	font-size:13px;
+	overflow: auto;
+	scrollbar-width: thin;
+}
+
+#loader_layer { /* слой для анимации загрузки */
+	position: fixed;
+	left:155px;
+	top:40px;
+	right:0px;
+	bottom:0px;
+	background: #DDEEEE;
+	z-index: 999;
+	opacity: 0.7;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.layer_center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/******************* слои внутри базовой таблицы*/
+
+/* таблица со списком изделий*/
+#leftmenu1 {  /*  таблица со списком изделий */
+width:100%;
+}
+
+.menufielditem {  /*  ячейки с индексами изделий */
+width:100%;
+}
+
+
+
+/******************* таблица со списком изделий*/
+#topmenu_box {
+	display: flex;
+	flex-direction: row;
+	background:#DDEEEE;
+	height: 30px;
+	margin-top: 1px;
+	margin-bottom: 9px;
+	margin-left: 1px;
+	justify-content: space-between;
+}
+
+#topmenu_box div {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+}
+
+/* стили слоев ячеек меню */
+.menuitem {
+	background: linear-gradient(to top, #BAC1E1, #D2D5E1);
+	/*background:#C2CBE1; */
+	border: solid 1px DarkBlue;
+	border-radius: 6px; 
+	max-width:100%;
+	padding: 5px;	/*поля внутри элемента; */
+	font-family: "Trebuchet MS", Helvetica, sans-serif; 
+	font-size:12px;
+	font-weight: 600;
+}
+
+.topmenuitem {
+	background: linear-gradient(to top, #BAC1E1, #D2D5E1);
+	/*background:#C2CBE1; */
+	border: solid 1px DarkBlue;
+	border-radius: 6px; 
+	padding: 5px;	/*поля внутри элемента; */
+	font-family: "Trebuchet MS", Helvetica, sans-serif; 
+	font-size:12px;
+	font-weight: 600;
+	margin: 2px;
+}
+
+.close_catalog .menuitem {
+	background:none;
+	/*background:#C2CBE1; */
+	border: solid 0px DarkBlue;
+	border-radius: 0px; 
+	max-width:0px;
+	padding: 0px;	/*поля внутри элемента; */
+	font-family: "Trebuchet MS", Helvetica, sans-serif; 
+	font-size:12px;
+	font-weight: 600;
+}
+
+.menuitem_header {
+	background-color:#dddddd;
+	max-width:100%;
+	padding: 4px;	/*поля внутри элемента; */
+	text-align: center;
+	display: none;
+}
+
+.menuitem:hover {
+	background: linear-gradient(to right, pink, pink);
+	/*background-color:pink;*/
+}
+
+.topmenuitem:hover {
+	background: linear-gradient(to right, pink, pink);
+	/*background-color:pink;*/
+}
+
+.menuactive {
+	background: linear-gradient(to right, lime, lime);
+	/*background-color:lime;*/
+}
+
+.treemenuactive {
+	/*background: linear-gradient(to right, lime, lime);*/
+	/*background-color:lime;*/
+	font-family: "Trebuchet MS", Helvetica, sans-serif; 
+	font-size:12px;
+	font-weight: 600;
+	background: lime;
+}
+
+li span:hover {
+	background: linear-gradient(to right, pink, pink);
+	/*background-color:pink;*/
+}
+
+ul {
+	padding: 0;
+	margin: 0;
+list-style-position: outside;
+/*list-style-image: url(../include/treeimg/open.gif);*/
+}
+
+.li_style {
+	list-style-type: none;
+	/*background-image : url(../include/treeimg/i.gif);
+	background-position : top left;
+	background-repeat : repeat-y;*/
+	padding-left: 18px;
+	text-indent: -18px; /* смещение первой строки текста*/
+	zoom: 1;
+}
+
+.vertical_line {
+	list-style-type: none;
+	background-image : url(../include/treeimg/i.gif);
+	background-position : top left;
+	background-repeat : repeat-y;
+	padding-left: 18px;
+	text-indent: -18px; /* смещение первой строки текста*/
+	zoom: 1;
+}
+
+.vertical_line_down {
+	list-style-type: none;
+	background-image : url(../include/treeimg/l.gif);
+	background-position : top left;
+	background-repeat : repeat-y;
+	padding-left: 18px;
+	text-indent: -18px; /* смещение первой строки текста*/
+	zoom: 1;
+}
+
+/*li div {
+    background-image: url(../include/treeimg/expand_leaf.gif);
+}*/
+
+li span {
+	font-family: "Trebuchet MS", Helvetica, sans-serif; 
+	font-weight: 600;
+	font-size:12px;
+	
+}
+
+.pattern_field {
+	width: 18px;
+	height: 18px;
+	position: relative;
+	left: -18px; /* смещение блока относительно первоначального положения*/
+/*background: lime;*/
+	background-image: url(../include/treeimg/t.gif);
+	float: left;
+}
+
+.pattern_field_up {
+	width: 18px;
+	height: 18px;
+	position: relative;
+	left: -18px; /* смещение блока относительно первоначального положения*/
+/*background: lime;*/
+	background-image: url(../include/treeimg/t.gif);
+	float: left;
+}
+
+.pattern_field_down {
+	width: 18px;
+	height: 18px;
+	position: relative;
+	left: -18px; /* смещение блока относительно первоначального положения*/
+/*background: lime;*/
+	background-image: url(../include/treeimg/l.gif);
+	float: left;
+}
+
+.catalog_open_field {
+	background-image: url(../include/treeimg/expand_minus.gif);
+}
+
+.catalog_minus {
+	width: 18px;
+	height: 18px;
+	position: relative;
+	background-image: url(../include/treeimg/minus.gif);
+	left: -36px; 
+	float: left;
+}
+
+.catalog_txt {
+	text-indent: -36px;
+}
+
+.begin_field1 {
+	background-image: url(../include/treeimg/expand_leaf.gif);
+}
+
+.end_field {
+	background-image: url(../include/treeimg/i_half.gif);
+}
+
+.catalog_open {
+	display: block;
+}
+
+.catalog_close {
+	display: none;
+}
+
+/************** стили ячеек меню */
+
+
+#open_close {  /* поле с замком */
+	/*right: 30px; */
+	height: 30px;
+	width: 30px;
+	margin-right: 5px;
+	margin-top: 7px;
+	float: right; 
+	align-self: center;
+}
+
+.topmenuitem, .menuitem, .treemenuitem {
+	cursor: default;
+}
+
+.notshow_any {
+	display: none;
+}
+
+.scrollbar {
+	scrollbar-width: thin;
+}
+
+#menu_edit_field {
+	padding-bottom: 30px;
+}

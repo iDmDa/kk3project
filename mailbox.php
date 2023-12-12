@@ -1,4 +1,11 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
 <?
 
 
@@ -221,14 +228,14 @@ $dtable->pos_nomer_col = 0;
 $dtable->nomer_col_menu_style = " relocnomer ";
 $dtable->max_line = 100;
 if(isset($_GET['page'])) $dtable->show_page = $_GET['page'];
-$dtable->datatable();
+//$dtable->datatable();
 //echo $dtable->max_pages ." page: " .$dtable->show_page;
 echo "<br>";
 echo "</div>"; //filter
 
 function db_connect() {
 	try {
-		$db = new PDO("mysql:host=127.0.0.1;port=3306;dbname=kanboard", "root", "root");
+		$db = new PDO("mysql:host=127.0.0.1;port=3306;dbname=kk3project", "root", "root");
 	} catch (PDOException $e) {
 		print "Error!: " . $e->getMessage();
 		die();
@@ -238,15 +245,17 @@ function db_connect() {
 
 function dataArray($tableName){
 	$db = db_connect();
-	echo "<pre>";
 	$r = $db->prepare("SHOW FULL COLUMNS FROM {$tableName}");
 	$r->execute();
 	return $r->fetchAll(PDO::FETCH_ASSOC);
 }
 
 function getColName($array, $column) {
-	foreach ($array as $key => $value) {
-		if($value['Field'] == $column) return $value['Comment'];
+	foreach ($array as $value) {
+		if($value['Field'] == $column) {
+			if($value['Comment'] != "") return $value['Comment'];
+			return $column;
+		}
 	}
 	return $column;
 }
@@ -255,6 +264,16 @@ $arr = dataArray("kk3project.mailbox");
 echo getColName($arr, "datevh");
 echo "		";
 echo getColName($arr, "contentvh");
+echo "	id: " .$_GET['id'];
+
+function getDatatable($tableName, $table_id){
+	$db = db_connect();
+	$r = $db->prepare("SELECT * FROM {$tableName} WHERE hide = 0 and detid = '{$table_id}'");
+	$r->execute();
+	return $r->fetchAll(PDO::FETCH_ASSOC);
+}
+echo "<pre>";
+print_r(getDatatable("mailbox", $_GET['id']));
 
 
 ?>
@@ -296,3 +315,6 @@ startfind();
 
 });
 </script>
+
+</body>
+</html>

@@ -2,7 +2,7 @@
 <?
 
 
-require ("megatable.php");
+require ("megatable2.php");
 
 if($_GET['print'] == 1) echo "<link href='css/litemgtable.css' rel='stylesheet'>";
 
@@ -225,6 +225,38 @@ $dtable->datatable();
 //echo $dtable->max_pages ." page: " .$dtable->show_page;
 echo "<br>";
 echo "</div>"; //filter
+
+function db_connect() {
+	try {
+		$db = new PDO("mysql:host=127.0.0.1;port=3306;dbname=kanboard", "root", "root");
+	} catch (PDOException $e) {
+		print "Error!: " . $e->getMessage();
+		die();
+	}
+	return $db;
+}
+
+function dataArray($tableName){
+	$db = db_connect();
+	echo "<pre>";
+	$r = $db->prepare("SHOW FULL COLUMNS FROM {$tableName}");
+	$r->execute();
+	return $r->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getColName($array, $column) {
+	foreach ($array as $key => $value) {
+		if($value['Field'] == $column) return $value['Comment'];
+	}
+	return $column;
+}
+
+$arr = dataArray("kk3project.mailbox");
+echo getColName($arr, "datevh");
+echo "		";
+echo getColName($arr, "contentvh");
+
+
 ?>
 <script>
 

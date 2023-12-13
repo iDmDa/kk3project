@@ -68,20 +68,11 @@ if(isset($_POST['xhrload'])) {
 
 	$jsonArray = json_decode($json, true);
 
-	// Добавляем ваш собственный объект в массив
-	//$customObject = array("customField1" => "value1", "customField2" => "value2");
 	$customObject = getColList(dataArray("kk3project.mailbox"));
-
-	//print_r($customObject);
-
-	array_unshift($jsonArray, $customObject);
-
-	// Переиндексируем массив, чтобы ключи начинались с 0
-	$jsonArray = array_values($jsonArray);
+	array_unshift($jsonArray, $customObject); // Добавляет один или несколько элементов в начало массива
+	$jsonArray = array_values($jsonArray);// Переиндексируем массив, чтобы ключи начинались с 0
 	
-	// Кодируем массив обратно в JSON-строку
 	$json = json_encode($jsonArray, JSON_UNESCAPED_UNICODE);
-
     echo $json;
 	
 	unset($_POST['xhrload']);
@@ -104,10 +95,17 @@ if(isset($_POST['xhrload'])) {
 
 		let varframe = document.getElementById("varframe");
 
-		let div = document.createElement("div");
+		/*let div = document.createElement("div");
 		div.id = "data_div";
 		varframe.append(div);
-		div.innerText = resp;
+		div.innerText = resp;*/
+
+		let table = new TableGenerator();
+		table.tableID = "table";
+		table.layerID = "varframe";
+		table.dbData = resultArray;
+
+		table.createTable();
 		//div.innerText = resultArray[0]['id'];
 
         //callback();
@@ -116,11 +114,7 @@ if(isset($_POST['xhrload'])) {
 
 
 
-let table = new TableGenerator();
-table.tableID = "table";
-table.layerID = "varframe";
 
-table.createTable();
 
 xhrLoad("xhrload", "xhrload", <?=$_GET['id']?>);
 
@@ -347,7 +341,7 @@ $dtable->pos_nomer_col = 0;
 $dtable->nomer_col_menu_style = " relocnomer ";
 $dtable->max_line = 100;
 if(isset($_GET['page'])) $dtable->show_page = $_GET['page'];
-$dtable->datatable();
+//$dtable->datatable();
 //echo $dtable->max_pages ." page: " .$dtable->show_page;
 echo "<br>";
 echo "</div>"; //filter

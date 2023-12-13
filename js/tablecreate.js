@@ -2,6 +2,7 @@ class TableGenerator {
 
 	tableID;
 	layerID;
+    dbData;
 
     bigTitle() {
         let tr = document.createElement("tr")
@@ -56,16 +57,31 @@ class TableGenerator {
         let tbody = document.createElement("tbody");
         tbody.classList.add("table_body_block");
 
-        for(let i = 0; i < 10; i++) {
+        /*this.dbData.forEach(line => {
             tr = document.createElement("tr");
-            for(let j = 0; j < 10; j++) {
+            line.forEach(item => {
                 td = document.createElement("td");
-                td.innerText = ` (${i} ${j}) `;
+                td.innerText = `${item}`;
+                td.classList.add("simplefield");
+                tr.appendChild(td);
+            });
+            tbody.appendChild(tr);
+        });*/
+
+        for(let i = 1; i < this.dbData.length; i++) {
+            tr = document.createElement("tr");
+            //for(let j = 0; j < 10; j++) 
+            for(let item in this.dbData[i])
+            {
+                td = document.createElement("td");
+                td.innerHTML = `${this.dbData[i][item]}`;
+                //td.innerText = `${this.dbData.length}`;
                 td.classList.add("simplefield");
                 tr.appendChild(td);
             }
             tbody.appendChild(tr);
         }
+
         return tbody;
     }
 

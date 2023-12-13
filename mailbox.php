@@ -1,3 +1,5 @@
+<?
+/*
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,8 +8,125 @@
 	<title>Document</title>
 </head>
 <body>
-<?
+*/
 
+
+if(isset($_POST['xhrload'])) {
+
+	function db_connect() {
+		try {
+			$db = new PDO("mysql:host=127.0.0.1;port=3306;dbname=kk3project", "root", "root");
+		} catch (PDOException $e) {
+			print "Error!: " . $e->getMessage();
+			die();
+		}
+		return $db;
+	}
+	
+	function dataArray($tableName){
+		$db = db_connect();
+		$r = $db->prepare("SHOW FULL COLUMNS FROM {$tableName}");
+		$r->execute();
+		return $r->fetchAll(PDO::FETCH_ASSOC);
+	}
+	
+	function getColName($array, $column) {
+		foreach ($array as $value) {
+			if($value['Field'] == $column) {
+				if($value['Comment'] != "") return $value['Comment'];
+				return $column;
+			}
+		}
+		return $column;
+	}
+
+	function getColList($array) {
+		foreach ($array as $value) {
+			$result[$value['Field']] = $value['Comment'];
+		}
+		return $result;
+	}
+	
+	$arr = dataArray("kk3project.mailbox");
+	/*echo getColName($arr, "datevh");
+	echo "		";
+	echo getColName($arr, "contentvh");
+	echo "	id: " .$_GET['id'];*/
+
+	
+	function getDatatable($tableName, $table_id, $fieldList){
+		$db = db_connect();
+		$r = $db->prepare("SELECT {$fieldList} FROM {$tableName} WHERE hide = 0 and detid = '{$table_id}'");
+		$r->execute();
+		return $r->fetchAll(PDO::FETCH_ASSOC);
+	}
+	
+	//$fieldList = "id, hide, detid, datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, dateish, nomerish, adresish, contentish, scanish, countlistish, fioispish, sumnormchasish, upd";
+	$fieldList = "id, datevh, nomervh, adresvh, contentvh, 	scanvh, countlistvh, sumnormchasvh, 
+	dateish, nomerish, adresish, contentish, scanish, countlistish, fioispish, sumnormchasish";
+	$json = json_encode(getDatatable("mailbox", $_POST['tabNumber'], $fieldList), JSON_UNESCAPED_UNICODE);
+
+	$jsonArray = json_decode($json, true);
+
+	// Добавляем ваш собственный объект в массив
+	//$customObject = array("customField1" => "value1", "customField2" => "value2");
+	$customObject = getColList(dataArray("kk3project.mailbox"));
+
+	//print_r($customObject);
+
+	array_unshift($jsonArray, $customObject);
+
+	// Переиндексируем массив, чтобы ключи начинались с 0
+	$jsonArray = array_values($jsonArray);
+	
+	// Кодируем массив обратно в JSON-строку
+	$json = json_encode($jsonArray, JSON_UNESCAPED_UNICODE);
+
+    echo $json;
+	
+	unset($_POST['xhrload']);
+	exit;
+}
+?>
+
+<script>
+	function xhrLoad (postname, value, tabNumber) {
+    let data = new FormData();
+    data.append(postname, value);
+	data.append("tabNumber", tabNumber);
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', 'mailbox.php', true);
+    xhr.send(data);
+    xhr.onload = function () {
+        let resp = xhr.response; //Результат запроса
+        resultArray = JSON.parse(resp);
+
+		let varframe = document.getElementById("varframe");
+
+		let div = document.createElement("div");
+		div.id = "data_div";
+		varframe.append(div);
+		div.innerText = resp;
+		//div.innerText = resultArray[0]['id'];
+
+        //callback();
+    }
+}
+
+
+
+let table = new TableGenerator();
+table.tableID = "table";
+table.layerID = "varframe";
+
+table.createTable();
+
+xhrLoad("xhrload", "xhrload", <?=$_GET['id']?>);
+
+</script>
+
+<?
 
 require ("megatable2.php");
 
@@ -228,52 +347,21 @@ $dtable->pos_nomer_col = 0;
 $dtable->nomer_col_menu_style = " relocnomer ";
 $dtable->max_line = 100;
 if(isset($_GET['page'])) $dtable->show_page = $_GET['page'];
-//$dtable->datatable();
+$dtable->datatable();
 //echo $dtable->max_pages ." page: " .$dtable->show_page;
 echo "<br>";
 echo "</div>"; //filter
 
-function db_connect() {
-	try {
-		$db = new PDO("mysql:host=127.0.0.1;port=3306;dbname=kk3project", "root", "root");
-	} catch (PDOException $e) {
-		print "Error!: " . $e->getMessage();
-		die();
-	}
-	return $db;
-}
 
-function dataArray($tableName){
-	$db = db_connect();
-	$r = $db->prepare("SHOW FULL COLUMNS FROM {$tableName}");
-	$r->execute();
-	return $r->fetchAll(PDO::FETCH_ASSOC);
-}
 
-function getColName($array, $column) {
-	foreach ($array as $value) {
-		if($value['Field'] == $column) {
-			if($value['Comment'] != "") return $value['Comment'];
-			return $column;
-		}
-	}
-	return $column;
-}
 
-$arr = dataArray("kk3project.mailbox");
-echo getColName($arr, "datevh");
-echo "		";
-echo getColName($arr, "contentvh");
-echo "	id: " .$_GET['id'];
 
-function getDatatable($tableName, $table_id){
-	$db = db_connect();
-	$r = $db->prepare("SELECT * FROM {$tableName} WHERE hide = 0 and detid = '{$table_id}'");
-	$r->execute();
-	return $r->fetchAll(PDO::FETCH_ASSOC);
-}
-echo "<pre>";
-print_r(getDatatable("mailbox", $_GET['id']));
+
+
+
+
+
+
 
 
 ?>

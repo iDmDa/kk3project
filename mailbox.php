@@ -101,8 +101,11 @@ if(isset($_POST['xhrload'])) {
 		div.innerText = resp;*/
 
 		let table = new TableGenerator();
-		table.tableID = "table";
+		console.log(tabNumber);
+		table.tableID = `table_${tabNumber}`;
 		table.layerID = "varframe";
+		table.tabName = "Переписка";
+		table.fieldList = "datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, dateish, nomerish, adresish, contentish, scanish, countlistish, fioispish, sumnormchasish";
 		table.dbData = resultArray;
 
 		table.createTable();
@@ -341,7 +344,7 @@ $dtable->pos_nomer_col = 0;
 $dtable->nomer_col_menu_style = " relocnomer ";
 $dtable->max_line = 100;
 if(isset($_GET['page'])) $dtable->show_page = $_GET['page'];
-//$dtable->datatable();
+$dtable->datatable();
 //echo $dtable->max_pages ." page: " .$dtable->show_page;
 echo "<br>";
 echo "</div>"; //filter

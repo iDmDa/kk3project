@@ -36,13 +36,14 @@ class TableGenerator {
         return tr;
     }
 
+
     bottomTitle() {
         let tr = document.createElement("tr");
-        let td = document.createElement("td");
-        for(let item in this.dbData[0]) {
-            if(this.fieldList.indexOf(item) < 0) continue;
+        let td;
+        let fieldList = this.fieldList.split(", ")
+        for(let item in fieldList) {
             td = document.createElement("td");
-            switch(item) {
+            switch(fieldList[item]) {
                 case "scanvh":
                     td.style.width = "60px";
                 break;
@@ -56,9 +57,9 @@ class TableGenerator {
                     td.style.width = "50px";
                 break;
             }
-            td.innerHTML = `${this.dbData[0][item]}`;
+            td.innerHTML = `${this.dbData[0][fieldList[item]]}`;
             td.classList.add("table_header");
-            td.dataset.table = item;
+            td.dataset.column = fieldList[item];
             tr.appendChild(td);
         }
 
@@ -82,11 +83,27 @@ class TableGenerator {
 
         for(let i = 1; i < this.dbData.length; i++) {
             tr = document.createElement("tr");
-            for(let item in this.dbData[i]) {
-                if(this.fieldList.indexOf(item) < 0) continue;
+            let input;
+            let fieldList = this.fieldList.split(", ")
+            for(let item in fieldList) {
+                if(this.fieldList.indexOf(fieldList[item]) < 0) continue;
                 td = document.createElement("td");
-                td.innerHTML = `${this.dbData[i][item]}`;
-                td.classList.add("simplefield");
+                if(fieldList[item] == "datevh") {
+                    input = document.createElement("input");
+                    //input.value = `${this.dbData[i][fieldList[item]]}`;
+                    input.id = `${this.dbData[i]["id"]}_${fieldList[item]}_${this.dbData[0]["db"]}`;
+                    input.classList.add("dateinput");
+                    input.setAttribute("type", "text");
+                    input.setAttribute("onchange", "update_db(this.id,this.value)");
+                    input.setAttribute("value", `${this.dbData[i][fieldList[item]]}`);
+                    td.appendChild(input);
+                }
+                else {
+                    td.innerHTML = `${this.dbData[i][fieldList[item]]}`;
+                    td.classList.add("simplefield");
+                    td.id = `${this.dbData[i]["id"]}_${fieldList[item]}_${this.dbData[0]["db"]}`;
+                }
+
                 tr.appendChild(td);
             }
             tbody.appendChild(tr);
@@ -94,6 +111,7 @@ class TableGenerator {
 
         return tbody;
     }
+
 
     createNumberLine() {
         let title = document.querySelectorAll(`#${this.tableID} .table_header`);
@@ -108,18 +126,23 @@ class TableGenerator {
             td = document.createElement("td");
             td.innerText = i + 1;
             td.classList.add("table_nomeric_col");
+            td.classList.add("relocnomer");
+            td.dataset.id = document.querySelectorAll(`#${this.tableID} tbody tr`)[i].children[1].id.split("_")[0];
+            td.dataset.table = document.querySelectorAll(`#${this.tableID} tbody tr`)[i].children[1].id.split("_")[2];
+            td.dataset.actfile = "mailbox.php";
+            td.dataset.htag = "varframe";
+            td.dataset.getdata = `&id=${this.tableID.split("_")[1]}`;
             document.querySelectorAll(`#${this.tableID} tbody tr`)[i].children[0].before(td);
         }
     }
 
 	createTable() {
-		let layer = document.getElementById(this.layerID);
 		let table = document.createElement("table");
 		table.id = this.tableID;
         table.classList.add("autotable");
-		layer.append(table);
-        table.appendChild(this.theadCreate());
+		table.appendChild(this.theadCreate());
         table.appendChild(this.tbodyCreate());
+        document.getElementById(this.layerID).append(table);
         this.createNumberLine();
 	}
 

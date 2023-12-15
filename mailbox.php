@@ -68,8 +68,9 @@ if(isset($_POST['xhrload'])) {
 
 	$jsonArray = json_decode($json, true);
 
-	$customObject = getColList(dataArray("kk3project.mailbox"));
-	array_unshift($jsonArray, $customObject); // Добавляет один или несколько элементов в начало массива
+	$headerNameList = getColList(dataArray("kk3project.mailbox"));
+	$headerNameList['db'] = "mailbox";
+	array_unshift($jsonArray, $headerNameList); // Добавляет один или несколько элементов в начало массива
 	$jsonArray = array_values($jsonArray);// Переиндексируем массив, чтобы ключи начинались с 0
 	
 	$json = json_encode($jsonArray, JSON_UNESCAPED_UNICODE);
@@ -105,10 +106,13 @@ if(isset($_POST['xhrload'])) {
 		table.tableID = `table_${tabNumber}`;
 		table.layerID = "varframe";
 		table.tabName = "Переписка";
-		table.fieldList = "datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, dateish, nomerish, adresish, contentish, scanish, countlistish, fioispish, sumnormchasish";
+		table.fieldList = "datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish";
 		table.dbData = resultArray;
 
 		table.createTable();
+
+		zamok == 1 ? open_edit() : close_edit();
+
 		//div.innerText = resultArray[0]['id'];
 
         //callback();

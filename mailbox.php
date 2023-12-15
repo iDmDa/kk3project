@@ -63,7 +63,7 @@ if(isset($_POST['xhrload'])) {
 	
 	//$fieldList = "id, hide, detid, datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, dateish, nomerish, adresish, contentish, scanish, countlistish, fioispish, sumnormchasish, upd";
 	$fieldList = "id, datevh, nomervh, adresvh, contentvh, 	scanvh, countlistvh, sumnormchasvh, 
-	dateish, nomerish, adresish, contentish, scanish, countlistish, fioispish, sumnormchasish";
+	dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish";
 	$json = json_encode(getDatatable("mailbox", $_POST['tabNumber'], $fieldList), JSON_UNESCAPED_UNICODE);
 
 	$jsonArray = json_decode($json, true);

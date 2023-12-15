@@ -22,7 +22,7 @@ class TableGenerator {
         let tr = document.createElement("tr");
         let td = document.createElement("td");
         td.innerText = "Входящие";
-        td.colSpan = 7;
+        td.colSpan = 8;
         td.style.textAlign = "center";
         td.classList.add("table_colspan_header");
         tr.appendChild(td);
@@ -42,6 +42,20 @@ class TableGenerator {
         for(let item in this.dbData[0]) {
             if(this.fieldList.indexOf(item) < 0) continue;
             td = document.createElement("td");
+            switch(item) {
+                case "scanvh":
+                    td.style.width = "60px";
+                break;
+                case "sumnormchasvh":
+                    td.style.width = "50px";
+                break;
+                case "scanish":
+                    td.style.width = "60px";
+                break;
+                case "sumnormchasish":
+                    td.style.width = "50px";
+                break;
+            }
             td.innerHTML = `${this.dbData[0][item]}`;
             td.classList.add("table_header");
             td.dataset.table = item;
@@ -82,7 +96,6 @@ class TableGenerator {
     }
 
     createNumberLine() {
-        //let title = document.querySelectorAll(`#${tableID} .table_header`)[0].before(document.createElement("td"));
         let title = document.querySelectorAll(`#${this.tableID} .table_header`);
         let td = document.createElement("td");
         title[0].before(td);
@@ -90,7 +103,6 @@ class TableGenerator {
         td.classList.add("table_header");
         td.style.width = "25px";
 
-        //document.querySelectorAll("#table_105 tbody tr")[1].children[0].before(document.createElement("td"))
         let len = document.querySelectorAll(`#${this.tableID} tbody tr`).length;
         for(let i = 0; i < len; i++) {
             td = document.createElement("td");

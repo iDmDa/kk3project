@@ -52,6 +52,11 @@ if(isset($_POST['xhrload'])) {
 	echo "		";
 	echo getColName($arr, "contentvh");
 	echo "	id: " .$_GET['id'];*/
+/*
+	SELECT mailbox.*, uplfiles.type, uplfiles.filename, uplfiles.maskname, uplfiles.prefix
+	FROM mailbox
+	JOIN uplfiles ON mailbox.id = uplfiles.detid 
+	WHERE mailbox.detid = 118	*/
 
 	
 	function getDatatable($tableName, $table_id, $fieldList){
@@ -60,9 +65,23 @@ if(isset($_POST['xhrload'])) {
 		$r->execute();
 		return $r->fetchAll(PDO::FETCH_ASSOC);
 	}
+
+	function getDatatable1($tableName, $table_id, $fieldList){
+		$db = db_connect();
+		$fieldList = "mailbox.id, mailbox.datevh, mailbox.nomervh, mailbox.adresvh, mailbox.contentvh, mailbox.scanvh, mailbox.countlistvh, mailbox.sumnormchasvh, 
+		mailbox.dateish, mailbox.nomerish, mailbox.adresish, mailbox.contentish, mailbox.scanish, mailbox.countlistish, mailbox.sumnormchasish, mailbox.fioispish, 
+		uplfiles.type, uplfiles.filename, uplfiles.maskname, uplfiles.prefix";
+		$r = $db->prepare("SELECT {$fieldList}
+		FROM mailbox
+		JOIN uplfiles ON mailbox.id = uplfiles.detid 
+		WHERE mailbox.detid = '{$table_id}'");
+		$r->execute();
+		return $r->fetchAll(PDO::FETCH_ASSOC);
+	}
+
 	
 	//$fieldList = "id, hide, detid, datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, dateish, nomerish, adresish, contentish, scanish, countlistish, fioispish, sumnormchasish, upd";
-	$fieldList = "id, datevh, nomervh, adresvh, contentvh, 	scanvh, countlistvh, sumnormchasvh, 
+	$fieldList = "id, datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, 
 	dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish";
 	$json = json_encode(getDatatable("mailbox", $_POST['tabNumber'], $fieldList), JSON_UNESCAPED_UNICODE);
 
@@ -112,11 +131,16 @@ if(isset($_POST['xhrload'])) {
 		table.createTable();
 
 		zamok == 1 ? open_edit() : close_edit();
+		$(".dateinput").mask("99.99.9999", {placeholder: "дд.мм.гггг" });
 
 		//div.innerText = resultArray[0]['id'];
 
         //callback();
     }
+
+	xhr.onloadend = function(event) {
+    	console.log("Загрузка завершена");
+  	}
 }
 
 

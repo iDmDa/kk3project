@@ -88,7 +88,7 @@ class TableGenerator {
             for(let item in fieldList) {
                 if(this.fieldList.indexOf(fieldList[item]) < 0) continue;
                 td = document.createElement("td");
-                if(fieldList[item] == "datevh") {
+                if(fieldList[item] == "datevh" || fieldList[item] == "dateish") {
                     input = document.createElement("input");
                     //input.value = `${this.dbData[i][fieldList[item]]}`;
                     input.id = `${this.dbData[i]["id"]}_${fieldList[item]}_${this.dbData[0]["db"]}`;

@@ -77,31 +77,61 @@ class TableGenerator {
     }
 
     tbodyCreate() {
-        let tr, td;
+        let tr, td, input, value;
         let tbody = document.createElement("tbody");
         tbody.classList.add("table_body_block");
 
+        let fieldList = this.fieldList.split(", ");
         for(let i = 1; i < this.dbData.length; i++) {
             tr = document.createElement("tr");
-            let input;
-            let fieldList = this.fieldList.split(", ")
+            
             for(let item in fieldList) {
                 if(this.fieldList.indexOf(fieldList[item]) < 0) continue;
+                value = this.dbData[i][fieldList[item]];
                 td = document.createElement("td");
-                if(fieldList[item] == "datevh" || fieldList[item] == "dateish") {
-                    input = document.createElement("input");
-                    //input.value = `${this.dbData[i][fieldList[item]]}`;
-                    input.id = `${this.dbData[i]["id"]}_${fieldList[item]}_${this.dbData[0]["db"]}`;
-                    input.classList.add("dateinput");
-                    input.setAttribute("type", "text");
-                    input.setAttribute("onchange", "update_db(this.id,this.value)");
-                    input.setAttribute("value", `${this.dbData[i][fieldList[item]]}`);
-                    td.appendChild(input);
-                }
-                else {
-                    td.innerHTML = `${this.dbData[i][fieldList[item]]}`;
-                    td.classList.add("simplefield");
-                    td.id = `${this.dbData[i]["id"]}_${fieldList[item]}_${this.dbData[0]["db"]}`;
+
+                switch (fieldList[item]) {
+                    case "datevh":
+                    case "dateish":
+                        input = document.createElement("input");
+                        input.id = `${this.dbData[i]["id"]}_${fieldList[item]}_${this.dbData[0]["db"]}`;
+                        input.classList.add("dateinput");
+                        input.setAttribute("type", "text");
+                        input.setAttribute("onchange", "update_db(this.id,this.value)");
+                        input.setAttribute("value", `${value}`);
+                        td.appendChild(input);
+                        break;
+
+                    case "scanvh":
+                        if(value.length > 0) {
+                            let result = "";
+                            
+                            for(let j = 0; j < value.length; j++) {
+                                let filetype = value[j]["maskname"].split(".").reverse()[0];
+                                let a = document.createElement("a");
+                                let img = document.createElement("img");
+                                a.href = `/include/ico/${filetype}.png`;
+                                img.src = `include/ico/${filetype}.png`;
+                                a.appendChild(img);
+                                td.appendChild(a);
+                                console.log(filetype); 
+                                result += value[j]["maskname"];
+                            }
+
+                            
+                            //td.innerHTML = result;
+                        };
+                        break;
+                    
+                    case "scanish1":
+                        td.innerHTML = "ish";
+                        break;
+                
+                    default:
+                        td.innerHTML = `${value}`;
+                        td.classList.add("simplefield");
+                        td.id = `${this.dbData[i]["id"]}_${fieldList[item]}_${this.dbData[0]["db"]}`;
+                        break;
                 }
 
                 tr.appendChild(td);

@@ -1,15 +1,4 @@
 <?
-/*
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
-</head>
-<body>
-*/
-
 
 if(isset($_POST['xhrload'])) {
 
@@ -23,41 +12,19 @@ if(isset($_POST['xhrload'])) {
 		return $db;
 	}
 	
-	function dataArray($tableName){
+	function getColName($tableName){
 		$db = db_connect();
 		$r = $db->prepare("SHOW FULL COLUMNS FROM {$tableName}");
 		$r->execute();
 		return $r->fetchAll(PDO::FETCH_ASSOC);
 	}
 	
-	function getColName($array, $column) {
-		foreach ($array as $value) {
-			if($value['Field'] == $column) {
-				if($value['Comment'] != "") return $value['Comment'];
-				return $column;
-			}
-		}
-		return $column;
-	}
-
-	function getColList($array) {
-		foreach ($array as $value) {
+	function getColList($tableName) {
+		foreach (getColName($tableName) as $value) {
 			$result[$value['Field']] = $value['Comment'];
 		}
 		return $result;
 	}
-	
-	$arr = dataArray("kk3project.mailbox");
-	/*echo getColName($arr, "datevh");
-	echo "		";
-	echo getColName($arr, "contentvh");
-	echo "	id: " .$_GET['id'];*/
-/*
-	SELECT mailbox.*, uplfiles.type, uplfiles.filename, uplfiles.maskname, uplfiles.prefix
-	FROM mailbox
-	JOIN uplfiles ON mailbox.id = uplfiles.detid 
-	WHERE mailbox.detid = 118	*/
-
 	
 	function getDatatable($tableName, $table_id, $fieldList){
 		$db = db_connect();
@@ -66,36 +33,50 @@ if(isset($_POST['xhrload'])) {
 		return $r->fetchAll(PDO::FETCH_ASSOC);
 	}
 
-	function getDatatable1($tableName, $table_id, $fieldList){
+	function getLinkList($id, $type) {
 		$db = db_connect();
-		$fieldList = "mailbox.id, mailbox.datevh, mailbox.nomervh, mailbox.adresvh, mailbox.contentvh, mailbox.scanvh, mailbox.countlistvh, mailbox.sumnormchasvh, 
-		mailbox.dateish, mailbox.nomerish, mailbox.adresish, mailbox.contentish, mailbox.scanish, mailbox.countlistish, mailbox.sumnormchasish, mailbox.fioispish, 
-		uplfiles.type, uplfiles.filename, uplfiles.maskname, uplfiles.prefix";
-		$r = $db->prepare("SELECT {$fieldList}
-		FROM mailbox
-		JOIN uplfiles ON mailbox.id = uplfiles.detid 
-		WHERE mailbox.detid = '{$table_id}'");
+		$r = $db->prepare("SELECT prefix, filename, maskname FROM uplfiles WHERE hide = 0 and detid = '{$id}' and tabname = 'mailbox' and type = '{$type}'");
 		$r->execute();
 		return $r->fetchAll(PDO::FETCH_ASSOC);
 	}
 
-	
-	//$fieldList = "id, hide, detid, datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, dateish, nomerish, adresish, contentish, scanish, countlistish, fioispish, sumnormchasish, upd";
+
 	$fieldList = "id, datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, 
 	dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish";
-	$json = json_encode(getDatatable("mailbox", $_POST['tabNumber'], $fieldList), JSON_UNESCAPED_UNICODE);
+	$jsonArray = getDatatable("mailbox", $_POST['tabNumber'], $fieldList);
 
-	$jsonArray = json_decode($json, true);
+	for($i = 0; $i < count($jsonArray); $i++) {
+		$jsonArray[$i]["scanvh"] =  getLinkList($jsonArray[$i]["id"], 1);
+		$jsonArray[$i]["scanish"] = getLinkList($jsonArray[$i]["id"], 2);;
+	}
 
-	$headerNameList = getColList(dataArray("kk3project.mailbox"));
+	$headerNameList = getColList("kk3project.mailbox");
 	$headerNameList['db'] = "mailbox";
+	$headerNameList['count'] = $jsonArray[0]["id"];
 	array_unshift($jsonArray, $headerNameList); // Добавляет один или несколько элементов в начало массива
 	$jsonArray = array_values($jsonArray);// Переиндексируем массив, чтобы ключи начинались с 0
-	
 	$json = json_encode($jsonArray, JSON_UNESCAPED_UNICODE);
     echo $json;
 	
 	unset($_POST['xhrload']);
+	exit;
+}
+
+if(isset($_POST['scanload'])) {
+
+	function db_connect() {
+		try {
+			$db = new PDO("mysql:host=127.0.0.1;port=3306;dbname=kk3project", "root", "root");
+		} catch (PDOException $e) {
+			print "Error!: " . $e->getMessage();
+			die();
+		}
+		return $db;
+	}
+
+	$json = json_encode($jsonArray, JSON_UNESCAPED_UNICODE);
+    echo $json;
+	unset($_POST['scanload']);
 	exit;
 }
 ?>

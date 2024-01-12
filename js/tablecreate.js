@@ -103,24 +103,30 @@ class TableGenerator {
                         break;
 
                     case "scanvh":
+                    case "scanish":
+                        td.id = `${this.dbData[i]["id"]}_${fieldList[item]}_${this.dbData[0]["db"]}`;
                         if(value.length > 0) {
-                            let result = "";
-                            
+                            let extList = "bmp, doc, docx, gif, jpg, mp3, pdf, png, tiff, txt, xlsx";
                             for(let j = 0; j < value.length; j++) {
-                                let filetype = value[j]["maskname"].split(".").reverse()[0];
+                                let filetype = value[j]["maskname"].split(".").reverse()[0].toLowerCase();
                                 let a = document.createElement("a");
                                 let img = document.createElement("img");
-                                a.href = `/include/ico/${filetype}.png`;
-                                img.src = `include/ico/${filetype}.png`;
+                                let textNode = document.createTextNode(" ");
+                                a.href = `/projectdata/mailbox/${value[j]["prefix"]}_${value[j]["filename"]}`;
+                                a.target = "_blank";
+                                extList.indexOf(filetype) < 0 ? img.src = `include/ico/unknow.png` : img.src = `include/ico/${filetype}.png`;
+                                img.title = `${value[j]["filename"]}`;
                                 a.appendChild(img);
                                 td.appendChild(a);
-                                console.log(filetype); 
-                                result += value[j]["maskname"];
+                                if(j != value.length - 1) td.appendChild(textNode);
+                                console.log(a);
                             }
-
-                            
-                            //td.innerHTML = result;
-                        };
+                        }
+                        let img = document.createElement("img");
+                        img.src = `include/new window.png`;
+                        img.style.float = "right";
+                        img.classList.add("button_field");
+                        td.appendChild(img);
                         break;
                     
                     case "scanish1":
@@ -174,6 +180,19 @@ class TableGenerator {
         table.appendChild(this.tbodyCreate());
         document.getElementById(this.layerID).append(table);
         this.createNumberLine();
+
+        let tb = document.getElementById(this.tableID);
+		tb.addEventListener("click", function(event) {
+            let type = "";
+            if(event.target.classList == "button_field"){
+                console.log(event.target.classList);
+                console.log(event.target.parentNode.id.split("_")[1]);
+                console.log(event.target);
+                if(event.target.parentNode.id.split("_")[1] == "scanvh") type = 1;
+                if(event.target.parentNode.id.split("_")[1] == "scanish") type = 2;
+                okno_show('dialog',`&tabname=mailbox&type=${type}&id=${event.target.parentNode.id.split("_")[0]}`);
+            }
+        });
 	}
 
 }

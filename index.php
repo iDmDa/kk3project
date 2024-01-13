@@ -18,7 +18,7 @@
 require ("localstyle.php");
 require ("dbconnect.php");
 ?>
-<script src = "js/tablecreate.js"></script>
+<script src = "js/mailbox.js"></script>
 <script src="jquery-ui-1.12.1.custom/external/jquery/jquery.js"></script>
 <script src="jquery-ui-1.12.1.custom/jquery-ui.js"></script>
 <script type="text/javascript" src="include/ajaxupload.3.5.js" ></script>
@@ -150,7 +150,7 @@ function delete_refresh_pass(table, id, loadfile, htag, getdata)
 	url: 'delete.php?table=' + table + "&id=" + id,
 	success: function(data)
 		{
-			refresh(loadfile, htag, getdata);
+			//refresh(loadfile, htag, getdata);
 			loadsection(izdelieid, sectionid);
 		}
 	

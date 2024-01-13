@@ -21,34 +21,42 @@ if(isset($_POST['xhrload'])) {
 	
 	function getColList($tableName) {
 		foreach (getColName($tableName) as $value) {
-			$result[$value['Field']] = $value['Comment'];
+			$result[$value['Field']] = $value['Comment'] != "" ? $value['Comment'] : columnNameList()[$value['Field']];
 		}
 		return $result;
 	}
+
+	function columnNameList() {
+		$name["datevh"] = "Дата";
+		$name["nomervh"] = "Номер";
+		$name["adresvh"] = "Адресат";
+		$name["contentvh"] = "Краткое содержание";
+		$name["scanvh"] = "Скан";
+		$name["countlistvh"] = "Кол. листов";
+		$name["sumnormchasvh"] = "Трудо-<br>емкость";
+		$name["dateish"] = "Дата";
+		$name["nomerish"] = "Номер";
+		$name["adresish"] = "Адресат";
+		$name["contentish"] = "Краткое содержание";
+		$name["scanish"] = "Скан";
+		$name["countlistish"] = "Кол. листов";
+		$name["sumnormchasish"] = "Трудо-<br>емкость";
+		$name["fioispish"] = "ФИО исполнителя";
+		return $name;
+	}
 	
-	function getDatatable($tableName, $table_id, $fieldList){
+	function getDatatable($tableName, $table_id, $fieldList, $startLine, $limitLine){
 		$db = db_connect();
-		$r = $db->prepare("SELECT {$fieldList} FROM {$tableName} WHERE hide = 0 and detid = '{$table_id}'");
+		$sortfield = "if(datevh != '', datevh, dateish) as summ ";
+		$sortirovka = "if(summ = '' or summ is null, 1, 0), SUBSTRING_INDEX(summ,'.',-1), SUBSTRING_INDEX(SUBSTRING_INDEX(summ,'.',2),'.',-1), SUBSTRING_INDEX(summ,'.',1), id";
+		$r = $db->prepare("SELECT {$fieldList}, {$sortfield} FROM {$tableName} WHERE hide = 0 and detid = '{$table_id}' ORDER BY {$sortirovka} LIMIT {$startLine}, {$limitLine}");
 		$r->execute();
 		return $r->fetchAll(PDO::FETCH_ASSOC);
 	}
-
-	function getLinkList($id, $type) {
-		$db = db_connect();
-		$r = $db->prepare("SELECT prefix, filename, maskname FROM uplfiles WHERE hide = 0 and detid = '{$id}' and tabname = 'mailbox' and type = '{$type}'");
-		$r->execute();
-		return $r->fetchAll(PDO::FETCH_ASSOC);
-	}
-
 
 	$fieldList = "id, datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, 
 	dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish";
-	$jsonArray = getDatatable("mailbox", $_POST['tabNumber'], $fieldList);
-
-	for($i = 0; $i < count($jsonArray); $i++) {
-		$jsonArray[$i]["scanvh"] =  getLinkList($jsonArray[$i]["id"], 1);
-		$jsonArray[$i]["scanish"] = getLinkList($jsonArray[$i]["id"], 2);;
-	}
+	$jsonArray = getDatatable("mailbox", $_POST['tabNumber'], $fieldList, 0, 100);
 
 	$headerNameList = getColList("kk3project.mailbox");
 	$headerNameList['db'] = "mailbox";
@@ -74,58 +82,25 @@ if(isset($_POST['scanload'])) {
 		return $db;
 	}
 
+	function getLinkList($id, $type) {
+		$db = db_connect();
+		$r = $db->prepare("SELECT prefix, filename, maskname FROM uplfiles WHERE hide = 0 and detid = '{$id}' and tabname = 'mailbox' and type = '{$type}'");
+		$r->execute();
+		return $r->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	$jsonArray = getLinkList($_POST['scan_id'], $_POST['scan_type']);
+
 	$json = json_encode($jsonArray, JSON_UNESCAPED_UNICODE);
     echo $json;
 	unset($_POST['scanload']);
+	unset($_POST['scan_id']);
+	unset($_POST['scan_type']);
 	exit;
 }
 ?>
 
 <script>
-	function xhrLoad (postname, value, tabNumber) {
-    let data = new FormData();
-    data.append(postname, value);
-	data.append("tabNumber", tabNumber);
-
-    let xhr = new XMLHttpRequest();
-    xhr.open('POST', 'mailbox.php', true);
-    xhr.send(data);
-    xhr.onload = function () {
-        let resp = xhr.response; //Результат запроса
-        resultArray = JSON.parse(resp);
-
-		let varframe = document.getElementById("varframe");
-
-		/*let div = document.createElement("div");
-		div.id = "data_div";
-		varframe.append(div);
-		div.innerText = resp;*/
-
-		let table = new TableGenerator();
-		console.log(tabNumber);
-		table.tableID = `table_${tabNumber}`;
-		table.layerID = "varframe";
-		table.tabName = "Переписка";
-		table.fieldList = "datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish";
-		table.dbData = resultArray;
-
-		table.createTable();
-
-		zamok == 1 ? open_edit() : close_edit();
-		$(".dateinput").mask("99.99.9999", {placeholder: "дд.мм.гггг" });
-
-		//div.innerText = resultArray[0]['id'];
-
-        //callback();
-    }
-
-	xhr.onloadend = function(event) {
-    	console.log("Загрузка завершена");
-  	}
-}
-
-
-
 
 
 xhrLoad("xhrload", "xhrload", <?=$_GET['id']?>);

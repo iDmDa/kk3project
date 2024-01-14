@@ -319,3 +319,16 @@ li span {
 #menu_edit_field {
 	padding-bottom: 30px;
 }
+
+.mailbox_pages {
+	display: flex;
+	justify-content: center;
+	margin-top: 20px;
+	margin-bottom: 50px;
+}
+
+.mailbox_pages div {
+	width: fit-content;
+	margin-left: 2px;
+	margin-right: 2px;
+}

@@ -45,28 +45,40 @@ if(isset($_POST['xhrload'])) {
 		return $name;
 	}
 	
-	function getDatatable($tableName, $table_id, $fieldList, $startLine, $limitLine){
+	function getDatatable($tableName, $table_id, $fieldList, $page, $limitLine){
 		$db = db_connect();
 		$sortfield = "if(datevh != '', datevh, dateish) as summ ";
 		$sortirovka = "if(summ = '' or summ is null, 1, 0), SUBSTRING_INDEX(summ,'.',-1), SUBSTRING_INDEX(SUBSTRING_INDEX(summ,'.',2),'.',-1), SUBSTRING_INDEX(summ,'.',1), id";
-		$r = $db->prepare("SELECT {$fieldList}, {$sortfield} FROM {$tableName} WHERE hide = 0 and detid = '{$table_id}' ORDER BY {$sortirovka} LIMIT {$startLine}, {$limitLine}");
+		$r = $db->prepare("SELECT {$fieldList}, {$sortfield} FROM {$tableName} WHERE hide = 0 and detid = '{$table_id}' ORDER BY {$sortirovka} LIMIT {$page}, {$limitLine}");
 		$r->execute();
 		return $r->fetchAll(PDO::FETCH_ASSOC);
 	}
 
+	function maxResult($tableName, $table_id) {
+		$db = db_connect();
+		$r = $db->prepare("SELECT COUNT(id) as maxResult FROM {$tableName} WHERE hide = 0 and detid = '{$table_id}'");
+		$r->execute();
+		return $r->fetchAll(PDO::FETCH_ASSOC)[0]['maxResult'];
+	}
+
 	$fieldList = "id, datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, 
 	dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish";
-	$jsonArray = getDatatable("mailbox", $_POST['tabNumber'], $fieldList, 0, 100);
+	$page = $_POST['page'] == 0 ? (maxResult("mailbox", $_POST['tabNumber'])/100|0)*100 : ($_POST['page']-1)*100;
+	$jsonArray = getDatatable("mailbox", $_POST['tabNumber'], $fieldList, $page, 100);
 
 	$headerNameList = getColList("kk3project.mailbox");
 	$headerNameList['db'] = "mailbox";
-	$headerNameList['count'] = $jsonArray[0]["id"];
+	$headerNameList['maxResult'] = maxResult("mailbox", $_POST['tabNumber']);
+	$headerNameList['maxPage'] = (maxResult("mailbox", $_POST['tabNumber'])/100|0) + 1;
+	$headerNameList['page'] = ($page / 100) + 1;
+	//$headerNameList['count'] = $jsonArray[0]["id"];
 	array_unshift($jsonArray, $headerNameList); // Добавляет один или несколько элементов в начало массива
 	$jsonArray = array_values($jsonArray);// Переиндексируем массив, чтобы ключи начинались с 0
 	$json = json_encode($jsonArray, JSON_UNESCAPED_UNICODE);
     echo $json;
 	
 	unset($_POST['xhrload']);
+	unset($_POST['page']);
 	exit;
 }
 
@@ -98,13 +110,38 @@ if(isset($_POST['scanload'])) {
 	unset($_POST['scan_type']);
 	exit;
 }
+
+if(isset($_POST['add'])) {
+
+	function db_connect() {
+		try {
+			$db = new PDO("mysql:host=127.0.0.1;port=3306;dbname=kk3project", "root", "root");
+		} catch (PDOException $e) {
+			print "Error!: " . $e->getMessage();
+			die();
+		}
+		return $db;
+	}
+
+	function add($id) {
+		$db = db_connect();
+		$r = $db->prepare("INSERT INTO mailbox(hide, detid) VALUES ('0', '{$id}')");
+		//$r = $db->prepare("SELECT prefix, filename, maskname FROM uplfiles WHERE hide = 0 and detid = '{$id}' and tabname = 'mailbox' and type = '{$type}'");
+		$r->execute();
+		return $db->lastInsertId();
+	}
+
+	$lastId = add($_POST['add']);
+
+	echo $lastId;
+
+	unset($_POST['add']);
+	exit;
+}
 ?>
 
 <script>
-
-
-xhrLoad("xhrload", "xhrload", <?=$_GET['id']?>);
-
+	xhrLoad("xhrload", <?=$_GET['id']?>, 0);
 </script>
 
 <?
@@ -328,7 +365,7 @@ $dtable->pos_nomer_col = 0;
 $dtable->nomer_col_menu_style = " relocnomer ";
 $dtable->max_line = 100;
 if(isset($_GET['page'])) $dtable->show_page = $_GET['page'];
-$dtable->datatable();
+//$dtable->datatable();
 //echo $dtable->max_pages ." page: " .$dtable->show_page;
 echo "<br>";
 echo "</div>"; //filter

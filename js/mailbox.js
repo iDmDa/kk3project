@@ -44,6 +44,10 @@ class TableGenerator {
         for(let item in fieldList) {
             td = document.createElement("td");
             switch(fieldList[item]) {
+                case "datevh":
+                case "dateish":
+                    td.style.width = "70px";
+                break;
                 case "scanvh":
                     td.style.width = "60px";
                 break;
@@ -109,7 +113,12 @@ class TableGenerator {
                         img.src = `include/mini-loading.gif`;
                         img.style.float = "left";
                         td.appendChild(img);
-                        //td.innerText = 1;
+                        break;
+
+                    case "sumnormchasvh":
+                    case "sumnormchasish":
+                        td.innerHTML = `${value}`;
+                        td.id = `${this.dbData[i]["id"]}_${fieldList[item]}_${this.dbData[0]["db"]}`;
                         break;
                     
                     default:
@@ -151,7 +160,90 @@ class TableGenerator {
         }
     }
 
-	createTable() {
+    pages() {
+        let pages = document.createElement("div");
+        pages.classList.add("mailbox_pages");
+        pages.id = "pages";
+
+        if((this.dbData[0]["maxResult"]/100|0) > 0) {     
+            for(let i = 0; i < (this.dbData[0]["maxResult"]/100|0) + 1; i++) {
+                let page = document.createElement("div");
+                page.innerText = i + 1;
+                page.classList.add("menuitem");
+                if((i + 1) == this.dbData[0]["page"]) page.classList.add("menuactive");
+                pages.appendChild(page);
+            }
+            document.getElementById(this.layerID).append(pages);
+        }
+    }
+
+    createAddButton() {
+        let addbutton = document.createElement("img");
+        addbutton.src = `include/addline.png`;
+        addbutton.classList.add("button_field");
+        addbutton.id = "addButton";
+        if(zamok == 0) addbutton.style.display = "none";
+        let table = document.getElementById(this.tableID);
+        table.after(addbutton);
+    }
+
+    createEvents() {
+        let table = document.getElementById(this.tableID);
+		table.addEventListener("click", function(event) {
+            let type = "";
+            if(event.target.classList == "button_field"){
+                if(event.target.parentNode.id.split("_")[1] == "scanvh") type = 1;
+                if(event.target.parentNode.id.split("_")[1] == "scanish") type = 2;
+                okno_show('dialog',`&tabname=mailbox&type=${type}&id=${event.target.parentNode.id.split("_")[0]}`);
+            }
+        });
+
+        let pages = document.getElementById("pages");
+        let tb = document.getElementById(this.tableID);
+        let varframe = document.getElementById("varframe");
+        if(pages != null) {
+            pages.addEventListener("click", function(event) {
+                //console.log(event.target.classList.contains("menuitem"));
+                if(event.target.classList.contains("menuitem")) {
+                    
+                    varframe.innerHTML = "";
+                    xhrLoad("xhrload", tb.id.split("_")[1], event.target.innerText);
+                }
+            });
+        }
+
+        let tableID = this.tableID;
+        let addButton = document.getElementById("addButton");
+        addButton.addEventListener("click", function(event) {
+            //varframe.innerHTML = "";
+            //xhrLoad("xhrload", tb.id.split("_")[1], 0);
+
+            /*let node = document.querySelectorAll(`#${tableID} tr`);
+            let clone = node[3].cloneNode(true);
+            table.appendChild(clone);
+            console.log(node[3]);*/
+
+            let data = new FormData();
+            data.append("add", tableID.split("_")[1]);
+        
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', 'mailbox.php', true);
+            xhr.send(data);
+            xhr.onload = function () {
+                let resp = xhr.response; //Результат запроса
+                //resultArray = JSON.parse(resp);
+                console.log(resp);
+            }
+
+            varframe.innerHTML = "";
+            xhrLoad("xhrload", tableID.split("_")[1], 0);
+
+        });
+    }
+
+
+
+	createTable(id) {
 		let table = document.createElement("table");
 		table.id = this.tableID;
         table.classList.add("autotable");
@@ -159,27 +251,22 @@ class TableGenerator {
         table.appendChild(this.tbodyCreate());
         document.getElementById(this.layerID).append(table);
         this.createNumberLine();
+        this.createAddButton();
+        this.pages();
+        this.createEvents();
 
-        let tb = document.getElementById(this.tableID);
-		tb.addEventListener("click", function(event) {
-            let type = "";
-            if(event.target.classList == "button_field"){
-                console.log(event.target.classList);
-                console.log(event.target.parentNode.id.split("_")[1]);
-                console.log(event.target);
-                if(event.target.parentNode.id.split("_")[1] == "scanvh") type = 1;
-                if(event.target.parentNode.id.split("_")[1] == "scanish") type = 2;
-                okno_show('dialog',`&tabname=mailbox&type=${type}&id=${event.target.parentNode.id.split("_")[0]}`);
-            }
-        });
+        let varframe = document.getElementById("varframe");
+        //varframe.scrollTop = varframe.scrollHeight;
+        varframe.scrollTop = 9999;
 	}
 
 }
 
-function xhrLoad (postname, value, tabNumber) {
+function xhrLoad (postname, tabNumber, page, id) {
     let data = new FormData();
-    data.append(postname, value);
+    data.append(postname, "value");
 	data.append("tabNumber", tabNumber);
+    data.append("page", page);
 
     let xhr = new XMLHttpRequest();
     xhr.open('POST', 'mailbox.php', true);
@@ -187,24 +274,27 @@ function xhrLoad (postname, value, tabNumber) {
     xhr.onload = function () {
         let resp = xhr.response; //Результат запроса
         resultArray = JSON.parse(resp);
+        console.log(resultArray);
 
 		let table = new TableGenerator();
-		console.log(tabNumber);
+		//console.log(tabNumber);
 		table.tableID = `table_${tabNumber}`;
 		table.layerID = "varframe";
 		table.tabName = "Переписка";
 		table.fieldList = "datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish";
-		table.dbData = resultArray;
+        table.dbData = resultArray;
 
-		table.createTable();
+		table.createTable(id);
 
-		zamok == 1 ? open_edit() : close_edit();
-		$(".dateinput").mask("99.99.9999", {placeholder: "дд.мм.гггг" });
+
 
         //callback();
     }
 
 	xhr.onloadend = function(event) {
+
+        zamok == 1 ? open_edit() : close_edit();
+		$(".dateinput").mask("99.99.9999", {placeholder: "дд.мм.гггг" });
     	console.log("Загрузка завершена");
 		loadFileIcon();
   	}
@@ -240,7 +330,7 @@ function itemLoad(td) {
     xhr.onload = function () {
         let resp = xhr.response; //Результат запроса
         resultArray = JSON.parse(resp);
-        console.log(resultArray);
+        //console.log(resultArray);
         createIcon(resultArray, td);
     }
 }
@@ -264,4 +354,8 @@ function createIcon(filelist, td) {
         }
     }
     createLoadButton(td);
+    let varframe = document.getElementById("varframe");
+    varframe.scrollTop = varframe.scrollHeight;
+    //varframe.scrollTop = 9999;
 }
+

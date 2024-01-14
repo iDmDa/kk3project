@@ -1,7 +1,7 @@
 .autotable { 
-	width: 100%; /* Ширина таблицы */
-	/*border: 4px double black; /* Рамка вокруг таблицы */
-	border-collapse: collapse; /* Отображать только одинарные линии */
+	width: 100%; /* РЁРёСЂРёРЅР° С‚Р°Р±Р»РёС†С‹ */
+	/*border: 4px double black; /* Р Р°РјРєР° РІРѕРєСЂСѓРі С‚Р°Р±Р»РёС†С‹ */
+	border-collapse: collapse; /* РћС‚РѕР±СЂР°Р¶Р°С‚СЊ С‚РѕР»СЊРєРѕ РѕРґРёРЅР°СЂРЅС‹Рµ Р»РёРЅРёРё */
 	font-family: "Trebuchet MS", Helvetica, sans-serif; 
 	/*border: solid 1px orange;  */
 	/*background: #FDE7A1;/*
@@ -13,8 +13,8 @@
 }
 
 .simplefield, .notsimplefield { 
-	padding: 5px; /* Поля вокруг содержимого ячеек */
-	/*border: 1px solid #D19405; /* Граница вокруг ячеек */
+	padding: 5px; /* РџРѕР»СЏ РІРѕРєСЂСѓРі СЃРѕРґРµСЂР¶РёРјРѕРіРѕ СЏС‡РµРµРє */
+	/*border: 1px solid #D19405; /* Р“СЂР°РЅРёС†Р° РІРѕРєСЂСѓРі СЏС‡РµРµРє */
 	/*font-family: "Trebuchet MS", Helvetica, sans-serif; */
 	/*font-family: Georgia, serif; */
 	/*font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif; */
@@ -37,7 +37,7 @@
 	top: 0px;
 	/*border: solid 2px black;*/
 	background: black;
-	border-top:2px solid #AAD8EB; /* защита от съедания верхней полосой */
+	border-top:2px solid #AAD8EB; /* Р·Р°С‰РёС‚Р° РѕС‚ СЃСЉРµРґР°РЅРёСЏ РІРµСЂС…РЅРµР№ РїРѕР»РѕСЃРѕР№ */
 	position: -webkit-sticky;
 }
 
@@ -56,7 +56,7 @@ table, tbody {
 	font-size:15px;
 	font-weight: bold;
 	/* background: #F2AD53; */
-	background: linear-gradient(to top, #55ABFF, #AAD8EB);  /*цвет низ, верх (to top) */
+	background: linear-gradient(to top, #55ABFF, #AAD8EB);  /*С†РІРµС‚ РЅРёР·, РІРµСЂС… (to top) */
 	/*position: sticky;
 	top: 0;*/
    }
@@ -91,17 +91,17 @@ table, tbody {
 
 
    .tablebox1 { 
-    width: 100%; /* Ширина таблицы */
-    //border: 4px double black; /* Рамка вокруг таблицы */
-    border-collapse: collapse; /* Отображать только одинарные линии */
+    width: 100%; /* РЁРёСЂРёРЅР° С‚Р°Р±Р»РёС†С‹ */
+    //border: 4px double black; /* Р Р°РјРєР° РІРѕРєСЂСѓРі С‚Р°Р±Р»РёС†С‹ */
+    border-collapse: collapse; /* РћС‚РѕР±СЂР°Р¶Р°С‚СЊ С‚РѕР»СЊРєРѕ РѕРґРёРЅР°СЂРЅС‹Рµ Р»РёРЅРёРё */
     background: #FDE7A1;
     box-shadow: 0 0 3px;
    }
    th1 { 
-    text-align: left; /* Выравнивание по левому краю */
-    //background: #ccc; /* Цвет фона ячеек */
-    padding: 5px; /* Поля вокруг содержимого ячеек */
-    border: 1px solid black; /* Граница вокруг ячеек */
+    text-align: left; /* Р’С‹СЂР°РІРЅРёРІР°РЅРёРµ РїРѕ Р»РµРІРѕРјСѓ РєСЂР°СЋ */
+    //background: #ccc; /* Р¦РІРµС‚ С„РѕРЅР° СЏС‡РµРµРє */
+    padding: 5px; /* РџРѕР»СЏ РІРѕРєСЂСѓРі СЃРѕРґРµСЂР¶РёРјРѕРіРѕ СЏС‡РµРµРє */
+    border: 1px solid black; /* Р“СЂР°РЅРёС†Р° РІРѕРєСЂСѓРі СЏС‡РµРµРє */
    }
 
 
@@ -132,7 +132,7 @@ table, tbody {
 .dateinput {
 	/*display: inline-block !important;*/
 	/*width: auto !important;*/
-	width:68px;
+	width:67px;
 	border: none;
 	outline: none;
 	background:inherit;
@@ -141,7 +141,7 @@ table, tbody {
 .dateinput:hover {
 	/*display: inline-block !important;*/
 	/*width: auto !important;*/
-	width:65px;
+	width:67px;
 	border: dashed 1px black;
 	/*outline: none;*/
 	background:inherit;

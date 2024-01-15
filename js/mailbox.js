@@ -109,10 +109,10 @@ class TableGenerator {
                     case "scanvh":
                     case "scanish":
                         td.id = `${this.dbData[i]["id"]}_${fieldList[item]}_${this.dbData[0]["db"]}`;
-                        let img = document.createElement("img");
-                        img.src = `include/mini-loading.gif`;
-                        img.style.float = "left";
-                        td.appendChild(img);
+                        //let img = document.createElement("img");
+                        //img.src = `include/mini-loading.gif`;
+                        //img.style.float = "left";
+                        //td.appendChild(img);
                         break;
 
                     case "sumnormchasvh":
@@ -230,18 +230,35 @@ class TableGenerator {
             xhr.open('POST', 'mailbox.php', true);
             xhr.send(data);
             xhr.onload = function () {
-                let resp = xhr.response; //Результат запроса
+                let id = xhr.response; //Результат запроса
                 //resultArray = JSON.parse(resp);
-                console.log(resp);
+                console.log("id: " + id);
+
+                varframe.innerHTML = "";
+                xhrLoad("xhrload", tableID.split("_")[1], 0, id);
             }
-
-            varframe.innerHTML = "";
-            xhrLoad("xhrload", tableID.split("_")[1], 0);
-
         });
     }
 
-
+    loadAllFileIcon() {
+        let td = document.querySelectorAll('[id$="_scanvh_mailbox"]');
+        let items = [];
+        td.forEach(item => {
+            items.push(item.id.split("_")[0]);
+        });
+    
+        let data = new FormData();
+        data.append("finditems", items);
+    
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', 'mailbox.php', true);
+        xhr.send(data);
+        xhr.onload = function () {
+            let resp = xhr.response; //Результат запроса
+            resultArray = JSON.parse(resp);
+            createIcons(resultArray);
+        }
+    }
 
 	createTable(id) {
 		let table = document.createElement("table");
@@ -254,7 +271,7 @@ class TableGenerator {
         this.createAddButton();
         this.pages();
         this.createEvents();
-
+        this.loadAllFileIcon();
         let varframe = document.getElementById("varframe");
         //varframe.scrollTop = varframe.scrollHeight;
         varframe.scrollTop = 9999;
@@ -274,7 +291,7 @@ function xhrLoad (postname, tabNumber, page, id) {
     xhr.onload = function () {
         let resp = xhr.response; //Результат запроса
         resultArray = JSON.parse(resp);
-        console.log(resultArray);
+        //console.log(resultArray);
 
 		let table = new TableGenerator();
 		//console.log(tabNumber);
@@ -286,8 +303,6 @@ function xhrLoad (postname, tabNumber, page, id) {
 
 		table.createTable(id);
 
-
-
         //callback();
     }
 
@@ -296,66 +311,40 @@ function xhrLoad (postname, tabNumber, page, id) {
         zamok == 1 ? open_edit() : close_edit();
 		$(".dateinput").mask("99.99.9999", {placeholder: "дд.мм.гггг" });
     	console.log("Загрузка завершена");
-		loadFileIcon();
+		//loadAllFileIcon();
   	}
 }
 
-function loadFileIcon() {
-    let td = document.querySelectorAll('[id$="_scanvh_mailbox"], [id$="_scanish_mailbox"]');
+
+
+function createIcons(resultArray) {
+    let td;
+    let extList = "bmp, doc, docx, gif, jpg, mp3, pdf, png, tif, tiff, txt, xls, xlsx";
+    for(let i = 0; i < resultArray.length; i++) {
+        if(resultArray[i]['type'] == "1") td = document.getElementById(`${resultArray[i]['detid']}_scanvh_mailbox`);
+        if(resultArray[i]['type'] == "2") td = document.getElementById(`${resultArray[i]['detid']}_scanish_mailbox`);
+        let filetype = resultArray[i]["filename"].split(".").reverse()[0].toLowerCase();
+        let a = document.createElement("a");
+        let img = document.createElement("img");
+        let textNode = document.createTextNode(" ");
+        a.href = `/projectdata/mailbox/${resultArray[i]["prefix"]}_${resultArray[i]["filename"]}`;
+        a.target = "_blank";
+        extList.indexOf(filetype) < 0 ? img.src = `include/ico/unknow.png` : img.src = `include/ico/${filetype}.png`;
+        img.title = `${resultArray[i]["filename"]}`;
+        a.appendChild(img);
+        td.appendChild(a);
+        td.appendChild(textNode);
+    }
+
+    td = document.querySelectorAll('[id$="_scanvh_mailbox"], [id$="_scanish_mailbox"]');
     td.forEach(item => {
-        itemLoad(item);
+        let img = document.createElement("img");
+        img.src = `include/new window.png`;
+        img.style.float = "right";
+        img.classList.add("button_field");
+        if(zamok == 0) img.style.display = "none";
+        item.appendChild(img);
     });
 }
 
-function createLoadButton(td) {
-    let img = document.createElement("img");
-    img.src = `include/new window.png`;
-    img.style.float = "right";
-    img.classList.add("button_field");
-    if(zamok == 0) img.style.display = "none";
-    td.appendChild(img);
-}
-
-function itemLoad(td) {
-    let scan_id = td.id.split("_")[0];
-    let scan_type = td.id.split("_")[1] == "scanvh" ? 1 : 2;
-    let data = new FormData();
-    data.append("scanload", "1");
-	data.append("scan_id", scan_id);
-    data.append("scan_type", scan_type);
-
-    let xhr = new XMLHttpRequest();
-    xhr.open('POST', 'mailbox.php', true);
-    xhr.send(data);
-    xhr.onload = function () {
-        let resp = xhr.response; //Результат запроса
-        resultArray = JSON.parse(resp);
-        //console.log(resultArray);
-        createIcon(resultArray, td);
-    }
-}
-
-function createIcon(filelist, td) {
-    td.innerHTML = "";
-    if(filelist.length > 0) {
-        let extList = "bmp, doc, docx, gif, jpg, mp3, pdf, png, tif, tiff, txt, xls, xlsx";
-        for(let j = 0; j < filelist.length; j++) {
-            let filetype = filelist[j]["filename"].split(".").reverse()[0].toLowerCase();
-            let a = document.createElement("a");
-            let img = document.createElement("img");
-            let textNode = document.createTextNode(" ");
-            a.href = `/projectdata/mailbox/${filelist[j]["prefix"]}_${filelist[j]["filename"]}`;
-            a.target = "_blank";
-            extList.indexOf(filetype) < 0 ? img.src = `include/ico/unknow.png` : img.src = `include/ico/${filetype}.png`;
-            img.title = `${filelist[j]["filename"]}`;
-            a.appendChild(img);
-            td.appendChild(a);
-            if(j != filelist.length - 1) td.appendChild(textNode);
-        }
-    }
-    createLoadButton(td);
-    let varframe = document.getElementById("varframe");
-    varframe.scrollTop = varframe.scrollHeight;
-    //varframe.scrollTop = 9999;
-}
 

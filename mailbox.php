@@ -1,17 +1,16 @@
 <?
+function db_connect() {
+	try {
+		$db = new PDO("mysql:host=127.0.0.1;port=3306;dbname=kk3project", "root", "root");
+	} catch (PDOException $e) {
+		print "Error!: " . $e->getMessage();
+		die();
+	}
+	return $db;
+}
 
 if(isset($_POST['xhrload'])) {
 
-	function db_connect() {
-		try {
-			$db = new PDO("mysql:host=127.0.0.1;port=3306;dbname=kk3project", "root", "root");
-		} catch (PDOException $e) {
-			print "Error!: " . $e->getMessage();
-			die();
-		}
-		return $db;
-	}
-	
 	function getColName($tableName){
 		$db = db_connect();
 		$r = $db->prepare("SHOW FULL COLUMNS FROM {$tableName}");
@@ -84,16 +83,6 @@ if(isset($_POST['xhrload'])) {
 
 if(isset($_POST['scanload'])) {
 
-	function db_connect() {
-		try {
-			$db = new PDO("mysql:host=127.0.0.1;port=3306;dbname=kk3project", "root", "root");
-		} catch (PDOException $e) {
-			print "Error!: " . $e->getMessage();
-			die();
-		}
-		return $db;
-	}
-
 	function getLinkList($id, $type) {
 		$db = db_connect();
 		$r = $db->prepare("SELECT prefix, filename, maskname FROM uplfiles WHERE hide = 0 and detid = '{$id}' and tabname = 'mailbox' and type = '{$type}'");
@@ -113,16 +102,6 @@ if(isset($_POST['scanload'])) {
 
 if(isset($_POST['add'])) {
 
-	function db_connect() {
-		try {
-			$db = new PDO("mysql:host=127.0.0.1;port=3306;dbname=kk3project", "root", "root");
-		} catch (PDOException $e) {
-			print "Error!: " . $e->getMessage();
-			die();
-		}
-		return $db;
-	}
-
 	function add($id) {
 		$db = db_connect();
 		$r = $db->prepare("INSERT INTO mailbox(hide, detid) VALUES ('0', '{$id}')");
@@ -138,6 +117,36 @@ if(isset($_POST['add'])) {
 	unset($_POST['add']);
 	exit;
 }
+
+
+if(isset($_POST['finditems'])) {
+
+	function createList($items) {
+		$items = explode(",", $items);
+		foreach ($items as $item) {
+			$result .= "detid = '{$item}' or ";
+		}
+		$result = substr($result, 0, -4);
+		return $result;
+	}
+
+	function finditems($items) {
+		$db = db_connect();
+		$r = $db->prepare("SELECT prefix, filename, maskname, type, detid FROM uplfiles WHERE hide = '0' and tabname = 'mailbox' and ({$items})");
+		$r->execute();
+		return $r->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	$array = finditems(createList($_POST['finditems']));
+
+	$json = json_encode($array, JSON_UNESCAPED_UNICODE);
+
+	echo $json;
+
+	unset($_POST['finditems']);
+	exit;
+}
+
 ?>
 
 <script>

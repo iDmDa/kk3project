@@ -150,12 +150,17 @@ if(isset($_POST['finditems'])) {
 ?>
 
 <script>
+	//mailfindbox();
+	let tablayer = document.createElement("div");
+	tablayer.id = "tablediv";
+	varframe = document.getElementById("varframe");
+	varframe.appendChild(tablayer);
 	xhrLoad("xhrload", <?=$_GET['id']?>, 0);
 </script>
 
 <?
 
-require ("megatable2.php");
+require ("megatable.php");
 
 if($_GET['print'] == 1) echo "<link href='css/litemgtable.css' rel='stylesheet'>";
 
@@ -311,7 +316,7 @@ public function filter_vvoda_listov($str_data1)
 }
 }
 
-
+/*
 echo $_GET['print'] == 1 ? "<div style = 'display:none;'>" : "<div style = 'position:sticky;top:0px;'>";
 echo "Найти: <input type='text' style='width:600px;' class='findall' >";
 echo " Дата от <input id = 'finddatebegin' type='text'  style='width:70px;' class=''> до <input id = 'finddateend' type='text' style='width:70px;' class=''> <button onclick='startfind();'>Найти</button><br><br>";
@@ -319,6 +324,9 @@ echo " Дата от <input id = 'finddatebegin' type='text'  style='width:70px;
 echo "</div>";
 
 echo "<div id='filter'>"; //filter
+*/
+
+
 require ("dbconnect.php");
 $dtable = new mgtable;
 
@@ -380,19 +388,8 @@ echo "<br>";
 echo "</div>"; //filter
 
 
-
-
-
-
-
-
-
-
-
-
-
 ?>
-<script>
+<script>/*
 
 var list_nomer_id = <?echo $_GET['id'];?>; //Переменная для сохранения id страницы
 
@@ -428,8 +425,7 @@ $(".findall").keyup(function(e) {
 startfind();
 });
 
-});
+});*/
 </script>
-
 </body>
 </html>

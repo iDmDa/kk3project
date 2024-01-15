@@ -150,8 +150,9 @@ function delete_refresh_pass(table, id, loadfile, htag, getdata)
 	url: 'delete.php?table=' + table + "&id=" + id,
 	success: function(data)
 		{
-			//refresh(loadfile, htag, getdata);
+			refresh(loadfile, htag, getdata);
 			loadsection(izdelieid, sectionid);
+			refresh(loadfile, htag, getdata);
 		}
 	
 	});

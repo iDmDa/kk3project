@@ -154,7 +154,7 @@ class TableGenerator {
             td.dataset.id = document.querySelectorAll(`#${this.tableID} tbody tr`)[i].children[1].id.split("_")[0];
             td.dataset.table = document.querySelectorAll(`#${this.tableID} tbody tr`)[i].children[1].id.split("_")[2];
             td.dataset.actfile = "mailbox.php";
-            td.dataset.htag = "varframe";
+            td.dataset.htag = this.layerID;
             td.dataset.getdata = `&id=${this.tableID.split("_")[1]}`;
             document.querySelectorAll(`#${this.tableID} tbody tr`)[i].children[0].before(td);
         }
@@ -173,8 +173,8 @@ class TableGenerator {
                 if((i + 1) == this.dbData[0]["page"]) page.classList.add("menuactive");
                 pages.appendChild(page);
             }
-            document.getElementById(this.layerID).append(pages);
         }
+        document.getElementById(this.layerID).append(pages);
     }
 
     createAddButton() {
@@ -200,13 +200,12 @@ class TableGenerator {
 
         let pages = document.getElementById("pages");
         let tb = document.getElementById(this.tableID);
-        let varframe = document.getElementById("varframe");
+        let tablediv = document.getElementById(this.layerID);
         if(pages != null) {
             pages.addEventListener("click", function(event) {
                 //console.log(event.target.classList.contains("menuitem"));
                 if(event.target.classList.contains("menuitem")) {
-                    
-                    varframe.innerHTML = "";
+                    tablediv.innerHTML = "";
                     xhrLoad("xhrload", tb.id.split("_")[1], event.target.innerText);
                 }
             });
@@ -215,7 +214,7 @@ class TableGenerator {
         let tableID = this.tableID;
         let addButton = document.getElementById("addButton");
         addButton.addEventListener("click", function(event) {
-            //varframe.innerHTML = "";
+            //tablediv.innerHTML = "";
             //xhrLoad("xhrload", tb.id.split("_")[1], 0);
 
             /*let node = document.querySelectorAll(`#${tableID} tr`);
@@ -234,7 +233,7 @@ class TableGenerator {
                 //resultArray = JSON.parse(resp);
                 console.log("id: " + id);
 
-                varframe.innerHTML = "";
+                tablediv.innerHTML = "";
                 xhrLoad("xhrload", tableID.split("_")[1], 0, id);
             }
         });
@@ -261,7 +260,7 @@ class TableGenerator {
     }
 
 	createTable(id) {
-		let table = document.createElement("table");
+        let table = document.createElement("table");
 		table.id = this.tableID;
         table.classList.add("autotable");
 		table.appendChild(this.theadCreate());
@@ -272,9 +271,9 @@ class TableGenerator {
         this.pages();
         this.createEvents();
         this.loadAllFileIcon();
-        let varframe = document.getElementById("varframe");
-        //varframe.scrollTop = varframe.scrollHeight;
-        varframe.scrollTop = 9999;
+        let tablediv = document.getElementById(this.layerID);
+        //tablediv.scrollTop = tablediv.scrollHeight;
+        tablediv.scrollTop = 9999;
 	}
 
 }
@@ -296,7 +295,7 @@ function xhrLoad (postname, tabNumber, page, id) {
 		let table = new TableGenerator();
 		//console.log(tabNumber);
 		table.tableID = `table_${tabNumber}`;
-		table.layerID = "varframe";
+		table.layerID = "tablediv";
 		table.tabName = "Переписка";
 		table.fieldList = "datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish";
         table.dbData = resultArray;
@@ -347,4 +346,16 @@ function createIcons(resultArray) {
     });
 }
 
+function mailfindbox() {
+    if(document.getElementById("findlayer")) document.getElementById("findlayer").remove();
+    let div = document.createElement("div");
+    div.id = "findlayer";
+    div.innerHTML = "gkrejhoighregeorgoe";
+    let textNode = document.createTextNode(" ");
+    textNode.innerText = "Найти: ";
+    let input = document.createElement("input");
+    div.appendChild(input);
 
+    let varframe = document.getElementById("varframe");
+    varframe.before(div);
+}

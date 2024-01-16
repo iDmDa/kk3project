@@ -150,11 +150,14 @@ if(isset($_POST['finditems'])) {
 ?>
 
 <script>
-	//mailfindbox();
-	let tablayer = document.createElement("div");
-	tablayer.id = "tablediv";
-	varframe = document.getElementById("varframe");
-	varframe.appendChild(tablayer);
+	mailfindbox();
+	if(!document.getElementById("tablediv")) {
+		let tablayer = document.createElement("div");
+		tablayer.id = "tablediv";
+		varframe = document.getElementById("varframe");
+		varframe.appendChild(tablayer);
+	}
+
 	xhrLoad("xhrload", <?=$_GET['id']?>, 0);
 </script>
 

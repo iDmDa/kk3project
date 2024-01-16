@@ -125,6 +125,7 @@ function refresh(loadfile, htag, getdata)
 
 function add_refresh(table, field, fieldvalue, loadfile, htag, getdata) 
 {
+	console.log("(add_refresh)");
 	$.ajax({
 	url: 'add.php?table=' + table + "&field=" + field + "&value=" + fieldvalue, 
 	success: function(data)
@@ -151,8 +152,8 @@ function delete_refresh_pass(table, id, loadfile, htag, getdata)
 	success: function(data)
 		{
 			refresh(loadfile, htag, getdata);
-			loadsection(izdelieid, sectionid);
-			refresh(loadfile, htag, getdata);
+			//loadsection(izdelieid, sectionid);
+			//refresh(loadfile, htag, getdata);
 		}
 	
 	});
@@ -289,6 +290,7 @@ function upload(uplname, getdata){      //add_data = filter_id
 			$( "#dialog" ).empty();
 		},
 		onComplete: function(file, response){
+			console.log("(upload)");
 			refresh("uplfiles.php", "dialog", getdata);
 			loadsection(izdelieid, sectionid);
 		}
@@ -366,8 +368,9 @@ $.contextMenu({  //меню удаления
         delete: {
 			name: 'Удалить',
 			callback: function(key, options) {
-				console.log("(Удалить) htag: " + $(this).data('htag') + "; table: " + $(this).data('table') + "; id: " + $(this).data('id') + "; getdata: " + $(this).data('getdata') + "; file: " + $(this).data('actfile'));
+				console.log("(Удалить файл) htag: " + $(this).data('htag') + "; table: " + $(this).data('table') + "; id: " + $(this).data('id') + "; getdata: " + $(this).data('getdata') + "; file: " + $(this).data('actfile'));
 				delete_refresh($(this).data('table'), $(this).data('id'), $(this).data('actfile'), $(this).data('htag'), $(this).data('getdata'));
+				loadsection(izdelieid, sectionid);
 			}
 		},
         sep1: '---------',
@@ -384,7 +387,7 @@ $.contextMenu({  //меню удаления с подменю
         delete: {
 			name: 'Удалить',
 			callback: function(key, options) {
-				console.log("(Удалить) htag: " + $(this).data('htag') + "; table: " + $(this).data('table') + "; id: " + $(this).data('id') + "; getdata: " + $(this).data('getdata') + "; file: " + $(this).data('actfile'));
+				console.log("(Удалить строку) htag: " + $(this).data('htag') + "; table: " + $(this).data('table') + "; id: " + $(this).data('id') + "; getdata: " + $(this).data('getdata') + "; file: " + $(this).data('actfile'));
 				delete_refresh($(this).data('table'), $(this).data('id'), $(this).data('actfile'), $(this).data('htag'), $(this).data('getdata'));
 			}
 		},

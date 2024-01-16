@@ -271,9 +271,9 @@ class TableGenerator {
         this.pages();
         this.createEvents();
         this.loadAllFileIcon();
-        let tablediv = document.getElementById(this.layerID);
-        //tablediv.scrollTop = tablediv.scrollHeight;
-        tablediv.scrollTop = 9999;
+        //let varframe = document.getElementById(varframe);
+        //varframe.scrollTop = tablediv.scrollHeight;
+        varframe.scrollTop = 9999;
 	}
 
 }
@@ -292,16 +292,15 @@ function xhrLoad (postname, tabNumber, page, id) {
         resultArray = JSON.parse(resp);
         //console.log(resultArray);
 
-		let table = new TableGenerator();
-		//console.log(tabNumber);
-		table.tableID = `table_${tabNumber}`;
-		table.layerID = "tablediv";
-		table.tabName = "Переписка";
-		table.fieldList = "datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish";
+        let table = new TableGenerator();
+        //console.log(tabNumber);
+        table.tableID = `table_${tabNumber}`;
+        table.layerID = "tablediv";
+        table.tabName = "Переписка";
+        table.fieldList = "datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish";
         table.dbData = resultArray;
 
-		table.createTable(id);
-
+        table.createTable(id);
         //callback();
     }
 
@@ -309,7 +308,7 @@ function xhrLoad (postname, tabNumber, page, id) {
 
         zamok == 1 ? open_edit() : close_edit();
 		$(".dateinput").mask("99.99.9999", {placeholder: "дд.мм.гггг" });
-    	console.log("Загрузка завершена");
+    	console.log("(xhrLoad)Загрузка завершена");
 		//loadAllFileIcon();
   	}
 }
@@ -350,12 +349,14 @@ function mailfindbox() {
     if(document.getElementById("findlayer")) document.getElementById("findlayer").remove();
     let div = document.createElement("div");
     div.id = "findlayer";
-    div.innerHTML = "gkrejhoighregeorgoe";
-    let textNode = document.createTextNode(" ");
-    textNode.innerText = "Найти: ";
+    div.style.marginBottom = "600px";
+    let textNode = document.createTextNode("");
+    textNode.data = "Найти: ";
     let input = document.createElement("input");
+    input.style.width = "600px";
+    div.appendChild(textNode);
     div.appendChild(input);
 
     let varframe = document.getElementById("varframe");
-    varframe.before(div);
+    varframe.appendChild(div);
 }

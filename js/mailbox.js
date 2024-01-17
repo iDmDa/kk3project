@@ -237,6 +237,8 @@ class TableGenerator {
                 xhrLoad("xhrload", tableID.split("_")[1], 0, id);
             }
         });
+
+
     }
 
     loadAllFileIcon() {
@@ -260,6 +262,7 @@ class TableGenerator {
     }
 
 	createTable(id) {
+        document.getElementById(this.layerID).innerHTML = "";
         let table = document.createElement("table");
 		table.id = this.tableID;
         table.classList.add("autotable");
@@ -278,11 +281,12 @@ class TableGenerator {
 
 }
 
-function xhrLoad (postname, tabNumber, page, id) {
+function xhrLoad (postname, tabNumber, page, id, find) {
     let data = new FormData();
     data.append(postname, "value");
 	data.append("tabNumber", tabNumber);
     data.append("page", page);
+    data.append("find", find);
 
     let xhr = new XMLHttpRequest();
     xhr.open('POST', 'mailbox.php', true);
@@ -345,18 +349,27 @@ function createIcons(resultArray) {
     });
 }
 
-function mailfindbox() {
+function mailfindbox(tabid) {
     if(document.getElementById("findlayer")) document.getElementById("findlayer").remove();
     let div = document.createElement("div");
     div.id = "findlayer";
-    div.style.marginBottom = "600px";
+    div.style.marginBottom = "10px";
     let textNode = document.createTextNode("");
     textNode.data = "Найти: ";
     let input = document.createElement("input");
-    input.style.width = "600px";
+    input.style.width = 600 + 'px';
+    input.id = "findline";
     div.appendChild(textNode);
     div.appendChild(input);
 
     let varframe = document.getElementById("varframe");
     varframe.appendChild(div);
+
+    
+    let findline = document.getElementById("findline");
+    findline.addEventListener("change", function(event) {
+        //if(findline.value.length >= 2) {
+            xhrLoad("xhrload", tabid, 0, "", findline.value);
+        //}
+    });
 }

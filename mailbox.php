@@ -44,11 +44,23 @@ if(isset($_POST['xhrload'])) {
 		return $name;
 	}
 	
-	function getDatatable($tableName, $table_id, $fieldList, $page, $limitLine){
+	function getDatatable($tableName, $table_id, $fieldList, $page, $limitLine, $find){
 		$db = db_connect();
 		$sortfield = "if(datevh != '', datevh, dateish) as summ ";
 		$sortirovka = "if(summ = '' or summ is null, 1, 0), SUBSTRING_INDEX(summ,'.',-1), SUBSTRING_INDEX(SUBSTRING_INDEX(summ,'.',2),'.',-1), SUBSTRING_INDEX(summ,'.',1), id";
-		$r = $db->prepare("SELECT {$fieldList}, {$sortfield} FROM {$tableName} WHERE hide = 0 and detid = '{$table_id}' ORDER BY {$sortirovka} LIMIT {$page}, {$limitLine}");
+		$findlist = "";
+		if($find != null and $find != "" and $find != "undefined") {
+			$fieldForSearch = "contentvh, datevh, nomervh, adresvh, contentvh, countlistvh, dateish, nomerish, adresish, contentish, countlistish, fioispish";
+			$arrSearchList = explode(",", trim($fieldForSearch));
+			$findlist = "and (";
+			foreach ($arrSearchList as $value) {
+				$findlist .= "{$value} LIKE '%{$find}%' or ";
+			}
+			$findlist = substr($findlist, 0, -4);
+			$findlist .= ")";
+		}
+
+		$r = $db->prepare("SELECT {$fieldList}, {$sortfield} FROM {$tableName} WHERE hide = 0 and detid = '{$table_id}' {$findlist} ORDER BY {$sortirovka} LIMIT {$page}, {$limitLine}");
 		$r->execute();
 		return $r->fetchAll(PDO::FETCH_ASSOC);
 	}
@@ -63,7 +75,7 @@ if(isset($_POST['xhrload'])) {
 	$fieldList = "id, datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, 
 	dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish";
 	$page = $_POST['page'] == 0 ? (maxResult("mailbox", $_POST['tabNumber'])/100|0)*100 : ($_POST['page']-1)*100;
-	$jsonArray = getDatatable("mailbox", $_POST['tabNumber'], $fieldList, $page, 100);
+	$jsonArray = getDatatable("mailbox", $_POST['tabNumber'], $fieldList, $page, 100, $_POST['find']);
 
 	$headerNameList = getColList("kk3project.mailbox");
 	$headerNameList['db'] = "mailbox";
@@ -150,7 +162,7 @@ if(isset($_POST['finditems'])) {
 ?>
 
 <script>
-	mailfindbox();
+	mailfindbox(<?=$_GET['id']?>);
 	if(!document.getElementById("tablediv")) {
 		let tablayer = document.createElement("div");
 		tablayer.id = "tablediv";

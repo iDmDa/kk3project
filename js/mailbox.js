@@ -206,7 +206,7 @@ class TableGenerator {
                 //console.log(event.target.classList.contains("menuitem"));
                 if(event.target.classList.contains("menuitem")) {
                     tablediv.innerHTML = "";
-                    xhrLoad("xhrload", tb.id.split("_")[1], event.target.innerText);
+                    xhrLoad("xhrload", tb.id.split("_")[1], event.target.innerText, "", findline.value);
                 }
             });
         }
@@ -234,7 +234,7 @@ class TableGenerator {
                 console.log("id: " + id);
 
                 tablediv.innerHTML = "";
-                xhrLoad("xhrload", tableID.split("_")[1], 0, id);
+                xhrLoad("xhrload", tableID.split("_")[1], 0, id, findline.value);
             }
         });
 
@@ -242,9 +242,11 @@ class TableGenerator {
     }
 
     loadAllFileIcon() {
+        console.log("loadAllFileIcon");
         let td = document.querySelectorAll('[id$="_scanvh_mailbox"]');
         let items = [];
         td.forEach(item => {
+            item.innerHTML = "";
             items.push(item.id.split("_")[0]);
         });
     

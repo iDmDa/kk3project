@@ -43,11 +43,8 @@ if(isset($_POST['xhrload'])) {
 		$name["fioispish"] = "ФИО исполнителя";
 		return $name;
 	}
-	
-	function getDatatable($tableName, $table_id, $fieldList, $page, $limitLine, $find){
-		$db = db_connect();
-		$sortfield = "if(datevh != '', datevh, dateish) as summ ";
-		$sortirovka = "if(summ = '' or summ is null, 1, 0), SUBSTRING_INDEX(summ,'.',-1), SUBSTRING_INDEX(SUBSTRING_INDEX(summ,'.',2),'.',-1), SUBSTRING_INDEX(summ,'.',1), id";
+
+	function findlist($find) {
 		$findlist = "";
 		if($find != null and $find != "" and $find != "undefined") {
 			$fieldForSearch = "contentvh, datevh, nomervh, adresvh, contentvh, countlistvh, dateish, nomerish, adresish, contentish, countlistish, fioispish";
@@ -59,28 +56,36 @@ if(isset($_POST['xhrload'])) {
 			$findlist = substr($findlist, 0, -4);
 			$findlist .= ")";
 		}
-
+		return $findlist;
+	}
+	
+	function getDatatable($tableName, $table_id, $fieldList, $page, $limitLine, $find){
+		$db = db_connect();
+		$sortfield = "if(datevh != '', datevh, dateish) as summ ";
+		$sortirovka = "if(summ = '' or summ is null, 1, 0), SUBSTRING_INDEX(summ,'.',-1), SUBSTRING_INDEX(SUBSTRING_INDEX(summ,'.',2),'.',-1), SUBSTRING_INDEX(summ,'.',1), id";
+		$findlist = findlist($find);
 		$r = $db->prepare("SELECT {$fieldList}, {$sortfield} FROM {$tableName} WHERE hide = 0 and detid = '{$table_id}' {$findlist} ORDER BY {$sortirovka} LIMIT {$page}, {$limitLine}");
 		$r->execute();
 		return $r->fetchAll(PDO::FETCH_ASSOC);
 	}
 
-	function maxResult($tableName, $table_id) {
+	function maxResult($tableName, $table_id, $find) {
 		$db = db_connect();
-		$r = $db->prepare("SELECT COUNT(id) as maxResult FROM {$tableName} WHERE hide = 0 and detid = '{$table_id}'");
+		$findlist = findlist($find);
+		$r = $db->prepare("SELECT COUNT(id) as maxResult FROM {$tableName} WHERE hide = 0 and detid = '{$table_id}' {$findlist}");
 		$r->execute();
 		return $r->fetchAll(PDO::FETCH_ASSOC)[0]['maxResult'];
 	}
 
 	$fieldList = "id, datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, 
 	dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish";
-	$page = $_POST['page'] == 0 ? (maxResult("mailbox", $_POST['tabNumber'])/100|0)*100 : ($_POST['page']-1)*100;
+	$page = $_POST['page'] == 0 ? (maxResult("mailbox", $_POST['tabNumber'], $_POST['find'])/100|0)*100 : ($_POST['page']-1)*100;
 	$jsonArray = getDatatable("mailbox", $_POST['tabNumber'], $fieldList, $page, 100, $_POST['find']);
 
 	$headerNameList = getColList("kk3project.mailbox");
 	$headerNameList['db'] = "mailbox";
-	$headerNameList['maxResult'] = maxResult("mailbox", $_POST['tabNumber']);
-	$headerNameList['maxPage'] = (maxResult("mailbox", $_POST['tabNumber'])/100|0) + 1;
+	$headerNameList['maxResult'] = maxResult("mailbox", $_POST['tabNumber'], $_POST['find']);
+	$headerNameList['maxPage'] = (maxResult("mailbox", $_POST['tabNumber'], $_POST['find'])/100|0) + 1;
 	$headerNameList['page'] = ($page / 100) + 1;
 	//$headerNameList['count'] = $jsonArray[0]["id"];
 	array_unshift($jsonArray, $headerNameList); // Добавляет один или несколько элементов в начало массива

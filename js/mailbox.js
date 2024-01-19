@@ -417,8 +417,6 @@ function mailfindbox(tabid) {
     
     let findline = document.getElementById("findline");
     findline.addEventListener("change", function(event) {
-        //if(findline.value.length >= 2) {
             xhrLoad("xhrload", tabid, 0, "", findline.value);
-        //}
     });
 }

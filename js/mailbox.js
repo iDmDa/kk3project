@@ -21,19 +21,28 @@ class TableGenerator {
     middleTitle() {
         let tr = document.createElement("tr");
         let td = document.createElement("td");
+        td.id = "inbox";
         td.innerText = "Входящие";
-        td.colSpan = 8;
+        td.colSpan = 1;
         td.style.textAlign = "center";
         td.classList.add("table_colspan_header");
         tr.appendChild(td);
 
         td = document.createElement("td");
+        td.id = "outbox";
         td.innerText = "Исходящие";
+        td.style.borderLeftWidth = '2px';
         td.colSpan = 999;
         td.style.textAlign = "center";
         td.classList.add("table_colspan_header");
         tr.appendChild(td);
         return tr;
+    }
+
+    createMiddleSize() {
+        let size = document.querySelector('[data-column="dateish"]').cellIndex;
+        document.getElementById("inbox").colSpan = size;
+        console.log(size);
     }
 
 
@@ -44,8 +53,9 @@ class TableGenerator {
         for(let item in fieldList) {
             td = document.createElement("td");
             switch(fieldList[item]) {
-                case "datevh":
                 case "dateish":
+                    td.style.borderLeftWidth = '2px';
+                case "datevh":
                     td.style.width = "70px";
                 break;
                 case "scanvh":
@@ -95,8 +105,11 @@ class TableGenerator {
                 td = document.createElement("td");
 
                 switch (fieldList[item]) {
-                    case "datevh":
                     case "dateish":
+                        td.style.borderLeftWidth = '2px';
+                    case "datevh":
+                    case "datereg":
+                    case "datecontrol":
                         input = document.createElement("input");
                         input.id = `${this.dbData[i]["id"]}_${fieldList[item]}_${this.dbData[0]["db"]}`;
                         input.classList.add("dateinput");
@@ -104,8 +117,6 @@ class TableGenerator {
                         input.setAttribute("onchange", "update_db(this.id,this.value)");
                         input.setAttribute("value", `${value}`);
                         td.appendChild(input);
-                        break;
-
                     case "scanvh":
                     case "scanish":
                         td.id = `${this.dbData[i]["id"]}_${fieldList[item]}_${this.dbData[0]["db"]}`;
@@ -136,6 +147,10 @@ class TableGenerator {
         return tbody;
     }
 
+    addColorStyle() {
+        let items = document.querySelectorAll('[id$="_datereg_mailbox"], [id$="_nomerreg_mailbox"]');
+        items.forEach(item => item.classList.add("regstyle"));
+    }
 
     createNumberLine() {
         let title = document.querySelectorAll(`#${this.tableID} .table_header`);
@@ -206,7 +221,7 @@ class TableGenerator {
                 //console.log(event.target.classList.contains("menuitem"));
                 if(event.target.classList.contains("menuitem")) {
                     tablediv.innerHTML = "";
-                    xhrLoad("xhrload", tb.id.split("_")[1], event.target.innerText);
+                    xhrLoad("xhrload", tb.id.split("_")[1], event.target.innerText, "", findline.value);
                 }
             });
         }
@@ -234,17 +249,48 @@ class TableGenerator {
                 console.log("id: " + id);
 
                 tablediv.innerHTML = "";
-                xhrLoad("xhrload", tableID.split("_")[1], 0, id);
+                xhrLoad("xhrload", tableID.split("_")[1], 0, id, findline.value);
             }
         });
 
+        let tabRegNm = document.querySelector('[data-column="nomerreg"]');
+        tabRegNm.addEventListener("click", function(event) {
+            tabRegNm.style.display = "none";
+            let td = document.querySelectorAll('[id$="_nomerreg_mailbox"]');
+            td.forEach(item => {
+                item.style.display = "none"
+            });
+
+            let size = document.querySelector('[data-column="dateish"]').cellIndex;
+            document.getElementById("inbox").colSpan = size - 1;
+            console.log(size);
+        });
+
+        function colHideEvt(head, col, size) {
+            let tabRegNm = document.querySelector(`[data-column="${head}"]`);
+            tabRegNm.addEventListener("click", function(event) {
+                tabRegNm.style.display = "none";
+                let td = document.querySelectorAll(`[id$="${col}"]`);
+                td.forEach(item => {
+                    item.style.display = "none"
+                });
+    
+                //let size = document.querySelector('[data-column="dateish"]').cellIndex;
+                document.getElementById("inbox").colSpan = size - 1;
+                console.log(size);
+            });
+        }
+
+        colHideEvt("datereg", "_datereg_mailbox", document.querySelector('[data-column="dateish"]').cellIndex);
 
     }
 
     loadAllFileIcon() {
+        console.log("loadAllFileIcon");
         let td = document.querySelectorAll('[id$="_scanvh_mailbox"]');
         let items = [];
         td.forEach(item => {
+            item.innerHTML = "";
             items.push(item.id.split("_")[0]);
         });
     
@@ -270,12 +316,15 @@ class TableGenerator {
         table.appendChild(this.tbodyCreate());
         document.getElementById(this.layerID).append(table);
         this.createNumberLine();
+        this.createMiddleSize();
+        this.addColorStyle();
         this.createAddButton();
         this.pages();
         this.createEvents();
         this.loadAllFileIcon();
         //let varframe = document.getElementById(varframe);
         //varframe.scrollTop = tablediv.scrollHeight;
+  
         varframe.scrollTop = 9999;
 	}
 
@@ -301,7 +350,7 @@ function xhrLoad (postname, tabNumber, page, id, find) {
         table.tableID = `table_${tabNumber}`;
         table.layerID = "tablediv";
         table.tabName = "Переписка";
-        table.fieldList = "datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish";
+        table.fieldList = "datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, datereg, nomerreg, datecontrol, dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish";
         table.dbData = resultArray;
 
         table.createTable(id);

@@ -114,6 +114,7 @@ function refresh(loadfile, htag, getdata)
 
 	success: function(data)
 		{
+			if(loadfile == "mailbox.php") document.getElementById("varframe").innerHTML = "";
 			$('#' + htag).prepend('<div id = "loader_layer"><div class = "layer_center"><img src = "include/loader_circle.gif"></div></div>');
 			console.log("(refresh) htag: " + htag + "; getdata: " + getdata + "; loadfile: " + loadfile);
 			$('#' + htag).load(loadfile + "?&htag=" + htag + getdata);
@@ -152,7 +153,7 @@ function delete_refresh_pass(table, id, loadfile, htag, getdata)
 	success: function(data)
 		{
 			refresh(loadfile, htag, getdata);
-			//loadsection(izdelieid, sectionid);
+			loadsection(izdelieid, sectionid);
 			//refresh(loadfile, htag, getdata);
 		}
 	
@@ -185,6 +186,7 @@ function loadsection(izdelieid, sectionid)
 	break;
 
 	case "3":
+		document.getElementById("varframe").innerHTML = "";
 		refresh('mailbox.php', 'varframe', "&id=" + izdelieid);
 	break;
 
@@ -370,7 +372,7 @@ $.contextMenu({  //меню удаления
 			callback: function(key, options) {
 				console.log("(Удалить файл) htag: " + $(this).data('htag') + "; table: " + $(this).data('table') + "; id: " + $(this).data('id') + "; getdata: " + $(this).data('getdata') + "; file: " + $(this).data('actfile'));
 				delete_refresh($(this).data('table'), $(this).data('id'), $(this).data('actfile'), $(this).data('htag'), $(this).data('getdata'));
-				loadsection(izdelieid, sectionid);
+				//loadsection(izdelieid, sectionid);
 			}
 		},
         sep1: '---------',

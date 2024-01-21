@@ -68,6 +68,7 @@ table, tbody {
 	font-weight: bold;
 	vertical-align: top;
 	background: linear-gradient(to top, #AAD8EB, #AAD8EB);
+	cursor: pointer;
 }
 
 .table_nomeric_col { 

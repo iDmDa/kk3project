@@ -334,5 +334,22 @@ li span {
 }
 
 .regstyle {
-	background-color: #cddddd;
+	background-color: #d2e3e3;
+}
+
+#inbox {
+	position: relative;
+}
+
+#inbox div {
+	margin-left: 3px;
+}
+
+#iconPanel {
+	position: absolute;
+	display: flex;
+  	inset: 3px 5px 2px 2px;
+	flex-direction: row;
+	justify-content: flex-end;
+	align-items: center;
 }

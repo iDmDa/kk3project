@@ -59,13 +59,13 @@ class TableGenerator {
                     td.style.width = "70px";
                 break;
                 case "scanvh":
-                    td.style.width = "60px";
+                    td.style.minWidth = "45px";
                 break;
                 case "sumnormchasvh":
                     td.style.width = "50px";
                 break;
                 case "scanish":
-                    td.style.width = "60px";
+                    td.style.minWidth = "45px";
                 break;
                 case "sumnormchasish":
                     td.style.width = "50px";
@@ -73,6 +73,7 @@ class TableGenerator {
             }
             td.innerHTML = `${this.dbData[0][fieldList[item]]}`;
             td.classList.add("table_header");
+            td.classList.add("bottomTitle");
             td.dataset.column = fieldList[item];
             tr.appendChild(td);
         }
@@ -84,6 +85,7 @@ class TableGenerator {
     theadCreate() {
         let thead = document.createElement("thead");
         thead.classList.add("table_header_block");
+        thead.id = "table_header_block";
         thead.appendChild(this.bigTitle());
         thead.appendChild(this.middleTitle());
         thead.appendChild(this.bottomTitle());
@@ -111,10 +113,10 @@ class TableGenerator {
                     case "datereg":
                     case "datecontrol":
                         input = document.createElement("input");
-                        input.id = `${this.dbData[i]["id"]}_${fieldList[item]}_${this.dbData[0]["db"]}`;
+                        input.id = `${this.dbData[i]["id"]}_${fieldList[item]}_${this.dbData[0]["db"]}_i`;
                         input.classList.add("dateinput");
                         input.setAttribute("type", "text");
-                        input.setAttribute("onchange", "update_db(this.id,this.value)");
+                        input.setAttribute("onchange", "update_db(this.id,this.value);dateColor()");
                         input.setAttribute("value", `${value}`);
                         td.appendChild(input);
                     case "scanvh":
@@ -158,6 +160,7 @@ class TableGenerator {
         title[0].before(td);
         td.innerText = "№";
         td.classList.add("table_header");
+        td.classList.add("bottomTitle");
         td.style.width = "25px";
 
         let len = document.querySelectorAll(`#${this.tableID} tbody tr`).length;
@@ -229,13 +232,6 @@ class TableGenerator {
         let tableID = this.tableID;
         let addButton = document.getElementById("addButton");
         addButton.addEventListener("click", function(event) {
-            //tablediv.innerHTML = "";
-            //xhrLoad("xhrload", tb.id.split("_")[1], 0);
-
-            /*let node = document.querySelectorAll(`#${tableID} tr`);
-            let clone = node[3].cloneNode(true);
-            table.appendChild(clone);
-            console.log(node[3]);*/
 
             let data = new FormData();
             data.append("add", tableID.split("_")[1]);
@@ -253,37 +249,11 @@ class TableGenerator {
             }
         });
 
-        let tabRegNm = document.querySelector('[data-column="nomerreg"]');
-        tabRegNm.addEventListener("click", function(event) {
-            tabRegNm.style.display = "none";
-            let td = document.querySelectorAll('[id$="_nomerreg_mailbox"]');
-            td.forEach(item => {
-                item.style.display = "none"
-            });
 
-            let size = document.querySelector('[data-column="dateish"]').cellIndex;
-            document.getElementById("inbox").colSpan = size - 1;
-            console.log(size);
-        });
-
-        function colHideEvt(head, col, size) {
-            let tabRegNm = document.querySelector(`[data-column="${head}"]`);
-            tabRegNm.addEventListener("click", function(event) {
-                tabRegNm.style.display = "none";
-                let td = document.querySelectorAll(`[id$="${col}"]`);
-                td.forEach(item => {
-                    item.style.display = "none"
-                });
-    
-                //let size = document.querySelector('[data-column="dateish"]').cellIndex;
-                document.getElementById("inbox").colSpan = size - 1;
-                console.log(size);
-            });
-        }
-
-        colHideEvt("datereg", "_datereg_mailbox", document.querySelector('[data-column="dateish"]').cellIndex);
 
     }
+
+
 
     loadAllFileIcon() {
         console.log("loadAllFileIcon");
@@ -322,6 +292,8 @@ class TableGenerator {
         this.pages();
         this.createEvents();
         this.loadAllFileIcon();
+        createIconPanel();
+        dateColor();
         //let varframe = document.getElementById(varframe);
         //varframe.scrollTop = tablediv.scrollHeight;
   
@@ -329,6 +301,155 @@ class TableGenerator {
 	}
 
 }
+
+function colHideEvt(evButton, head, col) {
+    let colHead = document.querySelector(`[data-column="${head}"]`);
+    let button = document.getElementById(evButton);
+    colHead.addEventListener("click", function(e) {
+        colHead.style.display = "none";
+        let td = document.querySelectorAll(`[id$="${col}"]`);
+        td.forEach(item => {
+            item.style.display = "none"
+        });
+        let size = document.querySelectorAll('.bottomTitle:nth-child(-n+11):not([style*="display: none"])').length;
+        document.getElementById("inbox").colSpan = size;
+        console.log(e);
+        button.style.display = "";
+    });
+}
+
+function colHide (head, hide, callback) {
+    //let head = document.querySelector(`[data-column="${head1}"]`);
+    let allrows = head;
+    let rowNm = head;
+    while (allrows.tagName != "TABLE") allrows = allrows.parentNode;
+    while (rowNm.tagName != "TR") rowNm = rowNm.parentNode;
+    let tgtcol = document.querySelectorAll(`td:nth-child(${head.cellIndex + 1})`);
+    tgtcol.forEach(item => {
+        let row = item;
+        while (row.tagName != "TR") row = row.parentNode;
+        if(row.rowIndex >= rowNm.rowIndex && hide == 1) item.style.display = "none";
+        if(row.rowIndex >= rowNm.rowIndex && hide == 0) item.style.display = "";
+    })
+    callback();
+}
+
+function titleResize() {
+    let size = document.querySelectorAll('.bottomTitle:nth-child(-n+11):not([style*="display: none"])').length;
+    document.getElementById("inbox").colSpan = size;
+    return size;
+}
+
+function colShowEvt (evButton, head, col) {
+    let button = document.getElementById(evButton);
+    button.addEventListener('click', (e) => {
+        let colHead = document.querySelector(`[data-column="${head}"]`);
+        let td = document.querySelectorAll(`[id$="${col}"]`);
+        colHead.style.display = "";
+        td.forEach(item => {
+            item.style.display = "";
+        });
+        let size = document.querySelectorAll('.bottomTitle:nth-child(-n+11):not([style*="display: none"])').length;
+        document.getElementById("inbox").colSpan = size;
+        console.log(e);
+        button.style.display = "none";
+    })
+}
+
+function createIconPanel() {
+    let inbox = document.getElementById("inbox");
+    let div = document.createElement("div");
+    div.id = "iconPanel";
+
+    let regdata_div = document.createElement("div");
+    let regdata_img = document.createElement("img");
+    regdata_div.id = "regdata_div";
+    regdata_img.src = `include/regdata.png`;
+    regdata_img.id = "regdata_img";
+
+    let nomerreg_div = document.createElement("div");
+    let nomerreg_img = document.createElement("img");
+    nomerreg_div.id = "nomerreg_div";
+    nomerreg_img.src = `include/regno.png`;
+    nomerreg_img.id = "nomerreg_img";
+
+    regdata_div.appendChild(regdata_img);
+    nomerreg_div.appendChild(nomerreg_img);
+
+    div.appendChild(regdata_div);
+    div.appendChild(nomerreg_div);
+    inbox.appendChild(div);
+
+    //colHideEvt("nomerreg_div", "nomerreg", "_nomerreg_mailbox");
+    //colHideEvt("regdata_div", "datereg", "_datereg_mailbox");
+
+    //colShowEvt ("nomerreg_div", "nomerreg", "_nomerreg_mailbox");
+    //colShowEvt ("regdata_div", "datereg", "_datereg_mailbox");
+    
+    //colHide (document.querySelector(`[data-column="nomerreg"]`), 1, titleResize);
+
+    console.log(localStorage.getItem("datereg"));
+    if(!localStorage.getItem("dateregCol")) {
+        localStorage.setItem("dateregCol", "1");
+        localStorage.setItem("dateregButton", "0");
+        colHide (document.querySelector(`[data-column="datereg"]`), 1, titleResize);
+    };
+    if(!localStorage.getItem("nomerregCol")) {
+        localStorage.setItem("nomerregCol", "1");
+        localStorage.setItem("nomerregButton", "0");
+        colHide (document.querySelector(`[data-column="nomerreg"]`), 1, titleResize);
+    };
+
+    if(localStorage.getItem("dateregCol") == 1) colHide (document.querySelector(`[data-column="datereg"]`), 1, titleResize);
+    if(localStorage.getItem("dateregCol") == 0) colHide (document.querySelector(`[data-column="datereg"]`), 0, titleResize);
+    if(localStorage.getItem("dateregButton") == 1) document.getElementById("regdata_div").style.display = "none";
+    if(localStorage.getItem("dateregButton") == 0) document.getElementById("regdata_div").style.display = "";
+
+    if(localStorage.getItem("nomerregCol") == 1) colHide (document.querySelector(`[data-column="nomerreg"]`), 1, titleResize);
+    if(localStorage.getItem("nomerregCol") == 0) colHide (document.querySelector(`[data-column="nomerreg"]`), 0, titleResize);
+    if(localStorage.getItem("nomerregButton") == 1) document.getElementById("nomerreg_div").style.display = "none";
+    if(localStorage.getItem("nomerregButton") == 0) document.getElementById("nomerreg_div").style.display = "";
+
+    let columHideEvent = document.getElementById("table_header_block");
+
+    columHideEvent.addEventListener("click", function(e) {
+        console.log(e.target);
+        switch (e.target.dataset.column) {
+            case "datereg":
+                colHide (document.querySelector(`[data-column="datereg"]`), 1, titleResize);
+                document.getElementById("regdata_div").style.display = "";
+                localStorage.setItem("dateregCol", "1");
+                localStorage.setItem("dateregButton", "0");
+                break;
+            case "nomerreg":
+                colHide (document.querySelector(`[data-column="nomerreg"]`), 1, titleResize);
+                document.getElementById("nomerreg_div").style.display = "";
+                localStorage.setItem("nomerregCol", "1");
+                localStorage.setItem("nomerregButton", "0");
+                break;
+        }
+        switch (e.target.id) {
+            case "regdata_img":
+                colHide (document.querySelector(`[data-column="datereg"]`), 0, titleResize);
+                document.getElementById("regdata_div").style.display = "none";
+                localStorage.setItem("dateregCol", "0");
+                localStorage.setItem("dateregButton", "1");
+                break;
+            case "nomerreg_img":
+                colHide (document.querySelector(`[data-column="nomerreg"]`), 0, titleResize);
+                document.getElementById("nomerreg_div").style.display = "none";
+                localStorage.setItem("nomerregCol", "0");
+                localStorage.setItem("nomerregButton", "1");
+                break;       
+            default:
+                break;
+        }
+    });
+    
+
+}
+
+
 
 function xhrLoad (postname, tabNumber, page, id, find) {
     let data = new FormData();
@@ -419,4 +540,23 @@ function mailfindbox(tabid) {
     findline.addEventListener("change", function(event) {
             xhrLoad("xhrload", tabid, 0, "", findline.value);
     });
+}
+
+function dateColor() {
+    let dt = new Date();
+    let controlCol = document.querySelectorAll(`[id$="_datecontrol_mailbox_i"]`);
+    controlCol.forEach(item => {
+        if(item.value != "") {
+            let dateIsh = document.getElementById(item.id.split("_")[0] + "_dateish_mailbox").firstChild.value;
+            dateIsh != "" ? dateIsh = dateIsh.split(".")[2] + dateIsh.split(".")[1] + dateIsh.split(".")[0] : null;
+            let dateCtrl = item.value.split(".")[2] + item.value.split(".")[1] + item.value.split(".")[0];
+            let today = `${dt.getFullYear()}${(dt.getMonth() + 1).toString().padStart(2, '0')}${dt.getDate()}`;
+
+            //if(parseInt(dateCtrl) <= parseInt(today) || (parseInt(dateCtrl) <= parseInt(today) && dateIsh == "")) item.parentNode.style.backgroundColor = "#eddddd"; //red
+            //if(parseInt(dateCtrl) > parseInt(today) && dateIsh == "") item.parentNode.style.backgroundColor = "#ceedce"; //green
+            if(parseInt(dateCtrl) <= parseInt(today) && dateIsh == "") item.parentNode.style.backgroundColor = "#eddddd"; //red
+            if(parseInt(dateCtrl) > parseInt(today) && dateIsh == "") item.parentNode.style.backgroundColor = "#ceedce"; //green
+            if(dateCtrl != "" && dateIsh != "") item.parentNode.style.backgroundColor = "";
+        }
+    })
 }

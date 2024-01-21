@@ -143,6 +143,7 @@ if(isset($_POST['finditems'])) {
 
 	function createList($items) {
 		$items = explode(",", $items);
+		$result = "";
 		foreach ($items as $item) {
 			$result .= "detid = '{$item}' or ";
 		}

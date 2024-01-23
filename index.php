@@ -190,6 +190,11 @@ function loadsection(izdelieid, sectionid)
 		refresh('mailbox.php', 'varframe', "&id=" + izdelieid);
 	break;
 
+	case "ctrl":
+		document.getElementById("varframe").innerHTML = "";
+		refresh('mailbox.php', 'varframe', "&id=ctrl");
+	break;
+
 	case "4":
 		refresh('contragent.php', 'varframe', "&id=" + izdelieid);
 	break;
@@ -334,6 +339,7 @@ function newlocate(func, table, newdetid, id, newpos){
 			<div class = 'topmenuitem' onClick=menuchoice('0','1');>Договорные документы</div>
 			<div class = 'topmenuitem' onClick=menuchoice('0','2');>Документы и работа</div>
 			<div class = 'topmenuitem' onClick=menuchoice('0','3');>Переписка</div>
+			<div class = 'topmenuitem' style = "color:red;" onClick=menuchoice('0','ctrl');>На контроле</div>
 			<div class = 'topmenuitem' onClick=menuchoice('0','4');>Контрагенты</div>
 			<div class = 'topmenuitem' onClick=menuchoice('0','5');>Статистика</div>
 			<div class = 'topmenuitem' onClick=menuchoice('0','6');>Развитие проекта</div>

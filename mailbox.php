@@ -68,6 +68,7 @@ if(isset($_POST['xhrload'])) {
 		$sortirovka = "if(summ = '' or summ is null, 1, 0), SUBSTRING_INDEX(summ,'.',-1), SUBSTRING_INDEX(SUBSTRING_INDEX(summ,'.',2),'.',-1), SUBSTRING_INDEX(summ,'.',1), id";
 		$findlist = findlist($find);
 		$r = $db->prepare("SELECT {$fieldList}, {$sortfield} FROM {$tableName} WHERE hide = 0 and detid = '{$table_id}' {$findlist} ORDER BY {$sortirovka} LIMIT {$page}, {$limitLine}");
+		//$r = $db->prepare("SELECT detid, {$fieldList}, {$sortfield} FROM {$tableName} WHERE hide = 0 and detid > 0 {$findlist} ORDER BY {$sortirovka} LIMIT {$page}, {$limitLine}");
 		$r->execute();
 		return $r->fetchAll(PDO::FETCH_ASSOC);
 	}

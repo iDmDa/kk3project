@@ -202,7 +202,8 @@ class TableGenerator {
     createAddButton() {
         let addbutton = document.createElement("img");
         addbutton.src = `include/addline.png`;
-        addbutton.classList.add("button_field");
+        //addbutton.classList.add("button_field");
+        this.tableID.split("_")[1] != 0 ? addbutton.classList.add("button_field") : addbutton.classList.add("notshow_any");
         addbutton.id = "addButton";
         if(zamok == 0) addbutton.style.display = "none";
         let table = document.getElementById(this.tableID);

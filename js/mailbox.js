@@ -40,9 +40,9 @@ class TableGenerator {
     }
 
     createMiddleSize() {
-        let size = document.querySelector('[data-column="dateish"]').cellIndex;
-        document.getElementById("inbox").colSpan = size;
-        console.log(size);
+        //let size = document.querySelector('[data-column="dateish"]').cellIndex;
+        //document.getElementById("inbox").colSpan = size;
+        //console.log(size);
     }
 
 
@@ -127,7 +127,7 @@ class TableGenerator {
                         //img.style.float = "left";
                         //td.appendChild(img);
                         break;
-
+                    case "detid":
                     case "sumnormchasvh":
                     case "sumnormchasish":
                         td.innerHTML = `${value}`;
@@ -302,22 +302,6 @@ class TableGenerator {
 
 }
 
-function colHideEvt(evButton, head, col) {
-    let colHead = document.querySelector(`[data-column="${head}"]`);
-    let button = document.getElementById(evButton);
-    colHead.addEventListener("click", function(e) {
-        colHead.style.display = "none";
-        let td = document.querySelectorAll(`[id$="${col}"]`);
-        td.forEach(item => {
-            item.style.display = "none"
-        });
-        let size = document.querySelectorAll('.bottomTitle:nth-child(-n+11):not([style*="display: none"])').length;
-        document.getElementById("inbox").colSpan = size;
-        console.log(e);
-        button.style.display = "";
-    });
-}
-
 function colHide (head, hide, callback) {
     //let head = document.querySelector(`[data-column="${head1}"]`);
     let allrows = head;
@@ -335,25 +319,10 @@ function colHide (head, hide, callback) {
 }
 
 function titleResize() {
-    let size = document.querySelectorAll('.bottomTitle:nth-child(-n+11):not([style*="display: none"])').length;
+    let dateishIndex = document.querySelector('[data-column="dateish"]').cellIndex;
+    let size = document.querySelectorAll(`.bottomTitle:nth-child(-n+${dateishIndex}):not([style*="display: none"])`).length;
     document.getElementById("inbox").colSpan = size;
     return size;
-}
-
-function colShowEvt (evButton, head, col) {
-    let button = document.getElementById(evButton);
-    button.addEventListener('click', (e) => {
-        let colHead = document.querySelector(`[data-column="${head}"]`);
-        let td = document.querySelectorAll(`[id$="${col}"]`);
-        colHead.style.display = "";
-        td.forEach(item => {
-            item.style.display = "";
-        });
-        let size = document.querySelectorAll('.bottomTitle:nth-child(-n+11):not([style*="display: none"])').length;
-        document.getElementById("inbox").colSpan = size;
-        console.log(e);
-        button.style.display = "none";
-    })
 }
 
 function createIconPanel() {
@@ -380,15 +349,7 @@ function createIconPanel() {
     div.appendChild(nomerreg_div);
     inbox.appendChild(div);
 
-    //colHideEvt("nomerreg_div", "nomerreg", "_nomerreg_mailbox");
-    //colHideEvt("regdata_div", "datereg", "_datereg_mailbox");
-
-    //colShowEvt ("nomerreg_div", "nomerreg", "_nomerreg_mailbox");
-    //colShowEvt ("regdata_div", "datereg", "_datereg_mailbox");
-    
-    //colHide (document.querySelector(`[data-column="nomerreg"]`), 1, titleResize);
-
-    console.log(localStorage.getItem("datereg"));
+    //console.log(localStorage.getItem("datereg"));
     if(!localStorage.getItem("dateregCol")) {
         localStorage.setItem("dateregCol", "1");
         localStorage.setItem("dateregButton", "0");
@@ -472,6 +433,7 @@ function xhrLoad (postname, tabNumber, page, id, find) {
         table.layerID = "tablediv";
         table.tabName = "Переписка";
         table.fieldList = "datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, datereg, nomerreg, datecontrol, dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish";
+        if(tabNumber == 0) table.fieldList = "detid, " + table.fieldList;
         table.dbData = resultArray;
 
         table.createTable(id);

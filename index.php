@@ -192,7 +192,7 @@ function loadsection(izdelieid, sectionid)
 
 	case "ctrl":
 		document.getElementById("varframe").innerHTML = "";
-		refresh('mailbox.php', 'varframe', "&id=ctrl");
+		refresh('mailbox.php', 'varframe', "&id=0");
 	break;
 
 	case "4":

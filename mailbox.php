@@ -26,6 +26,7 @@ if(isset($_POST['xhrload'])) {
 	}
 
 	function columnNameList() {
+		$name["detid"] = "Изделие";
 		$name["datevh"] = "Дата";
 		$name["nomervh"] = "Номер";
 		$name["adresvh"] = "Адресат";
@@ -67,8 +68,8 @@ if(isset($_POST['xhrload'])) {
 		$sortfield = "if(datevh != '', datevh, dateish) as summ ";
 		$sortirovka = "if(summ = '' or summ is null, 1, 0), SUBSTRING_INDEX(summ,'.',-1), SUBSTRING_INDEX(SUBSTRING_INDEX(summ,'.',2),'.',-1), SUBSTRING_INDEX(summ,'.',1), id";
 		$findlist = findlist($find);
-		$r = $db->prepare("SELECT {$fieldList}, {$sortfield} FROM {$tableName} WHERE hide = 0 and detid = '{$table_id}' {$findlist} ORDER BY {$sortirovka} LIMIT {$page}, {$limitLine}");
-		//$r = $db->prepare("SELECT detid, {$fieldList}, {$sortfield} FROM {$tableName} WHERE hide = 0 and detid > 0 {$findlist} ORDER BY {$sortirovka} LIMIT {$page}, {$limitLine}");
+		if($table_id != "0") $r = $db->prepare("SELECT {$fieldList}, {$sortfield} FROM {$tableName} WHERE hide = 0 and detid = '{$table_id}' {$findlist} ORDER BY {$sortirovka} LIMIT {$page}, {$limitLine}");
+		if($table_id == "0") $r = $db->prepare("SELECT detid, {$fieldList}, {$sortfield} FROM {$tableName} WHERE hide = 0 {$findlist} and datecontrol != '' ORDER BY {$sortirovka} LIMIT {$page}, {$limitLine}");
 		$r->execute();
 		return $r->fetchAll(PDO::FETCH_ASSOC);
 	}
@@ -76,7 +77,8 @@ if(isset($_POST['xhrload'])) {
 	function maxResult($tableName, $table_id, $find) {
 		$db = db_connect();
 		$findlist = findlist($find);
-		$r = $db->prepare("SELECT COUNT(id) as maxResult FROM {$tableName} WHERE hide = 0 and detid = '{$table_id}' {$findlist}");
+		if($table_id != "0") $r = $db->prepare("SELECT COUNT(id) as maxResult FROM {$tableName} WHERE hide = 0 and detid = '{$table_id}' {$findlist}");
+		if($table_id == "0") $r = $db->prepare("SELECT COUNT(id) as maxResult FROM {$tableName} WHERE hide = 0 {$findlist} and datecontrol != ''");
 		$r->execute();
 		return $r->fetchAll(PDO::FETCH_ASSOC)[0]['maxResult'];
 	}

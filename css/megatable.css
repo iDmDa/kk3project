@@ -93,7 +93,7 @@ table, tbody {
 
    .tablebox1 { 
     width: 100%; /* Ширина таблицы */
-    //border: 4px double black; /* Рамка вокруг таблицы */
+    /*border: 4px double black; /* Рамка вокруг таблицы */
     border-collapse: collapse; /* Отображать только одинарные линии */
     background: #FDE7A1;
     box-shadow: 0 0 3px;

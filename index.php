@@ -5,8 +5,8 @@
         <meta charset="utf-8">
         <title>Проекты КК-3</title>
 	<link href="jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet">
-	<link href="css/main.css?v=2" rel="stylesheet">
-	<link href="css/megatable.css" rel="stylesheet">
+	<link href="css/main.css?v=<?=time();?>" rel="stylesheet">
+	<link href="css/megatable.css?v=<?=time();?>" rel="stylesheet">
 	<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
 	<style>
 
@@ -18,7 +18,7 @@
 require ("localstyle.php");
 require ("dbconnect.php");
 ?>
-<script src = "js/mailbox.js"></script>
+<script src = "js/mailbox.js?v=<?=time();?>"></script>
 <script src="jquery-ui-1.12.1.custom/external/jquery/jquery.js"></script>
 <script src="jquery-ui-1.12.1.custom/jquery-ui.js"></script>
 <script type="text/javascript" src="include/ajaxupload.3.5.js" ></script>

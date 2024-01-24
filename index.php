@@ -168,6 +168,7 @@ function menuchoice(izdelie, section)
 	if (section != 0 ) {sectionid = section;}
 	if (izdelieid != 0 && sectionid != 0) {loadsection(izdelieid, sectionid);}
 	if (sectionid == 7 || sectionid == 5) {loadsection(izdelieid, sectionid);}
+	if (sectionid == 'ctrl') {loadsection(izdelieid, sectionid);}
 	if (sectionid == 1) {$('#open_close').css({'display':'none'});}
 	else {$('#open_close').css({'display':'block'});}
 	if (sectionid == 25) {loadsection(izdelieid, sectionid);}

@@ -1,7 +1,8 @@
 <?
 function db_connect() {
 	try {
-		$db = new PDO("mysql:host=127.0.0.1;port=3306;dbname=kk3project", "root", "root");
+		include("dbdata.php");
+		$db = new PDO("mysql:host={$db_host};port=3306;dbname={$db_name}", "{$db_login}", "{$db_pass}");
 	} catch (PDOException $e) {
 		print "Error!: " . $e->getMessage();
 		die();
@@ -20,13 +21,13 @@ if(isset($_POST['xhrload'])) {
 	
 	function getColList($tableName) {
 		foreach (getColName($tableName) as $value) {
-			$result[$value['Field']] = $value['Comment'] != "" ? $value['Comment'] : columnNameList()[$value['Field']];
+			//$result[$value['Field']] = $value['Comment'] != "" ? $value['Comment'] : columnNameList()[$value['Field']];
+			$result[$value['Field']] = columnNameList()[$value['Field']];
 		}
 		return $result;
 	}
 
 	function columnNameList() {
-		$name["detid"] = "Изделие";
 		$name["datevh"] = "Дата";
 		$name["nomervh"] = "Номер";
 		$name["adresvh"] = "Адресат";
@@ -69,7 +70,7 @@ if(isset($_POST['xhrload'])) {
 		$sortirovka = "if(summ = '' or summ is null, 1, 0), SUBSTRING_INDEX(summ,'.',-1), SUBSTRING_INDEX(SUBSTRING_INDEX(summ,'.',2),'.',-1), SUBSTRING_INDEX(summ,'.',1), id";
 		$findlist = findlist($find);
 		if($table_id != "0") $r = $db->prepare("SELECT {$fieldList}, {$sortfield} FROM {$tableName} WHERE hide = 0 and detid = '{$table_id}' {$findlist} ORDER BY {$sortirovka} LIMIT {$page}, {$limitLine}");
-		if($table_id == "0") $r = $db->prepare("SELECT detid, {$fieldList}, {$sortfield} FROM {$tableName} WHERE hide = 0 {$findlist} and datecontrol != '' ORDER BY {$sortirovka} LIMIT {$page}, {$limitLine}");
+		if($table_id == "0") $r = $db->prepare("SELECT name as izdname, {$fieldList}, {$sortfield} FROM {$tableName} LEFT JOIN izdelie on izdelie.id = mailbox.detid WHERE mailbox.hide = 0 {$findlist} and datecontrol != '' ORDER BY {$sortirovka} LIMIT {$page}, {$limitLine}");
 		$r->execute();
 		return $r->fetchAll(PDO::FETCH_ASSOC);
 	}
@@ -83,12 +84,13 @@ if(isset($_POST['xhrload'])) {
 		return $r->fetchAll(PDO::FETCH_ASSOC)[0]['maxResult'];
 	}
 
-	$fieldList = "id, datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, datereg, nomerreg, datecontrol,
+	$fieldList = "mailbox.id, datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, datereg, nomerreg, datecontrol,
 	dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish";
 	$page = $_POST['page'] == 0 ? (maxResult("mailbox", $_POST['tabNumber'], $_POST['find'])/100|0)*100 : ($_POST['page']-1)*100;
 	$jsonArray = getDatatable("mailbox", $_POST['tabNumber'], $fieldList, $page, 100, $_POST['find']);
 
 	$headerNameList = getColList("kk3project.mailbox");
+	$headerNameList["izdname"] = "Изделие";
 	$headerNameList['db'] = "mailbox";
 	$headerNameList['maxResult'] = maxResult("mailbox", $_POST['tabNumber'], $_POST['find']);
 	$headerNameList['maxPage'] = (maxResult("mailbox", $_POST['tabNumber'], $_POST['find'])/100|0) + 1;

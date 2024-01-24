@@ -49,7 +49,8 @@ class TableGenerator {
     bottomTitle() {
         let tr = document.createElement("tr");
         let td;
-        let fieldList = this.fieldList.split(", ")
+        console.log(this.dbData[0]);
+        let fieldList = this.fieldList.split(", ");
         for(let item in fieldList) {
             td = document.createElement("td");
             switch(fieldList[item]) {
@@ -69,6 +70,9 @@ class TableGenerator {
                 break;
                 case "sumnormchasish":
                     td.style.width = "50px";
+                break;
+                case "izdname":
+                    td.style.minWidth = "140px";
                 break;
             }
             td.innerHTML = `${this.dbData[0][fieldList[item]]}`;
@@ -127,7 +131,7 @@ class TableGenerator {
                         //img.style.float = "left";
                         //td.appendChild(img);
                         break;
-                    case "detid":
+                    case "izdname":
                     case "sumnormchasvh":
                     case "sumnormchasish":
                         td.innerHTML = `${value}`;
@@ -433,7 +437,7 @@ function xhrLoad (postname, tabNumber, page, id, find) {
         table.layerID = "tablediv";
         table.tabName = "Переписка";
         table.fieldList = "datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, datereg, nomerreg, datecontrol, dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish";
-        if(tabNumber == 0) table.fieldList = "detid, " + table.fieldList;
+        if(tabNumber == 0) table.fieldList = "izdname, " + table.fieldList;
         table.dbData = resultArray;
 
         table.createTable(id);

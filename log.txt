@@ -1,2 +1,0 @@
-SELECT detid, mailbox.id, datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, datereg, nomerreg, datecontrol,
-	dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish, if(datevh != '', datevh, dateish) as summ  FROM mailbox WHERE hide = 0  and datecontrol != '' ORDER BY if(summ = '' or summ is null, 1, 0), SUBSTRING_INDEX(summ,'.',-1), SUBSTRING_INDEX(SUBSTRING_INDEX(summ,'.',2),'.',-1), SUBSTRING_INDEX(summ,'.',1), id LIMIT 0, 100

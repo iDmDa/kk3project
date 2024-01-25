@@ -46,6 +46,7 @@ if(isset($_POST['xhrload'])) {
 		$name["datereg"] = "Рег. дата";
 		$name["nomerreg"] = "Рег. номер";
 		$name["datecontrol"] = "На контроле";
+		$name["prim"] = "Примечание";
 		return $name;
 	}
 
@@ -85,7 +86,7 @@ if(isset($_POST['xhrload'])) {
 	}
 
 	$fieldList = "mailbox.id, datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, datereg, nomerreg, datecontrol,
-	dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish";
+	dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish, prim";
 	$page = $_POST['page'] == 0 ? (maxResult("mailbox", $_POST['tabNumber'], $_POST['find'])/100|0)*100 : ($_POST['page']-1)*100;
 	$jsonArray = getDatatable("mailbox", $_POST['tabNumber'], $fieldList, $page, 100, $_POST['find']);
 

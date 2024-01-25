@@ -298,6 +298,10 @@ class TableGenerator {
         this.createEvents();
         this.loadAllFileIcon();
         createIconPanel();
+        createHideShowColumnButton("datereg", "button_data.png");
+        createHideShowColumnButton("nomerreg", "button_nomer.png");
+        createHideShowColumnButton("prim", "button_prim.png");
+        
         dateColor();
         //let varframe = document.getElementById(varframe);
         //varframe.scrollTop = tablediv.scrollHeight;
@@ -331,91 +335,55 @@ function titleResize() {
 }
 
 function createIconPanel() {
-    let inbox = document.getElementById("inbox");
-    let div = document.createElement("div");
-    div.id = "iconPanel";
-
-    let regdata_div = document.createElement("div");
-    let regdata_img = document.createElement("img");
-    regdata_div.id = "regdata_div";
-    regdata_img.src = `include/regdata.png`;
-    regdata_img.id = "regdata_img";
-
-    let nomerreg_div = document.createElement("div");
-    let nomerreg_img = document.createElement("img");
-    nomerreg_div.id = "nomerreg_div";
-    nomerreg_img.src = `include/regno.png`;
-    nomerreg_img.id = "nomerreg_img";
-
-    regdata_div.appendChild(regdata_img);
-    nomerreg_div.appendChild(nomerreg_img);
-
-    div.appendChild(regdata_div);
-    div.appendChild(nomerreg_div);
+    let inbox = document.getElementById(`inbox`);
+    let div = document.createElement(`div`);
+    div.id = `iconPanel`;
     inbox.appendChild(div);
 
-    //console.log(localStorage.getItem("datereg"));
-    if(!localStorage.getItem("dateregCol")) {
-        localStorage.setItem("dateregCol", "1");
-        localStorage.setItem("dateregButton", "0");
-        colHide (document.querySelector(`[data-column="datereg"]`), 1, titleResize);
-    };
-    if(!localStorage.getItem("nomerregCol")) {
-        localStorage.setItem("nomerregCol", "1");
-        localStorage.setItem("nomerregButton", "0");
-        colHide (document.querySelector(`[data-column="nomerreg"]`), 1, titleResize);
-    };
-
-    if(localStorage.getItem("dateregCol") == 1) colHide (document.querySelector(`[data-column="datereg"]`), 1, titleResize);
-    if(localStorage.getItem("dateregCol") == 0) colHide (document.querySelector(`[data-column="datereg"]`), 0, titleResize);
-    if(localStorage.getItem("dateregButton") == 1) document.getElementById("regdata_div").style.display = "none";
-    if(localStorage.getItem("dateregButton") == 0) document.getElementById("regdata_div").style.display = "";
-
-    if(localStorage.getItem("nomerregCol") == 1) colHide (document.querySelector(`[data-column="nomerreg"]`), 1, titleResize);
-    if(localStorage.getItem("nomerregCol") == 0) colHide (document.querySelector(`[data-column="nomerreg"]`), 0, titleResize);
-    if(localStorage.getItem("nomerregButton") == 1) document.getElementById("nomerreg_div").style.display = "none";
-    if(localStorage.getItem("nomerregButton") == 0) document.getElementById("nomerreg_div").style.display = "";
-
     let columHideEvent = document.getElementById("table_header_block");
-
     columHideEvent.addEventListener("click", function(e) {
-        console.log(e.target);
-        switch (e.target.dataset.column) {
-            case "datereg":
-                colHide (document.querySelector(`[data-column="datereg"]`), 1, titleResize);
-                document.getElementById("regdata_div").style.display = "";
-                localStorage.setItem("dateregCol", "1");
-                localStorage.setItem("dateregButton", "0");
-                break;
-            case "nomerreg":
-                colHide (document.querySelector(`[data-column="nomerreg"]`), 1, titleResize);
-                document.getElementById("nomerreg_div").style.display = "";
-                localStorage.setItem("nomerregCol", "1");
-                localStorage.setItem("nomerregButton", "0");
-                break;
+        
+        if(e.target.dataset.colrule) {
+            let col = e.target.dataset.column;
+            console.log(e.target);
+            colHide (document.querySelector(`[data-column="${col}"]`), 1, titleResize);
+            document.getElementById(`${col}_div`).style.display = "";
+            localStorage.setItem(`${col}Col`, "1");
+            localStorage.setItem(`${col}Button`, "0");
         }
-        switch (e.target.id) {
-            case "regdata_img":
-                colHide (document.querySelector(`[data-column="datereg"]`), 0, titleResize);
-                document.getElementById("regdata_div").style.display = "none";
-                localStorage.setItem("dateregCol", "0");
-                localStorage.setItem("dateregButton", "1");
-                break;
-            case "nomerreg_img":
-                colHide (document.querySelector(`[data-column="nomerreg"]`), 0, titleResize);
-                document.getElementById("nomerreg_div").style.display = "none";
-                localStorage.setItem("nomerregCol", "0");
-                localStorage.setItem("nomerregButton", "1");
-                break;       
-            default:
-                break;
+
+        if(e.target.dataset.colname) {
+            let col = e.target.dataset.colname;
+            colHide (document.querySelector(`[data-column="${col}"]`), 0, titleResize);
+            document.getElementById(`${col}_div`).style.display = "none";
+            localStorage.setItem(`${col}Col`, "0");
+            localStorage.setItem(`${col}Button`, "1");
         }
     });
-    
-
 }
 
+function createHideShowColumnButton(name, image) {
+    let iconPanel = document.getElementById("iconPanel");
+    let button_div = document.createElement(`div`);
+    let img = document.createElement(`img`);
+    button_div.id = `${name}_div`;
+    img.src = `include/${image}`;
+    img.id = `${name}_img`;
+    img.dataset.colname = name;
+    button_div.appendChild(img);
+    iconPanel.appendChild(button_div);
+    document.querySelector(`[data-column="${name}"]`).dataset.colrule = name;
 
+    if(!localStorage.getItem(`${name}Col`)) {
+        localStorage.setItem(`${name}Col`, `1`);
+        localStorage.setItem(`${name}Button`, `0`);
+        colHide (document.querySelector(`[data-column="${name}"]`), 1, titleResize);
+    };
+    if(localStorage.getItem(`${name}Col`) == 1) colHide (document.querySelector(`[data-column="${name}"]`), 1, titleResize);
+    if(localStorage.getItem(`${name}Col`) == 0) colHide (document.querySelector(`[data-column="${name}"]`), 0, titleResize);
+    if(localStorage.getItem(`${name}Button`) == 1) document.getElementById(`${name}_div`).style.display = `none`;
+    if(localStorage.getItem(`${name}Button`) == 0) document.getElementById(`${name}_div`).style.display = ``;
+}
 
 function xhrLoad (postname, tabNumber, page, id, find) {
     let data = new FormData();
@@ -437,7 +405,7 @@ function xhrLoad (postname, tabNumber, page, id, find) {
         table.tableID = `table_${tabNumber}`;
         table.layerID = "tablediv";
         table.tabName = "Переписка";
-        table.fieldList = "datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, datereg, nomerreg, datecontrol, dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish";
+        table.fieldList = "datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, datereg, nomerreg, datecontrol, prim, dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish";
         if(tabNumber == 0) table.fieldList = "izdname, " + table.fieldList;
         table.dbData = resultArray;
 

@@ -69,6 +69,7 @@ table, tbody {
 	vertical-align: top;
 	background: linear-gradient(to top, #AAD8EB, #AAD8EB);
 	cursor: pointer;
+	user-select: none;
 }
 
 .table_nomeric_col { 

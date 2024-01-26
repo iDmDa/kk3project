@@ -12,21 +12,6 @@ function db_connect() {
 
 if(isset($_POST['xhrload'])) {
 
-	function getColName($tableName){
-		$db = db_connect();
-		$r = $db->prepare("SHOW FULL COLUMNS FROM {$tableName}");
-		$r->execute();
-		return $r->fetchAll(PDO::FETCH_ASSOC);
-	}
-	
-	function getColList($tableName) {
-		foreach (getColName($tableName) as $value) {
-			//$result[$value['Field']] = $value['Comment'] != "" ? $value['Comment'] : columnNameList()[$value['Field']];
-			$result[$value['Field']] = columnNameList()[$value['Field']];
-		}
-		return $result;
-	}
-
 	function columnNameList() {
 		$name["datevh"] = "Дата";
 		$name["nomervh"] = "Номер";
@@ -46,6 +31,7 @@ if(isset($_POST['xhrload'])) {
 		$name["datereg"] = "Рег. дата";
 		$name["nomerreg"] = "Рег. номер";
 		$name["datecontrol"] = "На контроле";
+		$name["izdname"] = "Изделие";
 		$name["prim"] = "Примечание";
 		return $name;
 	}
@@ -90,13 +76,11 @@ if(isset($_POST['xhrload'])) {
 	$page = $_POST['page'] == 0 ? (maxResult("mailbox", $_POST['tabNumber'], $_POST['find'])/100|0)*100 : ($_POST['page']-1)*100;
 	$jsonArray = getDatatable("mailbox", $_POST['tabNumber'], $fieldList, $page, 100, $_POST['find']);
 
-	$headerNameList = getColList("kk3project.mailbox");
-	$headerNameList["izdname"] = "Изделие";
+	$headerNameList = columnNameList();
 	$headerNameList['db'] = "mailbox";
 	$headerNameList['maxResult'] = maxResult("mailbox", $_POST['tabNumber'], $_POST['find']);
 	$headerNameList['maxPage'] = (maxResult("mailbox", $_POST['tabNumber'], $_POST['find'])/100|0) + 1;
 	$headerNameList['page'] = ($page / 100) + 1;
-	//$headerNameList['count'] = $jsonArray[0]["id"];
 	array_unshift($jsonArray, $headerNameList); // Добавляет один или несколько элементов в начало массива
 	$jsonArray = array_values($jsonArray);// Переиндексируем массив, чтобы ключи начинались с 0
 	$json = json_encode($jsonArray, JSON_UNESCAPED_UNICODE);
@@ -131,7 +115,6 @@ if(isset($_POST['add'])) {
 	function add($id) {
 		$db = db_connect();
 		$r = $db->prepare("INSERT INTO mailbox(hide, detid) VALUES ('0', '{$id}')");
-		//$r = $db->prepare("SELECT prefix, filename, maskname FROM uplfiles WHERE hide = 0 and detid = '{$id}' and tabname = 'mailbox' and type = '{$type}'");
 		$r->execute();
 		return $db->lastInsertId();
 	}

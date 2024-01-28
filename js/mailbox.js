@@ -49,7 +49,7 @@ class TableGenerator {
     bottomTitle() {
         let tr = document.createElement("tr");
         let td;
-        console.log(this.dbData[0]);
+        //console.log(this.dbData[0]);
         let fieldList = this.fieldList.split(", ");
         for(let item in fieldList) {
             td = document.createElement("td");
@@ -132,10 +132,29 @@ class TableGenerator {
                         //td.appendChild(img);
                         break;
                     case "izdname":
-                    case "sumnormchasvh":
-                    case "sumnormchasish":
+
                         td.innerHTML = `${value}`;
                         td.id = `${this.dbData[i]["id"]}_${fieldList[item]}_${this.dbData[0]["db"]}`;
+                        break;
+                    case "sumnormchasvh":
+                        td.id = `${this.dbData[i]["id"]}_${fieldList[item]}_${this.dbData[0]["db"]}`;
+                        let equvh = this.dbData[i]['countlistvh'];
+                        try {
+                            if(equvh) td.innerHTML = equationCreate(equvh) * 0.5;
+                        }
+                        catch {
+                            td.innerHTML = "-"
+                        }
+                        break;
+                    case "sumnormchasish":
+                        td.id = `${this.dbData[i]["id"]}_${fieldList[item]}_${this.dbData[0]["db"]}`;
+                        let equish = this.dbData[i]['countlistish'];
+                        try {
+                            if(equish) td.innerHTML = equationCreate(equish) * 5;
+                        }
+                        catch {
+                            td.innerHTML = "-"
+                        }
                         break;
                     
                     default:
@@ -221,6 +240,27 @@ class TableGenerator {
             }
         });
 
+        table.addEventListener("focusout", function(event) {
+            let item = event.target.innerHTML;
+            let result = event.target.nextElementSibling;
+            if(event.target.id.split("_")[1] == "countlistvh") {
+                try {
+                    result.innerHTML = equationCreate(item.replace(/\<br\>/g,' ')) * 0.5;
+                }
+                catch {
+                    result.innerHTML = "-"
+                }
+            }
+            if(event.target.id.split("_")[1] == "countlistish") {
+                try {
+                    result.innerHTML = equationCreate(item.replace(/\<br\>/g,' ')) * 5;
+                }
+                catch {
+                    result.innerHTML = "-"
+                }
+            }
+        })
+
         let pages = document.getElementById("pages");
         let tb = document.getElementById(this.tableID);
         let tablediv = document.getElementById(this.layerID);
@@ -253,12 +293,7 @@ class TableGenerator {
                 xhrLoad("xhrload", tableID.split("_")[1], 0, id, findline.value);
             }
         });
-
-
-
     }
-
-
 
     loadAllFileIcon() {
         console.log("loadAllFileIcon");
@@ -422,8 +457,6 @@ function xhrLoad (postname, tabNumber, page, id, find) {
   	}
 }
 
-
-
 function createIcons(resultArray) {
     let td;
     let extList = "bmp, doc, docx, gif, jpg, mp3, pdf, png, tif, tiff, txt, xls, xlsx";
@@ -494,4 +527,8 @@ function dateColor() {
             if(dateCtrl != "" && dateIsh != "") item.parentNode.style.backgroundColor = "";
         }
     })
+}
+
+function equationCreate(data) {
+    return new Function(`return ${data}`)();
 }

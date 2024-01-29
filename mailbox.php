@@ -160,7 +160,17 @@ if(isset($_POST['finditems'])) {
 ?>
 
 <script>
-	mailfindbox(<?=$_GET['id']?>);
+	try {
+		mailfindbox(<?=$_GET['id']?>);
+	}
+	catch {
+		console.log("errrrrrr");
+		console.log("errrrrrr");
+		let varframe = document.getElementById("varframe");
+		varframe.innerHTML = "<p style='font-size: 25px;'>Версия вашего браузера устарела и не может отобразить эту страницу! Скачайте новую версию браузера по <a href = 'http://server-kk3/projectdata/docwork/1706508740_FirefoxPortable112.zip'>ссылке</a></p>";
+		console.log("errrrrrr");
+	}
+	
 	if(!document.getElementById("tablediv")) {
 		let tablayer = document.createElement("div");
 		tablayer.id = "tablediv";

@@ -17,3 +17,9 @@ INSERT INTO `settings` (`id`, `hide`, `tablename`, `field`, `showname`, `size`, 
 INSERT INTO `settings` (`id`, `hide`, `tablename`, `field`, `showname`, `size`, `hidefield`) VALUES (205, 0, 'docwork', 'numish', '', '', 1);
 INSERT INTO `settings` (`id`, `hide`, `tablename`, `field`, `showname`, `size`, `hidefield`) VALUES (206, 0, 'docwork', 'trudoemc', '', '', 1);
 INSERT INTO `settings` (`id`, `hide`, `tablename`, `field`, `showname`, `size`, `hidefield`) VALUES (207, 0, 'docwork', 'doctype', '', '', 1);
+
+
+		$fd = fopen("c:/sqllog.txt", 'w') or die("не удалось создать файл");
+		$str = "SELECT {$fieldList}{$fieldCreate} FROM {$tableName} WHERE hide = 0 and doctype = 1 and detid = '{$table_id}' {$findlist} ORDER BY {$sortirovka} LIMIT {$page}, {$limitLine}";
+		fwrite($fd, $str);
+		fclose($fd);

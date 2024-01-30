@@ -11,19 +11,43 @@ function db_connect() {
 }
 
 if(isset($_POST['izv'])) {
-    function getDatatable($tableName, $table_id, $fieldList, $page = 0, $limitLine = 0, $find = ""){
+
+    function getDatatable($tableName, $table_id, $fieldList, $page, $limitLine, $find = ""){
 		$db = db_connect();
-		$sortfield = "if(datevh != '', datevh, dateish) as summ ";
-		$sortirovka = "if(summ = '' or summ is null, 1, 0), SUBSTRING_INDEX(summ,'.',-1), SUBSTRING_INDEX(SUBSTRING_INDEX(summ,'.',2),'.',-1), SUBSTRING_INDEX(summ,'.',1), id";
+		$fieldCreate = ", CONCAT(SUBSTRING_INDEX(date, '.', -1), 
+						SUBSTRING_INDEX(SUBSTRING_INDEX(date, '.', 2), '.', -1), 
+						SUBSTRING_INDEX(date, '.', 1)) as txtToDate";
+		$sortirovka = "CASE WHEN txtToDate = '' THEN 1 ELSE 0 END, txtToDate ASC, CASE WHEN txtToDate = '' THEN id END";
 		$findlist = ""; //findlist($find);
-		//$r = $db->prepare("SELECT {$fieldList}, {$sortfield} FROM {$tableName} WHERE hide = 0 and detid = '{$table_id}' {$findlist} ORDER BY {$sortirovka} LIMIT {$page}, {$limitLine}");
-        $r = $db->prepare("SELECT {$fieldList} FROM {$tableName} WHERE hide = 0 and detid = '{$table_id}' and doctype = 1");
+		$r = $db->prepare("SELECT {$fieldList}{$fieldCreate} FROM {$tableName} WHERE hide = 0 and doctype = 1 and detid = '{$table_id}' {$findlist} ORDER BY {$sortirovka} LIMIT {$page}, {$limitLine}");
 		$r->execute();
 		return $r->fetchAll(PDO::FETCH_ASSOC);
 	}
 
+	function maxResult($tableName, $table_id, $find = "", $fieldForSearch) {
+		$db = db_connect();
+		$findlist = findlist($find, $fieldForSearch);
+		$r = $db->prepare("SELECT COUNT(id) as maxResult FROM {$tableName} WHERE hide = 0 and doctype = 1 and detid = '{$table_id}' {$findlist}");
+		$r->execute();
+		return $r->fetchAll(PDO::FETCH_ASSOC)[0]['maxResult'];
+	}
+
+	function findlist($find, $fieldForSearch = "date") {
+		$findlist = "";
+		if($find != null and $find != "" and $find != "undefined") {
+			$arrSearchList = explode(",", trim($fieldForSearch));
+			$findlist = "and (";
+			foreach ($arrSearchList as $value) {
+				$findlist .= "{$value} LIKE '%{$find}%' or ";
+			}
+			$findlist = substr($findlist, 0, -4);
+			$findlist .= ")";
+		}
+		return $findlist;
+	}
+	$fieldForSearch = "numii, editdoc, naimenovenie, reason, fio, otd, codii, zadel, vnedrenie, date, numish, prim";
     $fieldList = "numii, editdoc, naimenovenie, reason, fio, otd, codii, zadel, vnedrenie, date, numish, scan, trudoemc, prim";
-    $jsonArray = getDatatable("docwork", $_POST['tab_id'], $fieldList, $page, 100, $_POST['find']);
+    $jsonArray = getDatatable("docwork", $_POST['tab_id'], $fieldList, 0, 100, $_POST['find']);
 	$json = json_encode($jsonArray, JSON_UNESCAPED_UNICODE);
     echo $json;
 

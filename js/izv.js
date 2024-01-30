@@ -1,5 +1,23 @@
 class IzvTableGenerator {
 
+	tableID;
+    tabName;
+	layerID;
+    dbData;
+    fieldList;
+
+    bigTitle() {
+        let tabName = !this.tabName ? "Таблица" : this.tabName;
+        let tr = document.createElement("tr")
+        let td = document.createElement("td");
+        td.innerText = tabName;
+        td.colSpan = 999;
+        td.style.textAlign = "center";
+        td.classList.add("table_big_header");
+        tr.appendChild(td);
+        return tr;
+    }
+    
 }
 
 function izvLoad (izv, tab_id) {

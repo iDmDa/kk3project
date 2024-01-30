@@ -15,10 +15,11 @@
     </head>
     <body>
 <?
-require ("localstyle.php");
+//require ("localstyle.php");
 require ("dbconnect.php");
 ?>
 <script src = "js/mailbox.js?v=<?=time();?>"></script>
+<script src = "js/izv.js?v=<?=time();?>"></script>
 <script src="jquery-ui-1.12.1.custom/external/jquery/jquery.js"></script>
 <script src="jquery-ui-1.12.1.custom/jquery-ui.js"></script>
 <script type="text/javascript" src="include/ajaxupload.3.5.js" ></script>
@@ -169,6 +170,7 @@ function menuchoice(izdelie, section)
 	if (izdelieid != 0 && sectionid != 0) {loadsection(izdelieid, sectionid);}
 	if (sectionid == 7 || sectionid == 5) {loadsection(izdelieid, sectionid);}
 	if (sectionid == 'ctrl') {loadsection(izdelieid, sectionid);}
+	//if (sectionid == 'izv') {loadsection(izdelieid, sectionid);}
 	if (sectionid == 1) {$('#open_close').css({'display':'none'});}
 	else {$('#open_close').css({'display':'block'});}
 	if (sectionid == 25) {loadsection(izdelieid, sectionid);}
@@ -194,6 +196,11 @@ function loadsection(izdelieid, sectionid)
 	case "ctrl":
 		document.getElementById("varframe").innerHTML = "";
 		refresh('mailbox.php', 'varframe', "&id=0");
+	break;
+
+	case "izv":
+		document.getElementById("varframe").innerHTML = "";
+		refresh('izveshenie.php', 'varframe', "&id=" + izdelieid);
 	break;
 
 	case "4":
@@ -339,10 +346,11 @@ function newlocate(func, table, newdetid, id, newpos){
 		<div>
 			<div class = 'topmenuitem' onClick=menuchoice('0','1');>Договорные документы</div>
 			<div class = 'topmenuitem' onClick=menuchoice('0','2');>Документы и работа</div>
+			<div class = 'topmenuitem' onClick=menuchoice('0','izv');>Извещения</div>
 			<div class = 'topmenuitem' onClick=menuchoice('0','3');>Переписка</div>
 			<div class = 'topmenuitem' style = "color:red;" onClick=menuchoice('0','ctrl');>На контроле</div>
 			<div class = 'topmenuitem' onClick=menuchoice('0','4');>Контрагенты</div>
-			<div class = 'topmenuitem' onClick=menuchoice('0','5');>Статистика</div>
+			<!--<div class = 'topmenuitem' onClick=menuchoice('0','5');>Статистика</div>-->
 			<div class = 'topmenuitem' onClick=menuchoice('0','6');>Развитие проекта</div>
 			<div class = 'topmenuitem' onClick=menuchoice('0','7');>Выборка документов</div>
 		</div>

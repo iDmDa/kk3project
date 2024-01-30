@@ -32,13 +32,18 @@
 	font-weight: 400;
 }
 
-.table_header_block1 {
+.table_header_block {
 	position: sticky;
 	top: 0px;
 	/*border: solid 2px black;*/
 	background: black;
 	border-top:2px solid #AAD8EB; /* защита от съедания верхней полосой */
-	position: -webkit-sticky;
+}
+
+.table_header_block > tr {
+	border-width: 1px;
+	border-style: solid;
+	border-color: black;
 }
 
 table, tbody {
@@ -78,7 +83,7 @@ table, tbody {
 	font-size:12px;
 	font-weight: bold;
 	vertical-align: top;
-	background: linear-gradient(to top, #AAD8EB, #AAD8EB);*/
+	background: linear-gradient(to top, #AAD8EB, #AAD8EB);
 }
 
 .table_colspan_header { 
@@ -87,7 +92,7 @@ table, tbody {
 	font-size:12px;
 	font-weight: bold;
 	vertical-align: top;
-	background: linear-gradient(to top, #8ac5ff, #8ac5ff);*/
+	background: linear-gradient(to top, #8ac5ff, #8ac5ff);
 }
 
 
@@ -101,7 +106,7 @@ table, tbody {
    }
    th1 { 
     text-align: left; /* Выравнивание по левому краю */
-    //background: #ccc; /* Цвет фона ячеек */
+    /*background: #ccc; /* Цвет фона ячеек */
     padding: 5px; /* Поля вокруг содержимого ячеек */
     border: 1px solid black; /* Граница вокруг ячеек */
    }

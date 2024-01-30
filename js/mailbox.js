@@ -1,4 +1,4 @@
-class TableGenerator {
+class MailTableGenerator {
 
 	tableID;
     tabName;
@@ -435,7 +435,7 @@ function xhrLoad (postname, tabNumber, page, id, find) {
         resultArray = JSON.parse(resp);
         //console.log(resultArray);
 
-        let table = new TableGenerator();
+        let table = new MailTableGenerator();
         //console.log(tabNumber);
         table.tableID = `table_${tabNumber}`;
         table.layerID = "tablediv";

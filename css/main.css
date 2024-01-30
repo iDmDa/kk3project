@@ -340,6 +340,7 @@ li span {
 
 #inbox {
 	position: relative;
+	border-width: 0px;
 }
 
 #inbox div {

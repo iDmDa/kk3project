@@ -12,7 +12,25 @@ function db_connect() {
 
 if(isset($_POST['izv'])) {
 
-    function getDatatable($tableName, $table_id, $fieldList, $page, $limitLine, $find = ""){
+	function columnNameList() {
+		$name["numii"] = "№ ИИ";
+		$name["editdoc"] = "Корректируемые документы";
+		$name["naimenovenie"] = "Краткое содержание корректировки";
+		$name["reason"] = "Основание для корректировки";
+		$name["fio"] = "Исполнитель";
+		$name["otd"] = "Подразделение";
+		$name["codii"] = "Код";
+		$name["zadel"] = "Указание о заделе";
+		$name["vnedrenie"] = "Указание о внедрении";
+		$name["date"] = "Дата выпуска";
+		$name["numish"] = "№ исх. на отправку дубликатов";
+		$name["scan"] = "Скан";
+		$name["trudoemc"] = "Трудоемкость";
+		$name["prim"] = "Примечание";
+		return $name;
+	}
+
+    function getDatatable($tableName, $table_id, $fieldList, $page, $limitLine, $find = "", $fieldForSearch = ""){
 		$db = db_connect();
 		$fieldCreate = ", CONCAT(SUBSTRING_INDEX(date, '.', -1), 
 						SUBSTRING_INDEX(SUBSTRING_INDEX(date, '.', 2), '.', -1), 
@@ -46,8 +64,19 @@ if(isset($_POST['izv'])) {
 		return $findlist;
 	}
 	$fieldForSearch = "numii, editdoc, naimenovenie, reason, fio, otd, codii, zadel, vnedrenie, date, numish, prim";
-    $fieldList = "numii, editdoc, naimenovenie, reason, fio, otd, codii, zadel, vnedrenie, date, numish, scan, trudoemc, prim";
-    $jsonArray = getDatatable("docwork", $_POST['tab_id'], $fieldList, 0, 100, $_POST['find']);
+    $fieldList = "id, numii, editdoc, naimenovenie, reason, fio, otd, codii, zadel, vnedrenie, date, numish, scan, trudoemc, prim";
+	$showField = "numii, editdoc, naimenovenie, reason, fio, otd, codii, zadel, vnedrenie, date, numish, scan, trudoemc, prim";
+    $jsonArray = getDatatable("docwork", $_POST['tab_id'], $fieldList, 0, 100, $_POST['find'], $fieldForSearch);
+
+	$headerNameList = columnNameList();
+	$headerNameList['fieldList'] = $fieldList;
+	$headerNameList['showField'] = $showField;
+	$headerNameList['db'] = "docwork";
+	$headerNameList['maxResult'] = maxResult("docwork", $_POST['tab_id'], $_POST['find'], $fieldForSearch);
+	$headerNameList['maxPage'] = ($headerNameList['maxResult']/100|0) + 1;
+	$headerNameList['page'] = ($page / 100) + 1;
+	array_unshift($jsonArray, $headerNameList); // Добавляет один или несколько элементов в начало массива
+	$jsonArray = array_values($jsonArray);// Переиндексируем массив, чтобы ключи начинались с 0
 	$json = json_encode($jsonArray, JSON_UNESCAPED_UNICODE);
     echo $json;
 
@@ -55,7 +84,7 @@ if(isset($_POST['izv'])) {
 	exit;
 }
 
-echo "izv";
+//echo "izv";
 ?>
 <script>
     let windata = window.location.search;

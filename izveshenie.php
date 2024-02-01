@@ -84,6 +84,35 @@ if(isset($_POST['izv'])) {
 	exit;
 }
 
+if(isset($_POST['finditems'])) {
+
+	function createList($items) {
+		$items = explode(",", $items);
+		$result = "";
+		foreach ($items as $item) {
+			$result .= "detid = '{$item}' or ";
+		}
+		$result = substr($result, 0, -4);
+		return $result;
+	}
+
+	function finditems($items) {
+		$db = db_connect();
+		$r = $db->prepare("SELECT tabname, prefix, filename, maskname, type, detid FROM uplfiles WHERE hide = '0' and tabname = 'docwork' and ({$items})");
+		$r->execute();
+		return $r->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	$array = finditems(createList($_POST['finditems']));
+
+	$json = json_encode($array, JSON_UNESCAPED_UNICODE);
+
+	echo $json;
+
+	unset($_POST['finditems']);
+	exit;
+}
+
 //echo "izv";
 ?>
 <script>

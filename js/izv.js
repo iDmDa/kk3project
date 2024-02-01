@@ -33,7 +33,6 @@ class IzvTableGenerator {
     bottomTitle() {
         let tr = document.createElement("tr");
         let td;
-        //console.log(this.dbData[0]);
         let fieldList = this.fieldList.split(", ");
         for(let item in fieldList) {
             td = document.createElement("td");
@@ -52,7 +51,7 @@ class IzvTableGenerator {
         thead.classList.add("table_header_block");
         thead.id = "table_header_block";
         thead.appendChild(this.bigTitle());
-        thead.appendChild(this.middleTitle());
+        //thead.appendChild(this.middleTitle());
         thead.appendChild(this.bottomTitle());
         return thead;
     }
@@ -69,16 +68,29 @@ class IzvTableGenerator {
             for(let item in fieldList) {
                 if(this.fieldList.indexOf(fieldList[item]) < 0) continue;
                 value = this.dbData[i][fieldList[item]];
-                td = document.createElement("td");
-                td.innerHTML = `${value}`;
-                td.classList.add("simplefield");
-                td.id = `${this.dbData[i]["id"]}_${fieldList[item]}_${this.dbData[0]["db"]}`;
-                tr.appendChild(td);
+                if(!this.tbodyColRules (fieldList[item], value, i, tr)) {
+                    td = document.createElement("td");
+                    td.classList.add("simplefield");
+                    td.id = `${this.dbData[i]["id"]}_${fieldList[item]}_${this.dbData[0]["db"]}`;
+                    td.innerHTML = `${value}`;
+                    tr.appendChild(td);
+                }
+
             }
             tbody.appendChild(tr);
         }
 
         return tbody;
+    }
+
+    tbodyColRules (colList, value, i, tr) {
+        console.log("tbodyColRules");
+        let td = document.createElement("td");
+        td.classList.add("simplefield");
+        td.id = `${this.dbData[i]["id"]}_${colList}_${this.dbData[0]["db"]}`;
+        td.innerHTML = `${value}`;
+        tr.appendChild(td);
+        return 1;
     }
 
     createNumberLine() {
@@ -133,6 +145,28 @@ class IzvTableGenerator {
         table.after(addbutton);
     }
 
+    loadAllFileIcon() {
+        console.log("loadAllFileIcon");
+        let td = document.querySelectorAll('[id$="_scan_docwork"]');
+        let items = [];
+        td.forEach(item => {
+            item.innerHTML = "";
+            items.push(item.id.split("_")[0]);
+        });
+    
+        let data = new FormData();
+        data.append("finditems", items);
+    
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', 'izveshenie.php', true);
+        xhr.send(data);
+        xhr.onload = function () {
+            let resp = xhr.response; //Результат запроса
+            resultArray = JSON.parse(resp);
+            createIcons(resultArray, [['2', '_scan_docwork']]);
+        }
+    }
+
     createTable(id) {
         //document.getElementById(this.layerID).innerHTML = "";
         let table = document.createElement("table");
@@ -141,9 +175,10 @@ class IzvTableGenerator {
 		table.appendChild(this.theadCreate());
         table.appendChild(this.tbodyCreate());
         document.getElementById(this.layerID).append(table);
-        //this.createNumberLine();
-        //this.createAddButton();
-        //this.pages();
+        this.createNumberLine();
+        this.createAddButton();
+        this.loadAllFileIcon();
+        this.pages();
         varframe.scrollTop = 9999;
 	}
     

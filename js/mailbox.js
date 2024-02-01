@@ -313,7 +313,7 @@ class MailTableGenerator {
         xhr.onload = function () {
             let resp = xhr.response; //Результат запроса
             resultArray = JSON.parse(resp);
-            createIcons(resultArray);
+            createIcons(resultArray, [['1', '_scanvh_mailbox'], ['2','_scanish_mailbox']]);
         }
     }
 
@@ -457,35 +457,7 @@ function xhrLoad (postname, tabNumber, page, id, find) {
   	}
 }
 
-function createIcons(resultArray) {
-    let td;
-    let extList = "bmp, doc, docx, gif, jpg, mp3, pdf, png, tif, tiff, txt, xls, xlsx";
-    for(let i = 0; i < resultArray.length; i++) {
-        if(resultArray[i]['type'] == "1") td = document.getElementById(`${resultArray[i]['detid']}_scanvh_mailbox`);
-        if(resultArray[i]['type'] == "2") td = document.getElementById(`${resultArray[i]['detid']}_scanish_mailbox`);
-        let filetype = resultArray[i]["filename"].split(".").reverse()[0].toLowerCase();
-        let a = document.createElement("a");
-        let img = document.createElement("img");
-        let textNode = document.createTextNode(" ");
-        a.href = `/projectdata/mailbox/${resultArray[i]["prefix"]}_${resultArray[i]["filename"]}`;
-        a.target = "_blank";
-        extList.indexOf(filetype) < 0 ? img.src = `include/ico/unknow.png` : img.src = `include/ico/${filetype}.png`;
-        img.title = `${resultArray[i]["filename"]}`;
-        a.appendChild(img);
-        td.appendChild(a);
-        td.appendChild(textNode);
-    }
 
-    td = document.querySelectorAll('[id$="_scanvh_mailbox"], [id$="_scanish_mailbox"]');
-    td.forEach(item => {
-        let img = document.createElement("img");
-        img.src = `include/new window.png`;
-        img.style.float = "right";
-        img.classList.add("button_field");
-        if(zamok == 0) img.style.display = "none";
-        item.appendChild(img);
-    });
-}
 
 function mailfindbox(tabid) {
     if(document.getElementById("findlayer")) document.getElementById("findlayer").remove();
@@ -520,8 +492,6 @@ function dateColor() {
             let dateCtrl = item.value.split(".")[2] + item.value.split(".")[1] + item.value.split(".")[0];
             let today = `${dt.getFullYear()}${(dt.getMonth() + 1).toString().padStart(2, '0')}${dt.getDate()}`;
 
-            //if(parseInt(dateCtrl) <= parseInt(today) || (parseInt(dateCtrl) <= parseInt(today) && dateIsh == "")) item.parentNode.style.backgroundColor = "#eddddd"; //red
-            //if(parseInt(dateCtrl) > parseInt(today) && dateIsh == "") item.parentNode.style.backgroundColor = "#ceedce"; //green
             if(parseInt(dateCtrl) <= parseInt(today) && dateIsh == "") item.parentNode.style.backgroundColor = "#eddddd"; //red
             if(parseInt(dateCtrl) > parseInt(today) && dateIsh == "") item.parentNode.style.backgroundColor = "#ceedce"; //green
             if(dateCtrl != "" && dateIsh != "") item.parentNode.style.backgroundColor = "";

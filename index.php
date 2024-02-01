@@ -20,6 +20,7 @@ require ("dbconnect.php");
 ?>
 <script src = "js/mailbox.js?v=<?=time();?>"></script>
 <script src = "js/izv.js?v=<?=time();?>"></script>
+<script src = "js/common.js?v=<?=time();?>"></script>
 <script src="jquery-ui-1.12.1.custom/external/jquery/jquery.js"></script>
 <script src="jquery-ui-1.12.1.custom/jquery-ui.js"></script>
 <script type="text/javascript" src="include/ajaxupload.3.5.js" ></script>

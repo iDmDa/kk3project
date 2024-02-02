@@ -57,40 +57,61 @@ class IzvTableGenerator {
     }
 
     tbodyCreate() {
-        let tr, td, input, value;
         let tbody = document.createElement("tbody");
         tbody.classList.add("table_body_block");
 
         let fieldList = this.fieldList.split(", ");
         for(let i = 1; i < this.dbData.length; i++) {
-            tr = document.createElement("tr");
+            let tr = document.createElement("tr");
             
             for(let item in fieldList) {
                 if(this.fieldList.indexOf(fieldList[item]) < 0) continue;
-                value = this.dbData[i][fieldList[item]];
-                if(!this.tbodyColRules (fieldList[item], value, i, tr)) {
-                    td = document.createElement("td");
+                let colName = fieldList[item];
+                //let value = this.dbData[i][fieldList[item]];
+                let dbLine = this.dbData[i];
+                try {
+                    tr.appendChild(this.tbodyColRules (colName, dbLine));
+                }
+                catch {
+                    let td = document.createElement("td");
                     td.classList.add("simplefield");
-                    td.id = `${this.dbData[i]["id"]}_${fieldList[item]}_${this.dbData[0]["db"]}`;
-                    td.innerHTML = `${value}`;
+                    td.id = `${dbLine["id"]}_${colName}_${this.dbData[0]["db"]}`;
+                    td.innerHTML = `${dbLine[colName]}`;
                     tr.appendChild(td);
                 }
-
             }
             tbody.appendChild(tr);
         }
-
         return tbody;
     }
 
-    tbodyColRules (colList, value, i, tr) {
+    tbodyColRules (colName, dbLine) {
         console.log("tbodyColRules");
         let td = document.createElement("td");
-        td.classList.add("simplefield");
-        td.id = `${this.dbData[i]["id"]}_${colList}_${this.dbData[0]["db"]}`;
-        td.innerHTML = `${value}`;
-        tr.appendChild(td);
-        return 1;
+        let itemID = `${dbLine["id"]}_${colName}_${this.dbData[0]["db"]}`;
+        let value = `${dbLine[colName]}`;
+        switch (colName) {
+            case "scan":
+                td.id = itemID;
+                break;
+            case "date":
+                td.id = itemID;
+                let input = document.createElement("input");
+                input.id = `${itemID}_i`;
+                input.classList.add("dateinput");
+                input.setAttribute("type", "text");
+                input.setAttribute("onchange", "update_db(this.id,this.value)");
+                input.setAttribute("value", `${value}`);
+                td.appendChild(input);
+                break;
+            default:
+                td.classList.add("simplefield");
+                td.id = itemID;
+                td.innerHTML = `${value}`;
+                break;
+        }
+        //return null;
+        return td;
     }
 
     createNumberLine() {
@@ -145,6 +166,53 @@ class IzvTableGenerator {
         table.after(addbutton);
     }
 
+    createEvents() {
+        let table = document.getElementById(this.tableID);
+		table.addEventListener("click", function(event) {
+            let type = "";
+            if(event.target.classList == "button_field"){
+                if(event.target.parentNode.id.split("_")[1] == "scan") type = 2;
+                okno_show('dialog',`&tabname=docwork&type=${type}&id=${event.target.parentNode.id.split("_")[0]}`);
+            }
+        })
+
+        let pages = document.getElementById("pages");
+        let tableID = this.tableID;
+        let tablediv = document.getElementById(this.layerID);
+        if(pages != null) {
+            pages.addEventListener("click", function(event) {
+                //console.log(event.target.classList.contains("menuitem"));
+                if(event.target.classList.contains("menuitem")) {
+                    tablediv.innerHTML = "";
+                    //xhrLoad("xhrload", tb.id.split("_")[1], event.target.innerText, findline.value);
+                    izvLoad("izv", tableID.split("_")[1], event.target.innerText, findline.value);
+                }
+            })
+        }
+
+        
+        let addButton = document.getElementById("addButton");
+        addButton.addEventListener("click", function(event) {
+
+            let data = new FormData();
+            data.append("add", tableID.split("_")[1]);
+        
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', 'izveshenie.php', true);
+            xhr.send(data);
+            xhr.onload = function () {
+                let id = xhr.response; //Результат запроса
+                //resultArray = JSON.parse(resp);
+                console.log("id: " + id);
+
+                tablediv.innerHTML = "";
+                izvLoad("izv", tableID.split("_")[1], 0, findline.value);
+                //xhrLoad("xhrload", tableID.split("_")[1], 0, findline.value);
+            }
+        })
+
+    }
+
     loadAllFileIcon() {
         console.log("loadAllFileIcon");
         let td = document.querySelectorAll('[id$="_scan_docwork"]');
@@ -167,8 +235,8 @@ class IzvTableGenerator {
         }
     }
 
-    createTable(id) {
-        //document.getElementById(this.layerID).innerHTML = "";
+    createTable() {
+        document.getElementById(this.layerID).innerHTML = "";
         let table = document.createElement("table");
 		table.id = this.tableID;
         table.classList.add("autotable");
@@ -179,15 +247,18 @@ class IzvTableGenerator {
         this.createAddButton();
         this.loadAllFileIcon();
         this.pages();
+        this.createEvents();
         varframe.scrollTop = 9999;
 	}
     
 }
 
-function izvLoad (izv, tab_id) {
+function izvLoad (izv, tab_id, page, id, find) {
     let data = new FormData();
     data.append(izv, "value");
     data.append("tab_id", tab_id)
+    data.append("page", page);
+    data.append("find", find);
 
     let xhr = new XMLHttpRequest();
     xhr.open('POST', 'izveshenie.php', true);
@@ -199,7 +270,7 @@ function izvLoad (izv, tab_id) {
 
         let table = new IzvTableGenerator();
         table.tableID = `table_${tab_id}`;
-        table.layerID = "varframe";
+        table.layerID = "tablediv";
         table.tabName = "Извещения";
         table.fieldList = resultArray[0]['showField'];
         table.dbData = resultArray;
@@ -210,6 +281,29 @@ function izvLoad (izv, tab_id) {
 	xhr.onloadend = function(event) {
         zamok == 1 ? open_edit() : close_edit();
 		$(".dateinput").mask("99.99.9999", {placeholder: "дд.мм.гггг" });
-    	console.log("(xhrLoad)Загрузка завершена");
+    	console.log("(izvLoad)Загрузка завершена");
   	}
+}
+
+function izvfindbox(tabid) {
+    if(document.getElementById("findlayer")) document.getElementById("findlayer").remove();
+    let div = document.createElement("div");
+    div.id = "findlayer";
+    div.style.marginBottom = "10px";
+    let textNode = document.createTextNode("");
+    textNode.data = "Найти: ";
+    let input = document.createElement("input");
+    input.style.width = 600 + 'px';
+    input.id = "findline";
+    div.appendChild(textNode);
+    div.appendChild(input);
+
+    let varframe = document.getElementById("varframe");
+    varframe.appendChild(div);
+
+    
+    let findline = document.getElementById("findline");
+    findline.addEventListener("change", function(event) {
+            izvLoad("izv", tabid, 0, findline.value);
+    });
 }

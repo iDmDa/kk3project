@@ -1,8 +1,8 @@
 <?php
 	include("dbconnect.php");
                       $id= filter_input (INPUT_POST ,  'id' , FILTER_SANITIZE_STRING );
-                      $id=explode('_', $id);    //$id ìàññèâ ñ äàííûìè ÷åðåç "_", ïîëó÷àåì ïîñòðî÷íûé ìàññèâ $id[x]
-                      $item_id=mysql_real_escape_string($id[0]); //èçìåíÿåò äàííûå äëÿ çàïèñè â áàçó äàííûõ
+                      $id=explode('_', $id);    //$id Ð¼Ð°ÑÑÐ¸Ð² Ñ Ð´Ð°Ð½Ð½Ñ‹Ð¼Ð¸ Ñ‡ÐµÑ€ÐµÐ· "_", Ð¿Ð¾Ð»ÑƒÑ‡Ð°ÐµÐ¼ Ð¿Ð¾ÑÑ‚Ñ€Ð¾Ñ‡Ð½Ñ‹Ð¹ Ð¼Ð°ÑÑÐ¸Ð² $id[x]
+                      $item_id=mysql_real_escape_string($id[0]); //Ð¸Ð·Ð¼ÐµÐ½ÑÐµÑ‚ Ð´Ð°Ð½Ð½Ñ‹Ðµ Ð´Ð»Ñ Ð·Ð°Ð¿Ð¸ÑÐ¸ Ð² Ð±Ð°Ð·Ñƒ Ð´Ð°Ð½Ð½Ñ‹Ñ…
 /*
 $fp = fopen("file.txt", "w");
 fwrite($fp, $item_id);
@@ -20,13 +20,13 @@ fclose($fp);
 	mysql_query("UPDATE $item_table SET $item_pole = '$content1' WHERE id = '$item_id' ");
 	if($item_table == "stage" or $item_table == "docwork" or $item_table == "mailbox") mysql_query("UPDATE $item_table SET upd = '1' WHERE id = '$item_id' ");
 
-	if ($id[1] == "data") //äîï ÿ÷åéêà, ïåðåðàñ÷åò äàòû ôîðìàòà ää.ìì.ãããã â ããããììää äëÿ ñîðòèðîâêè ïî äàòå
+	if ($id[1] == "data") //Ð´Ð¾Ð¿ ÑÑ‡ÐµÐ¹ÐºÐ°, Ð¿ÐµÑ€ÐµÑ€Ð°ÑÑ‡ÐµÑ‚ Ð´Ð°Ñ‚Ñ‹ Ñ„Ð¾Ñ€Ð¼Ð°Ñ‚Ð° Ð´Ð´.Ð¼Ð¼.Ð³Ð³Ð³Ð³ Ð² Ð³Ð³Ð³Ð³Ð¼Ð¼Ð´Ð´ Ð´Ð»Ñ ÑÐ¾Ñ€Ñ‚Ð¸Ñ€Ð¾Ð²ÐºÐ¸ Ð¿Ð¾ Ð´Ð°Ñ‚Ðµ
 	{
 	$srd=explode(".", $content1);
-	$srd[0] = preg_replace("/[^,.0-9]/", '', $srd[0]); //îáðåçàòü âåñü òåêñò è îñòàâèòü òîëüêî öèôðû
+	$srd[0] = preg_replace("/[^,.0-9]/", '', $srd[0]); //Ð¾Ð±Ñ€ÐµÐ·Ð°Ñ‚ÑŒ Ð²ÐµÑÑŒ Ñ‚ÐµÐºÑÑ‚ Ð¸ Ð¾ÑÑ‚Ð°Ð²Ð¸Ñ‚ÑŒ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ñ†Ð¸Ñ„Ñ€Ñ‹
 	$srd[1] = preg_replace("/[^,.0-9]/", '', $srd[1]);
 	$srd[2] = preg_replace("/[^,.0-9]/", '', $srd[2]);
-	if (strlen($srd[0]) == 1) $srd[0] = "0" .$srd[0]; //ïðîâåðèòü êîëè÷åñòâî ñèìâîëîâ â áëîêàõ äàòû
+	if (strlen($srd[0]) == 1) $srd[0] = "0" .$srd[0]; //Ð¿Ñ€Ð¾Ð²ÐµÑ€Ð¸Ñ‚ÑŒ ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ ÑÐ¸Ð¼Ð²Ð¾Ð»Ð¾Ð² Ð² Ð±Ð»Ð¾ÐºÐ°Ñ… Ð´Ð°Ñ‚Ñ‹
 	if (strlen($srd[1]) == 1) $srd[1] = "0" .$srd[1];
 	if (strlen($srd[2]) == 2) $srd[2] = "20" .$srd[2];
 
@@ -37,12 +37,12 @@ fclose($fp);
                      {
                        print $content;
                      }
-                     else print 'â„–1';
+                     else print 'Ð²â€žâ€“1';
 	}
 
 	if($item_id == "nid") 
 	{
-		$item_fld1=mysql_real_escape_string($id[0]); //èçìåíÿåò äàííûå äëÿ çàïèñè â áàçó äàííûõ
+		$item_fld1=mysql_real_escape_string($id[0]); //Ð¸Ð·Ð¼ÐµÐ½ÑÐµÑ‚ Ð´Ð°Ð½Ð½Ñ‹Ðµ Ð´Ð»Ñ Ð·Ð°Ð¿Ð¸ÑÐ¸ Ð² Ð±Ð°Ð·Ñƒ Ð´Ð°Ð½Ð½Ñ‹Ñ…
 		$item_fld2=mysql_real_escape_string($id[1]);
 		$item_fld3=mysql_real_escape_string($id[2]);
 		$item_fld4=mysql_real_escape_string($id[3]);

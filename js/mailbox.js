@@ -269,7 +269,7 @@ class MailTableGenerator {
                 //console.log(event.target.classList.contains("menuitem"));
                 if(event.target.classList.contains("menuitem")) {
                     tablediv.innerHTML = "";
-                    xhrLoad("xhrload", tb.id.split("_")[1], event.target.innerText, "", findline.value);
+                    xhrLoad("xhrload", tb.id.split("_")[1], event.target.innerText, findline.value);
                 }
             });
         }
@@ -290,7 +290,7 @@ class MailTableGenerator {
                 console.log("id: " + id);
 
                 tablediv.innerHTML = "";
-                xhrLoad("xhrload", tableID.split("_")[1], 0, id, findline.value);
+                xhrLoad("xhrload", tableID.split("_")[1], 0, findline.value);
             }
         });
     }
@@ -317,7 +317,7 @@ class MailTableGenerator {
         }
     }
 
-	createTable(id) {
+	createTable() {
         document.getElementById(this.layerID).innerHTML = "";
         let table = document.createElement("table");
 		table.id = this.tableID;
@@ -420,7 +420,7 @@ function createHideShowColumnButton(name, image) {
     if(localStorage.getItem(`${name}Button`) == 0) document.getElementById(`${name}_div`).style.display = ``;
 }
 
-function xhrLoad (postname, tabNumber, page, id, find) {
+function xhrLoad (postname, tabNumber, page, find) {
     let data = new FormData();
     data.append(postname, "value");
 	data.append("tabNumber", tabNumber);
@@ -433,7 +433,7 @@ function xhrLoad (postname, tabNumber, page, id, find) {
     xhr.onload = function () {
         let resp = xhr.response; //Результат запроса
         resultArray = JSON.parse(resp);
-        //console.log(resultArray);
+        //console.log(resp);
 
         let table = new MailTableGenerator();
         //console.log(tabNumber);
@@ -444,7 +444,7 @@ function xhrLoad (postname, tabNumber, page, id, find) {
         if(tabNumber == 0) table.fieldList = "izdname, " + table.fieldList;
         table.dbData = resultArray;
 
-        table.createTable(id);
+        table.createTable();
         //callback();
     }
 
@@ -478,7 +478,7 @@ function mailfindbox(tabid) {
     
     let findline = document.getElementById("findline");
     findline.addEventListener("change", function(event) {
-            xhrLoad("xhrload", tabid, 0, "", findline.value);
+            xhrLoad("xhrload", tabid, 0, findline.value);
     });
 }
 

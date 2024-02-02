@@ -36,7 +36,7 @@ if(isset($_POST['izv'])) {
 						SUBSTRING_INDEX(SUBSTRING_INDEX(date, '.', 2), '.', -1), 
 						SUBSTRING_INDEX(date, '.', 1)) as txtToDate";
 		$sortirovka = "CASE WHEN txtToDate = '' THEN 1 ELSE 0 END, txtToDate ASC, CASE WHEN txtToDate = '' THEN id END";
-		$findlist = ""; //findlist($find);
+		$findlist = findlist($find);
 		$r = $db->prepare("SELECT {$fieldList}{$fieldCreate} FROM {$tableName} WHERE hide = 0 and doctype = 1 and detid = '{$table_id}' {$findlist} ORDER BY {$sortirovka} LIMIT {$page}, {$limitLine}");
 		$r->execute();
 		return $r->fetchAll(PDO::FETCH_ASSOC);
@@ -66,7 +66,8 @@ if(isset($_POST['izv'])) {
 	$fieldForSearch = "numii, editdoc, naimenovenie, reason, fio, otd, codii, zadel, vnedrenie, date, numish, prim";
     $fieldList = "id, numii, editdoc, naimenovenie, reason, fio, otd, codii, zadel, vnedrenie, date, numish, scan, trudoemc, prim";
 	$showField = "numii, editdoc, naimenovenie, reason, fio, otd, codii, zadel, vnedrenie, date, numish, scan, trudoemc, prim";
-    $jsonArray = getDatatable("docwork", $_POST['tab_id'], $fieldList, 0, 100, $_POST['find'], $fieldForSearch);
+	$page = $_POST['page'] == 0 ? (maxResult("docwork", $_POST['tab_id'], $_POST['find'], $fieldForSearch)/100|0)*100 : ($_POST['page']-1)*100;
+    $jsonArray = getDatatable("docwork", $_POST['tab_id'], $fieldList, $page, 100, $_POST['find'], $fieldForSearch);
 
 	$headerNameList = columnNameList();
 	$headerNameList['fieldList'] = $fieldList;
@@ -113,12 +114,41 @@ if(isset($_POST['finditems'])) {
 	exit;
 }
 
+if(isset($_POST['add'])) {
+
+	function add($id) {
+		$db = db_connect();
+		$r = $db->prepare("INSERT INTO docwork(hide, detid, doctype) VALUES ('0', '{$id}','1')");
+		$r->execute();
+		return $db->lastInsertId();
+	}
+
+	$lastId = add($_POST['add']);
+
+	echo $lastId;
+
+	unset($_POST['add']);
+	exit;
+}
+
 //echo "izv";
 ?>
 <script>
-    let windata = window.location.search;
-    let urlParams = new URLSearchParams(windata);
-    let get_id = urlParams.get('id');
-    console.log(window.location);
+	try {
+		izvfindbox(<?=$_GET['id']?>);
+	}
+	catch {
+		console.log("errrrrrr");
+		let varframe = document.getElementById("varframe");
+		varframe.innerHTML = "<p style='font-size: 25px;'>Версия вашего браузера устарела и не может отобразить эту страницу! Скачайте новую версию браузера по <a href = 'http://server-kk3/projectdata/docwork/1706508740_FirefoxPortable112.zip'>ссылке</a></p>";
+	}
+
+	if(!document.getElementById("tablediv")) {
+		let tablayer = document.createElement("div");
+		tablayer.id = "tablediv";
+		varframe = document.getElementById("varframe");
+		varframe.appendChild(tablayer);
+	}
+
     izvLoad("izv", <?=$_GET['id']?>);
 </script>

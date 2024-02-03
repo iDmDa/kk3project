@@ -359,3 +359,7 @@ li span {
 [data-colrule]:hover {
 	background: linear-gradient(to right, rgb(237, 221, 221), rgb(237, 221, 221));
 }
+
+u {
+	color: crimson;
+}

@@ -5,6 +5,7 @@ class IzvTableGenerator {
 	layerID;
     dbData;
     fieldList;
+    showLine;
 
     bigTitle() {
         let tabName = !this.tabName ? "Таблица" : this.tabName;
@@ -143,8 +144,8 @@ class IzvTableGenerator {
         pages.classList.add("mailbox_pages");
         pages.id = "pages";
 
-        if((this.dbData[0]["maxResult"]/100|0) > 0) {     
-            for(let i = 0; i < (this.dbData[0]["maxResult"]/100|0) + 1; i++) {
+        if((this.dbData[0]["maxResult"]/this.showLine|0) > 0) {     
+            for(let i = 0; i < (this.dbData[0]["maxResult"]/this.showLine|0) + 1; i++) {
                 let page = document.createElement("div");
                 page.innerText = i + 1;
                 page.classList.add("menuitem");
@@ -253,12 +254,14 @@ class IzvTableGenerator {
     
 }
 
-function izvLoad (izv, tab_id, page, id, find) {
+function izvLoad (izv, tab_id, page, find, showLine = 100) {
     let data = new FormData();
     data.append(izv, "value");
     data.append("tab_id", tab_id)
     data.append("page", page);
     data.append("find", find);
+    data.append("showLine", showLine);
+
 
     let xhr = new XMLHttpRequest();
     xhr.open('POST', 'izveshenie.php', true);
@@ -272,6 +275,7 @@ function izvLoad (izv, tab_id, page, id, find) {
         table.tableID = `table_${tab_id}`;
         table.layerID = "tablediv";
         table.tabName = "Извещения";
+        table.showLine = showLine;
         table.fieldList = resultArray[0]['showField'];
         table.dbData = resultArray;
 
@@ -282,6 +286,7 @@ function izvLoad (izv, tab_id, page, id, find) {
         zamok == 1 ? open_edit() : close_edit();
 		$(".dateinput").mask("99.99.9999", {placeholder: "дд.мм.гггг" });
     	console.log("(izvLoad)Загрузка завершена");
+        if(find != "") findSelect(find);
   	}
 }
 
@@ -305,5 +310,8 @@ function izvfindbox(tabid) {
     let findline = document.getElementById("findline");
     findline.addEventListener("change", function(event) {
             izvLoad("izv", tabid, 0, findline.value);
+            console.log(`tabid: ${tabid}; findline.value: ${findline.value}`);
+            //document.querySelectorAll('.simplefield')[2].innerHTML = "0";
+            //console.log(document.querySelectorAll('.simplefield').innerHTML = "0");
     });
 }

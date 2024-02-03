@@ -453,6 +453,7 @@ function xhrLoad (postname, tabNumber, page, find) {
         zamok == 1 ? open_edit() : close_edit();
 		$(".dateinput").mask("99.99.9999", {placeholder: "дд.мм.гггг" });
     	console.log("(xhrLoad)Загрузка завершена");
+        if(find != "") findSelect(find);
 		//loadAllFileIcon();
   	}
 }

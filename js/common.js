@@ -33,3 +33,13 @@ function createIcons(resultArray, scanArr) {
         item.appendChild(img);
     });
 }
+
+function findSelect(find) {
+    let findSelect = document.querySelectorAll('tbody .simplefield');
+    findSelect.forEach(item => {
+        if(item.innerHTML.includes(find)) {
+            let regex = new RegExp('(' + find + ')', 'gi');
+            item.innerHTML = item.innerHTML.replace(regex, '<u>$1</u>');
+        }
+    })
+}

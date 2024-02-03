@@ -36,7 +36,7 @@ if(isset($_POST['izv'])) {
 						SUBSTRING_INDEX(SUBSTRING_INDEX(date, '.', 2), '.', -1), 
 						SUBSTRING_INDEX(date, '.', 1)) as txtToDate";
 		$sortirovka = "CASE WHEN txtToDate = '' THEN 1 ELSE 0 END, txtToDate ASC, CASE WHEN txtToDate = '' THEN id END";
-		$findlist = findlist($find);
+		$findlist = findlist($find, $fieldForSearch);
 		$r = $db->prepare("SELECT {$fieldList}{$fieldCreate} FROM {$tableName} WHERE hide = 0 and doctype = 1 and detid = '{$table_id}' {$findlist} ORDER BY {$sortirovka} LIMIT {$page}, {$limitLine}");
 		$r->execute();
 		return $r->fetchAll(PDO::FETCH_ASSOC);
@@ -63,19 +63,21 @@ if(isset($_POST['izv'])) {
 		}
 		return $findlist;
 	}
+
+	$showLine = $_POST['showLine'];
 	$fieldForSearch = "numii, editdoc, naimenovenie, reason, fio, otd, codii, zadel, vnedrenie, date, numish, prim";
     $fieldList = "id, numii, editdoc, naimenovenie, reason, fio, otd, codii, zadel, vnedrenie, date, numish, scan, trudoemc, prim";
 	$showField = "numii, editdoc, naimenovenie, reason, fio, otd, codii, zadel, vnedrenie, date, numish, scan, trudoemc, prim";
-	$page = $_POST['page'] == 0 ? (maxResult("docwork", $_POST['tab_id'], $_POST['find'], $fieldForSearch)/100|0)*100 : ($_POST['page']-1)*100;
-    $jsonArray = getDatatable("docwork", $_POST['tab_id'], $fieldList, $page, 100, $_POST['find'], $fieldForSearch);
+	$page = $_POST['page'] == 0 ? (maxResult("docwork", $_POST['tab_id'], $_POST['find'], $fieldForSearch)/$showLine|0)*$showLine : ($_POST['page']-1)*$showLine;
+    $jsonArray = getDatatable("docwork", $_POST['tab_id'], $fieldList, $page, $showLine, $_POST['find'], $fieldForSearch);
 
 	$headerNameList = columnNameList();
 	$headerNameList['fieldList'] = $fieldList;
 	$headerNameList['showField'] = $showField;
 	$headerNameList['db'] = "docwork";
 	$headerNameList['maxResult'] = maxResult("docwork", $_POST['tab_id'], $_POST['find'], $fieldForSearch);
-	$headerNameList['maxPage'] = ($headerNameList['maxResult']/100|0) + 1;
-	$headerNameList['page'] = ($page / 100) + 1;
+	$headerNameList['maxPage'] = ($headerNameList['maxResult']/$showLine|0) + 1;
+	$headerNameList['page'] = ($page / $showLine) + 1;
 	array_unshift($jsonArray, $headerNameList); // Добавляет один или несколько элементов в начало массива
 	$jsonArray = array_values($jsonArray);// Переиндексируем массив, чтобы ключи начинались с 0
 	$json = json_encode($jsonArray, JSON_UNESCAPED_UNICODE);

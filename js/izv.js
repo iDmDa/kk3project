@@ -249,7 +249,7 @@ class IzvTableGenerator {
         this.loadAllFileIcon();
         this.pages();
         this.createEvents();
-        varframe.scrollTop = 9999;
+        tablediv.scrollTop = 9999;
 	}
     
 }

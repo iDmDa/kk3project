@@ -250,7 +250,7 @@ $dtable->addfield = "detid";
 $dtable->addvalue = $_GET['id'];
 //$dtable->getdata = "&id=" .$_GET['id'];
 $dtable->getdata = $_SERVER['QUERY_STRING'];
-$dtable->filter = " and detid = " .$_GET['id'] ." and (naimenovenie LIKE '%" .$_GET['workname'] ."%' and fio LIKE '%" .$_GET['fio'] ."%' and otd LIKE '%" .$_GET['otd'] ."%') " .$hide_ready_work ." ";
+$dtable->filter = " and doctype = 0 and detid = " .$_GET['id'] ." and (naimenovenie LIKE '%" .$_GET['workname'] ."%' and fio LIKE '%" .$_GET['fio'] ."%' and otd LIKE '%" .$_GET['otd'] ."%') " .$hide_ready_work ." ";
 
 $dtable->dbtable = "docwork";
 $dtable->header_big_name = "Документы и работы";

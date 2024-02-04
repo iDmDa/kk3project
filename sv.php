@@ -37,4 +37,10 @@ if(isset($_POST['rename'])) {
     $mysqli->close();
 };
 
+if(isset($_POST['change_doctype'])) {
+    $sql = "update docwork set doctype = '" .$_POST['change_doctype'] ."' where id = " .$_POST['id'] ." ";
+    $mysqli->query($sql);
+    $mysqli->close();
+};
+
 ?>

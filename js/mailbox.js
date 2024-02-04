@@ -341,7 +341,7 @@ class MailTableGenerator {
         //let varframe = document.getElementById(varframe);
         //varframe.scrollTop = tablediv.scrollHeight;
   
-        varframe.scrollTop = 9999;
+        tablediv.scrollTop = 9999;
 	}
 
 }
@@ -491,7 +491,7 @@ function dateColor() {
             let dateIsh = document.getElementById(item.id.split("_")[0] + "_dateish_mailbox").firstChild.value;
             dateIsh != "" ? dateIsh = dateIsh.split(".")[2] + dateIsh.split(".")[1] + dateIsh.split(".")[0] : null;
             let dateCtrl = item.value.split(".")[2] + item.value.split(".")[1] + item.value.split(".")[0];
-            let today = `${dt.getFullYear()}${(dt.getMonth() + 1).toString().padStart(2, '0')}${dt.getDate()}`;
+            let today = `${dt.getFullYear()}${(dt.getMonth() + 1).toString().padStart(2, '0')}${dt.getDate().toString().padStart(2, '0')}`;
 
             if(parseInt(dateCtrl) <= parseInt(today) && dateIsh == "") item.parentNode.style.backgroundColor = "#eddddd"; //red
             if(parseInt(dateCtrl) > parseInt(today) && dateIsh == "") item.parentNode.style.backgroundColor = "#ceedce"; //green

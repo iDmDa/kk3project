@@ -510,6 +510,9 @@ $_POST['dateend'] == "" ? $find_date2 = "" : $find_date2 = "and " .$sql_date_fie
 $dtable->filter = " and (naimenovenie LIKE '%" .$_POST['naimenovenie'] ."%' and otd LIKE '%" .$_POST['otd'] ."%' and fio LIKE '%" .$_POST['fio'] ."%' " .$gotov_val .$find_date1 .$find_date2 ."  ) ";
 
 $dtable->dbtable = "docwork";
+//$dtable->filter = " and doctype = 0 ";
+$dtable->show_hide = 1;
+$dtable->hfilter = " and hide <> 1 and doctype = 0 ";
 $dtable->header_big_name = "Выборка";
 $dtable->pos_nomer_col = 0;
 $dtable->date_field_list = "date";

@@ -23,3 +23,31 @@ INSERT INTO `settings` (`id`, `hide`, `tablename`, `field`, `showname`, `size`, 
 		$str = "SELECT {$fieldList}{$fieldCreate} FROM {$tableName} WHERE hide = 0 and doctype = 1 and detid = '{$table_id}' {$findlist} ORDER BY {$sortirovka} LIMIT {$page}, {$limitLine}";
 		fwrite($fd, $str);
 		fclose($fd);
+
+
+
+				submenu: {
+			name: 'Переместить',
+			items: 
+			{
+				<? //генератор меню
+				$r = mysql_query("SELECT * FROM izdelie where hide <> 1 and notactive = 0 order by  if(name = '', 1, 0), sort, name, id");
+				for($j=0;$j<(mysql_num_rows($r)/25);$j++) {?>
+				
+							menuitem<?echo $j;?>: {name: '<?echo ($j*25+1) ." - " .($j+1)*25;?>',
+								items: 
+								{
+								<?
+								for($i=0;$i<25;$i++)
+								{
+								$n++;
+								if ($n > mysql_num_rows($r)) break;
+								$f = mysql_fetch_array($r);
+								echo "pos" .$i .": {name: '" .$f['name'] ."', callback: function(key, options) {newlocate('move', $(this).data('table'), '" .$f['id'] ."', $(this).data('id'), '" .$f['name'] ."');}},";
+								}
+								?>
+								}
+							},
+				<?}?>
+			}
+		},

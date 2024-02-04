@@ -43,3 +43,13 @@ function findSelect(find) {
         }
     })
 }
+
+function changeDoctype(type, id) {
+    let data = new FormData();
+    data.append("change_doctype", type);
+    data.append("id", id)
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', 'sv.php', true);
+    xhr.send(data);
+}

@@ -53,6 +53,7 @@ html, body{
 	font-size:13px;
 	overflow: auto;
 	scrollbar-width: thin;
+	height: 100%;
 }
 
 #loader_layer { /* слой для анимации загрузки */
@@ -176,7 +177,7 @@ width:100%;
 }
 
 li span:hover {
-	background: linear-gradient(to right, pink, pink);
+	/*background: linear-gradient(to right, pink, pink);*/
 	/*background-color:pink;*/
 }
 
@@ -362,4 +363,10 @@ li span {
 
 u {
 	color: crimson;
+}
+
+#tablediv {
+	overflow: auto;
+	scrollbar-width: thin;
+	height: calc(100% - 32px);
 }

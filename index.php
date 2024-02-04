@@ -251,7 +251,8 @@ function all_open()
 	$('.hide_field').css({'display':'block'});
 	$('.nomer').addClass('context-menu-one');
 	$('.meganomer').addClass('context-menu-megaclass-one');
-	$('.relocnomer').addClass('context-submenu-megaclass-one');
+	//$('.relocnomer').addClass('context-submenu-megaclass-one');
+	$('.relocnomer').addClass('context-document');
 	$('#open_close').empty()
 	.append("<a onclick = 'close_edit();'><img src='include/lock_open.png' alt='открыто'></a>");
 	findsave();
@@ -281,7 +282,8 @@ function close_edit()
 	$('.hide_field').css({'display':'none'});
 	$('.nomer').removeClass('context-menu-one');
 	$('.meganomer').removeClass('context-menu-megaclass-one');
-	$('.relocnomer').removeClass('context-submenu-megaclass-one');
+	//$('.relocnomer').removeClass('context-submenu-megaclass-one');
+	$('.relocnomer').removeClass('context-document');
 	$('#open_close').empty()
 	.append("<a onclick = 'open_edit();'><img src='include/lock.png' alt='закрыто'></a>");
 	$('#eco_pass_field').empty()
@@ -335,6 +337,7 @@ function newlocate(func, table, newdetid, id, newpos){
 		});
 	}
 };
+
 
 </script>
 
@@ -403,8 +406,9 @@ $.contextMenu({  //меню удаления
     }
 });
 
+
 $.contextMenu({  //меню удаления с подменю
-    selector: '.context-submenu-megaclass-one',
+    selector: '.context-document',
     items: {
         delete: {
 			name: 'Удалить',
@@ -414,31 +418,46 @@ $.contextMenu({  //меню удаления с подменю
 			}
 		},
 
-		submenu: {
-			name: 'Переместить',
-			items: 
-			{
-				<? //генератор меню
-				$r = mysql_query("SELECT * FROM izdelie where hide <> 1 and notactive = 0 order by  if(name = '', 1, 0), sort, name, id");
-				for($j=0;$j<(mysql_num_rows($r)/25);$j++) {?>
-				
-							menuitem<?echo $j;?>: {name: '<?echo ($j*25+1) ." - " .($j+1)*25;?>',
-								items: 
-								{
-								<?
-								for($i=0;$i<25;$i++)
-								{
-								$n++;
-								if ($n > mysql_num_rows($r)) break;
-								$f = mysql_fetch_array($r);
-								echo "pos" .$i .": {name: '" .$f['name'] ."', callback: function(key, options) {newlocate('move', $(this).data('table'), '" .$f['id'] ."', $(this).data('id'), '" .$f['name'] ."');}},";
-								}
-								?>
-								}
-							},
-				<?}?>
+		movetoizv: {
+			name: "Перевести в раздел 'Извещение'",
+			callback: function(key, options) {
+				changeDoctype('1', this[0].dataset.id);
+				loadsection(izdelieid, sectionid);
+				console.log("(Перевести в Извещение) htag: " + $(this).data('htag') + "; table: " + $(this).data('table') + "; id: " + $(this).data('id') + "; getdata: " + $(this).data('getdata') + "; file: " + $(this).data('actfile'));
 			}
 		},
+
+		movetodoc: {
+			name: "Перевести в раздел 'Документы'",
+			callback: function(key, options) {
+				changeDoctype('0', this[0].dataset.id);
+				loadsection(izdelieid, sectionid);
+				console.log("(Перевести в Извещение) htag: " + $(this).data('htag') + "; table: " + $(this).data('table') + "; id: " + $(this).data('id') + "; getdata: " + $(this).data('getdata') + "; file: " + $(this).data('actfile'));
+			}
+		},
+
+		submenu: {
+			name: 'Переместить',
+			items: {
+				<?php 
+				$r = mysql_query("SELECT * FROM izdelie where hide <> 1 and notactive = 0 order by if(name = '', 1, 0), sort, name, id");
+				$numRows = mysql_num_rows($r);
+				$itemsPerPage = 25;
+				for($j=0; $j<($numRows/$itemsPerPage); $j++) {
+					echo "menuitem" . $j . ": {name: '" . ($j*$itemsPerPage+1) ." - " .($j+1)*$itemsPerPage ."', items: {";
+					for($i=0; $i<$itemsPerPage; $i++) {
+						$n++;
+						if ($n > $numRows) break;
+						$f = mysql_fetch_array($r);
+						echo "pos" .$i .": {name: '" .$f['name'] ."', callback: function(key, options) {newlocate('move', $(this).data('table'), '" .$f['id'] ."', $(this).data('id'), '" .$f['name'] ."');}},";
+					}
+					echo "}";
+					echo "},";
+				}
+				?>
+			}
+		},
+
         sep1: '---------',
         quit: {
 			name: 'Выйти',

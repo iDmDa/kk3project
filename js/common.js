@@ -1,6 +1,6 @@
 function createIcons(resultArray, scanArr) {
     let td;
-    let extList = "bmp, doc, docx, gif, jpg, mp3, pdf, png, tif, tiff, txt, xls, xlsx";
+    let extList = "bmp, doc, docx, gif, jpg, mp3, pdf, png, tif, tiff, txt, xls, xlsx, rar, zip";
     for(let i = 0; i < resultArray.length; i++) {
         for(let j = 0; j < scanArr.length; j++) {
             if(resultArray[i]['type'] == scanArr[j][0]) td = document.getElementById(`${resultArray[i]['detid']}${scanArr[j][1]}`);

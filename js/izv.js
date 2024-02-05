@@ -92,6 +92,12 @@ class IzvTableGenerator {
         let itemID = `${dbLine["id"]}_${colName}_${this.dbData[0]["db"]}`;
         let value = `${dbLine[colName]}`;
         switch (colName) {
+            case "numii":
+                td.style.minWidth = 100 + "px";
+                td.classList.add("simplefield");
+                td.id = itemID;
+                td.innerHTML = `${value}`;
+                break;
             case "scan":
                 td.id = itemID;
                 break;

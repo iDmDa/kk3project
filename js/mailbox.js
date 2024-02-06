@@ -479,7 +479,7 @@ function mailfindbox(tabid) {
     
     let findline = document.getElementById("findline");
     findline.addEventListener("change", function(event) {
-            xhrLoad("xhrload", tabid, 0, findline.value);
+        xhrLoad("xhrload", tabid, 0, findline.value);
     });
 }
 

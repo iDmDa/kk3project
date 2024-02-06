@@ -95,6 +95,15 @@ table, tbody {
 	background: linear-gradient(to top, #8ac5ff, #8ac5ff);
 }
 
+.table_item_header {
+	padding: 5px;
+	text-align: center;
+	font-size:12px;
+	font-weight: bold;
+	vertical-align: top;
+	background: linear-gradient(to top, #cbe2eb, #cbe2eb);
+}
+
 
 
    .tablebox1 { 

@@ -132,7 +132,7 @@ class MailTableGenerator {
                         //td.appendChild(img);
                         break;
                     case "izdname":
-
+                        td.classList.add("table_item_header");
                         td.innerHTML = `${value}`;
                         td.id = `${this.dbData[i]["id"]}_${fieldList[item]}_${this.dbData[0]["db"]}`;
                         break;

@@ -261,6 +261,7 @@ class MailTableGenerator {
             }
         })
 
+        let sendObject = {};
         let pages = document.getElementById("pages");
         let tb = document.getElementById(this.tableID);
         let tablediv = document.getElementById(this.layerID);
@@ -269,7 +270,20 @@ class MailTableGenerator {
                 //console.log(event.target.classList.contains("menuitem"));
                 if(event.target.classList.contains("menuitem")) {
                     tablediv.innerHTML = "";
-                    xhrLoad("xhrload", tb.id.split("_")[1], event.target.innerText, findline.value);
+                    /*let sendObject = {};*/
+                    sendObject["tabNumber"] = tb.id.split("_")[1];
+                    sendObject["page"] = event.target.innerText;
+                    sendObject["find"] = findline.value;
+
+                    
+                    /*let sendObject = {
+                        "tabNumber": tb.id.split("_")[1],
+                        "page": event.target.innerText,
+                        "find": findline.value
+                    };*/
+                    
+                    xhrLoad(sendObject, tb.id.split("_")[1], event.target.innerText, findline.value);
+                    sendObject = null;
                 }
             });
         }
@@ -422,10 +436,18 @@ function createHideShowColumnButton(name, image) {
 
 function xhrLoad (postname, tabNumber, page, find) {
     let data = new FormData();
-    data.append(postname, "value");
-	data.append("tabNumber", tabNumber);
-    data.append("page", page);
-    data.append("find", find);
+    data.append("xhrload", "xhrload");
+    //data.append(postname, "value");
+    if(typeof postname != "object") {
+        console.log('not object');
+        data.append("tabNumber", tabNumber);
+        data.append("page", page);
+        data.append("find", find);
+    }
+    else {
+        console.log('object');
+        for(let key in postname) data.append(key, postname[key]);
+    }
 
     let xhr = new XMLHttpRequest();
     xhr.open('POST', 'mailbox.php', true);

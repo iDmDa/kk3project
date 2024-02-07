@@ -77,6 +77,7 @@ if(isset($_POST['xhrload'])) {
 	$jsonArray = getDatatable("mailbox", $_POST['tabNumber'], $fieldList, $page, 100, $_POST['find']);
 
 	$headerNameList = columnNameList();
+	$headerNameList['tabNumber'] = $_POST['tabNumber'];
 	$headerNameList['db'] = "mailbox";
 	$headerNameList['maxResult'] = maxResult("mailbox", $_POST['tabNumber'], $_POST['find']);
 	$headerNameList['maxPage'] = (maxResult("mailbox", $_POST['tabNumber'], $_POST['find'])/100|0) + 1;
@@ -178,7 +179,12 @@ if(isset($_POST['finditems'])) {
 		varframe.appendChild(tablayer);
 	}
 
-	xhrLoad("xhrload", <?=$_GET['id']?>, 0);
+	let sendObject = {
+                        "tabNumber": <?=$_GET['id']?>,
+                        "page": 0,
+                        "find": findline.value
+                    };
+	xhrLoad(sendObject);
 </script>
 </body>
 </html>

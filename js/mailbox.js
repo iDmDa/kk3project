@@ -270,20 +270,13 @@ class MailTableGenerator {
                 //console.log(event.target.classList.contains("menuitem"));
                 if(event.target.classList.contains("menuitem")) {
                     tablediv.innerHTML = "";
-                    /*let sendObject = {};*/
-                    sendObject["tabNumber"] = tb.id.split("_")[1];
-                    sendObject["page"] = event.target.innerText;
-                    sendObject["find"] = findline.value;
-
                     
-                    /*let sendObject = {
+                    let sendObject = {
                         "tabNumber": tb.id.split("_")[1],
                         "page": event.target.innerText,
                         "find": findline.value
-                    };*/
-                    
-                    xhrLoad(sendObject, tb.id.split("_")[1], event.target.innerText, findline.value);
-                    sendObject = null;
+                    };
+                    xhrLoad(sendObject);
                 }
             });
         }
@@ -304,7 +297,12 @@ class MailTableGenerator {
                 console.log("id: " + id);
 
                 tablediv.innerHTML = "";
-                xhrLoad("xhrload", tableID.split("_")[1], 0, findline.value);
+                let sendObject = {
+                    "tabNumber": tableID.split("_")[1],
+                    "page": 0,
+                    "find": findline.value
+                };
+                xhrLoad(sendObject);
             }
         });
     }
@@ -434,36 +432,24 @@ function createHideShowColumnButton(name, image) {
     if(localStorage.getItem(`${name}Button`) == 0) document.getElementById(`${name}_div`).style.display = ``;
 }
 
-function xhrLoad (postname, tabNumber, page, find) {
+function xhrLoad (sendObject) {
     let data = new FormData();
     data.append("xhrload", "xhrload");
-    //data.append(postname, "value");
-    if(typeof postname != "object") {
-        console.log('not object');
-        data.append("tabNumber", tabNumber);
-        data.append("page", page);
-        data.append("find", find);
-    }
-    else {
-        console.log('object');
-        for(let key in postname) data.append(key, postname[key]);
-    }
-
+    for(let key in sendObject) data.append(key, sendObject[key]);
+    
     let xhr = new XMLHttpRequest();
     xhr.open('POST', 'mailbox.php', true);
     xhr.send(data);
     xhr.onload = function () {
         let resp = xhr.response; //Результат запроса
         resultArray = JSON.parse(resp);
-        //console.log(resp);
 
         let table = new MailTableGenerator();
-        //console.log(tabNumber);
-        table.tableID = `table_${tabNumber}`;
+        table.tableID = `table_${sendObject.tabNumber}`;
         table.layerID = "tablediv";
         table.tabName = "Переписка";
         table.fieldList = "datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, datereg, nomerreg, datecontrol, prim, dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish";
-        if(tabNumber == 0) table.fieldList = "izdname, " + table.fieldList;
+        if(sendObject.tabNumber == 0) table.fieldList = "izdname, " + table.fieldList;
         table.dbData = resultArray;
 
         table.createTable();
@@ -475,7 +461,7 @@ function xhrLoad (postname, tabNumber, page, find) {
         zamok == 1 ? open_edit() : close_edit();
 		$(".dateinput").mask("99.99.9999", {placeholder: "дд.мм.гггг" });
     	console.log("(xhrLoad)Загрузка завершена");
-        if(find != "") findSelect(find);
+        if(find != "") findSelect(sendObject.find);
 		//loadAllFileIcon();
   	}
 }
@@ -501,7 +487,12 @@ function mailfindbox(tabid) {
     
     let findline = document.getElementById("findline");
     findline.addEventListener("change", function(event) {
-        xhrLoad("xhrload", tabid, 0, findline.value);
+        let sendObject = {
+            "tabNumber": tabid,
+            "page": 0,
+            "find": findline.value
+        };
+        xhrLoad(sendObject);
     });
 }
 

@@ -36,6 +36,7 @@ function createIcons(resultArray, scanArr) {
 
 function findSelect(find) {
     let findSelect = document.querySelectorAll('tbody .simplefield');
+    console.log(findSelect);
     findSelect.forEach(item => {
         if(item.innerHTML.includes(find)) {
             let regex = new RegExp('(' + find + ')', 'gi');

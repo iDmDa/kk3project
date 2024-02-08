@@ -461,7 +461,8 @@ function xhrLoad (sendObject) {
         zamok == 1 ? open_edit() : close_edit();
 		$(".dateinput").mask("99.99.9999", {placeholder: "дд.мм.гггг" });
     	console.log("(xhrLoad)Загрузка завершена");
-        if(find != "") findSelect(sendObject.find);
+    	//console.log("sendObject.find: " + sendObject.find);
+        if(sendObject.find != "") findSelect(sendObject.find);
 		//loadAllFileIcon();
   	}
 }

@@ -25,7 +25,7 @@ if(isset($_POST['izv'])) {
 		$name["date"] = "Дата выпуска";
 		$name["numish"] = "№ исх. на отправку дубликатов";
 		$name["scan"] = "Скан";
-		$name["trudoemc"] = "Трудоемкость";
+		$name["trudoemc"] = "Трудо-<br>емкость";
 		$name["prim"] = "Примечание";
 		return $name;
 	}

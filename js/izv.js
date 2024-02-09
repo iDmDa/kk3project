@@ -6,6 +6,7 @@ class IzvTableGenerator {
     dbData;
     fieldList;
     showLine;
+    midTitle;
 
     bigTitle() {
         let tabName = !this.tabName ? "Таблица" : this.tabName;
@@ -23,7 +24,7 @@ class IzvTableGenerator {
         let tr = document.createElement("tr");
         let td = document.createElement("td");
         td.id = "midtitle";
-        td.innerText = "Извещения";
+        td.innerText = this.midTitle;
         td.colSpan = 999;
         td.style.textAlign = "center";
         td.classList.add("table_colspan_header");
@@ -52,7 +53,7 @@ class IzvTableGenerator {
         thead.classList.add("table_header_block");
         thead.id = "table_header_block";
         thead.appendChild(this.bigTitle());
-        //thead.appendChild(this.middleTitle());
+        thead.appendChild(this.middleTitle());
         thead.appendChild(this.bottomTitle());
         return thead;
     }
@@ -99,6 +100,9 @@ class IzvTableGenerator {
                 td.innerHTML = `${value}`;
                 break;
             case "scan":
+                td.id = itemID;
+                break;
+            case "trudoemc":
                 td.id = itemID;
                 break;
             case "date":
@@ -179,6 +183,7 @@ class IzvTableGenerator {
             let type = "";
             if(event.target.classList == "button_field"){
                 if(event.target.parentNode.id.split("_")[1] == "scan") type = 2;
+                if(event.target.parentNode.id.split("_")[1] == "trudoemc") type = 1;
                 okno_show('dialog',`&tabname=docwork&type=${type}&id=${event.target.parentNode.id.split("_")[0]}`);
             }
         })
@@ -238,7 +243,7 @@ class IzvTableGenerator {
         xhr.onload = function () {
             let resp = xhr.response; //Результат запроса
             resultArray = JSON.parse(resp);
-            createIcons(resultArray, [['2', '_scan_docwork']]);
+            createIcons(resultArray, [['2', '_scan_docwork'], ['1', '_trudoemc_docwork']]);
         }
     }
 
@@ -281,6 +286,7 @@ function izvLoad (izv, tab_id, page, find, showLine = 100) {
         table.tableID = `table_${tab_id}`;
         table.layerID = "tablediv";
         table.tabName = "Извещения";
+        table.midTitle = document.getElementById(`${tab_id}_name_izdelie`).innerHTML.replace(/<br>/g, '');
         table.showLine = showLine;
         table.fieldList = resultArray[0]['showField'];
         table.dbData = resultArray;

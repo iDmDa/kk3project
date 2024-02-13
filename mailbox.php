@@ -58,6 +58,7 @@ if(isset($_POST['xhrload'])) {
 		$findlist = findlist($find);
 		if($table_id != "0") $r = $db->prepare("SELECT {$fieldList}, {$sortfield} FROM {$tableName} WHERE hide = 0 and detid = '{$table_id}' {$findlist} ORDER BY {$sortirovka} LIMIT {$page}, {$limitLine}");
 		if($table_id == "0") $r = $db->prepare("SELECT name as izdname, {$fieldList}, {$sortfield} FROM {$tableName} LEFT JOIN izdelie on izdelie.id = mailbox.detid WHERE mailbox.hide = 0 {$findlist} and datecontrol != '' ORDER BY {$sortirovka} LIMIT {$page}, {$limitLine}");
+		if($table_id == "-1") $r = $db->prepare("SELECT name as izdname, {$fieldList}, {$sortfield} FROM {$tableName} LEFT JOIN izdelie on izdelie.id = mailbox.detid WHERE mailbox.hide = 0 {$findlist} ORDER BY {$sortirovka} LIMIT {$page}, {$limitLine}");
 		$r->execute();
 		return $r->fetchAll(PDO::FETCH_ASSOC);
 	}
@@ -67,6 +68,7 @@ if(isset($_POST['xhrload'])) {
 		$findlist = findlist($find);
 		if($table_id != "0") $r = $db->prepare("SELECT COUNT(id) as maxResult FROM {$tableName} WHERE hide = 0 and detid = '{$table_id}' {$findlist}");
 		if($table_id == "0") $r = $db->prepare("SELECT COUNT(id) as maxResult FROM {$tableName} WHERE hide = 0 {$findlist} and datecontrol != ''");
+		if($table_id == "-1") $r = $db->prepare("SELECT COUNT(id) as maxResult FROM {$tableName} WHERE hide = 0 {$findlist}");
 		$r->execute();
 		return $r->fetchAll(PDO::FETCH_ASSOC)[0]['maxResult'];
 	}
@@ -180,10 +182,10 @@ if(isset($_POST['finditems'])) {
 	}
 
 	let sendObject = {
-                        "tabNumber": <?=$_GET['id']?>,
-                        "page": 0,
-                        "find": findline.value
-                    };
+		"tabNumber": <?=$_GET['id']?>,
+		"page": 0,
+		"find": findline.value
+	};
 	xhrLoad(sendObject);
 </script>
 </body>

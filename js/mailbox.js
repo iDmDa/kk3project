@@ -449,7 +449,7 @@ function xhrLoad (sendObject) {
         table.layerID = "tablediv";
         table.tabName = "Переписка";
         table.fieldList = "datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, datereg, nomerreg, datecontrol, prim, dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish";
-        if(sendObject.tabNumber == 0) table.fieldList = "izdname, " + table.fieldList;
+        if(sendObject.tabNumber == 0 || sendObject.tabNumber == -1) table.fieldList = "izdname, " + table.fieldList;
         table.dbData = resultArray;
 
         table.createTable();

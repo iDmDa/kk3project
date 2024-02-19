@@ -444,9 +444,19 @@ function xhrLoad (sendObject) {
         let resp = xhr.response; //Результат запроса
         resultArray = JSON.parse(resp);
 
+        let baseLayer = !sendObject.baseLayer ? "varframe" : sendObject.baseLayer;
+        let tableLayerName = !sendObject.tableLayerName ? "tablediv" : sendObject.tableLayerName;
+
+        if(!document.getElementById(tableLayerName)) {
+            let tablayer = document.createElement("div");
+            tablayer.id = tableLayerName;
+            varframe = document.getElementById(baseLayer);
+            varframe.appendChild(tablayer);
+        }
+
         let table = new MailTableGenerator();
         table.tableID = `table_${sendObject.tabNumber}`;
-        table.layerID = "tablediv";
+        table.layerID = tableLayerName;
         table.tabName = "Переписка";
         table.fieldList = "datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, datereg, nomerreg, datecontrol, prim, dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish";
         if(sendObject.tabNumber == 0 || sendObject.tabNumber == -1) table.fieldList = "izdname, " + table.fieldList;

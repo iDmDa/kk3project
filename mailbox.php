@@ -174,13 +174,6 @@ if(isset($_POST['finditems'])) {
 		console.log("errrrrrr");
 	}
 	
-	if(!document.getElementById("tablediv")) {
-		let tablayer = document.createElement("div");
-		tablayer.id = "tablediv";
-		varframe = document.getElementById("varframe");
-		varframe.appendChild(tablayer);
-	}
-
 	let sendObject = {
 		"tabNumber": <?=$_GET['id']?>,
 		"page": 0,

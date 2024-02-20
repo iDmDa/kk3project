@@ -454,13 +454,28 @@ echo " <input type='radio' name='findgotovnost' value = 'not100'>невыпущ�
 echo "</p>";
 echo "</div>";
 echo "<br>";
-
-echo "<table class = 'autotable razdel'><tr><td class = 'table_header' colspan = 999 align = center>Переписка</td></tr></table>";
-echo "<div id = 'poiskstage' class = '' style = 'display:none;'>";
-echo "<p><input id = 'findcontentmail' type='text'  style='width:90%;' title = 'Введите дату, номер или содержание письма'><button onclick='startfind_mail();'> Найти</button></p>";
-echo "</div>";
-echo "<br>";
-
+?>
+<table class = 'autotable razdel'><tr><td class = 'table_header' colspan = 999 align = center>Переписка</td></tr></table>
+<div id = 'poiskstage' class = '' style = 'display:none;'>
+<div id="findlayer" style="margin-top: 15px;"><input id = 'findcontentmail' type='text'  style='width:60%;' title = 'Введите дату, номер или содержание письма'><button onclick='startfind_mail();'> Найти</button>
+<script>
+	let img = document.createElement("img");
+    img.src = `include/question.png`;
+    let div2 = document.createElement("div");
+    div2.classList.add("mailQuestion");
+    div2.style.marginLeft = 5 + 'px';
+    div2.dataset.title = "Поиск по диапазону дат:\n- указать диапазон между знаками # #;\n\
+- после можно указать поисковое слово.\n\nНапример:\
+\n#10.01.2022-16.03.2022#\nБудут выведены все строки между указанными \nдатами включая 10 и 16 число.\n\
+\n#10.01.2022-16.03.2022# изделие\n\
+В указанном диапазоне будет задан поиск \nпо слову 'изделие'.";
+div2.appendChild(img);
+findlayer.appendChild(div2);
+</script>
+</div>
+</div>
+<br>
+<?
 echo "<table class = 'autotable razdel'><tr><td class = 'table_header' colspan = 999 align = center>Этапы договора</td></tr></table>";
 echo "<div id = 'poiskstage' class = '' style = 'display:none;'>";
 echo "<p>Дата окончания работ с <input id = 'finddatedog1' type='text'  style='width:70px;' class='datefield'> по <input id = 'finddatedog2' type='text' style='width:70px;' class='datefield'> <button onclick='startfind_stage();'>Найти</button></p>";

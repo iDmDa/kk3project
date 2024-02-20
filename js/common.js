@@ -35,8 +35,11 @@ function createIcons(resultArray, scanArr) {
 }
 
 function findSelect(find) {
+    if((find.match(/#/g) || []).length == 2) {
+        find = find.split("#")[2].trim();
+    }
     let findSelect = document.querySelectorAll('tbody .simplefield');
-    console.log(findSelect);
+    console.log("findSelect: " + find);
     findSelect.forEach(item => {
         if(item.innerHTML.includes(find)) {
             let regex = new RegExp('(' + find + ')', 'gi');

@@ -306,7 +306,6 @@ function izvfindbox(tabid) {
     if(document.getElementById("findlayer")) document.getElementById("findlayer").remove();
     let div = document.createElement("div");
     div.id = "findlayer";
-    div.style.marginBottom = "10px";
     let textNode = document.createTextNode("");
     textNode.data = "Найти: ";
     let input = document.createElement("input");

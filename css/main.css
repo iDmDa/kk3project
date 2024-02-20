@@ -368,5 +368,38 @@ u {
 #tablediv {
 	overflow: auto;
 	scrollbar-width: thin;
-	height: calc(100% - 32px);
+	height: calc(100% - 35px);
+}
+
+#findlayer {
+	margin-top: 3px;
+	margin-bottom: 10px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+#findlayer input{
+	margin-left: 3px;
+}
+
+  
+.mailQuestion {
+    /*display: inline-block; /* Строчно-блочный элемент */
+    position: relative; /* Относительное позиционирование */
+}
+
+.mailQuestion:hover::after {
+    /*content: attr(data-title); /* Выводим текст */
+	content: attr(data-title) "\a" attr(data-second-line); /* Используем \A для перевода на новую строку */
+    position: absolute; /* Абсолютное позиционирование */
+    left: 20%; top: 30%; /* Положение подсказки */
+    z-index: 1; /* Отображаем подсказку поверх других элементов */
+    background: rgba(255,255,230,0.9); /* Полупрозрачный цвет фона */
+    font-family: Arial, sans-serif; /* Гарнитура шрифта */
+    font-size: 13px; /* Размер текста подсказки */
+    padding: 5px 10px; /* Поля */
+    border: 1px solid #333; /* Параметры рамки */
+	/*white-space: nowrap;/* Текст не переносится на новую строку */
+	white-space: pre; /* Разрешить использование символа переноса строки */
 }

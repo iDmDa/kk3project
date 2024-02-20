@@ -38,17 +38,29 @@ if(isset($_POST['xhrload'])) {
 
 	function findlist($find) {
 		$findlist = "";
+		if(substr_count($find, '#') == 2) {
+			$diapazon = explode("#", $find)[1];
+			$diapazon = trim($diapazon);
+			$data1 = explode("-", $diapazon)[0];
+			$data2 = explode("-", $diapazon)[1];
+
+			$data1 = explode(".", $data1)[2] ."-" .explode(".", $data1)[1]."-" .explode(".", $data1)[0];
+			$data2 = explode(".", $data2)[2] ."-" .explode(".", $data2)[1]."-" .explode(".", $data2)[0];
+
+			$findlist = "and ((STR_TO_DATE(datevh, '%d.%m.%Y') BETWEEN '{$data1}' AND '$data2') OR (STR_TO_DATE(dateish, '%d.%m.%Y') BETWEEN '{$data1}' AND '$data2')) ";
+			$find = trim(explode("#", $find)[2]);
+		}
+
 		if($find != null and $find != "" and $find != "undefined") {
 			$fieldForSearch = "contentvh, datevh, nomervh, adresvh, contentvh, countlistvh, dateish, nomerish, adresish, contentish, countlistish, fioispish";
 			$arrSearchList = explode(",", trim($fieldForSearch));
-			$findlist = "and (";
+			$findlist .= "and (";
 			foreach ($arrSearchList as $value) {
 				$findlist .= "{$value} LIKE '%{$find}%' or ";
 			}
 			$findlist = substr($findlist, 0, -4);
 			$findlist .= ")";
 		}
-		//$findlist = "and (STR_TO_DATE(datevh, '%d.%m.%Y') BETWEEN '2023-12-01' AND '2024-05-01') ";
 		return $findlist;
 	}
 	

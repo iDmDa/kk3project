@@ -485,16 +485,33 @@ function xhrLoad (sendObject) {
 
 function mailfindbox(tabid) {
     if(document.getElementById("findlayer")) document.getElementById("findlayer").remove();
+
     let div = document.createElement("div");
     div.id = "findlayer";
-    div.style.marginBottom = "10px";
+
     let textNode = document.createTextNode("");
-    textNode.data = "Найти: ";
+    textNode.data = "Найти:";
+
     let input = document.createElement("input");
     input.style.width = 600 + 'px';
     input.id = "findline";
+
+    let img = document.createElement("img");
+    img.src = `include/question.png`;
+    let div2 = document.createElement("div");
+    div2.classList.add("mailQuestion");
+    div2.style.marginLeft = 5 + 'px';
+    div2.dataset.title = "Поиск по диапазону дат:\n- указать диапазон между знаками # #;\n\
+- после можно указать поисковое слово.\n\nНапример:\
+\n#10.01.2022-16.03.2022#\nБудут выведены все строки между указанными \nдатами включая 10 и 16 число.\n\
+\n#10.01.2022-16.03.2022# изделие\n\
+В указанном диапазоне будет задан поиск по слову 'изделие'.";
+
+
     div.appendChild(textNode);
     div.appendChild(input);
+    div.appendChild(div2);
+    div2.appendChild(img);
 
     let varframe = document.getElementById("varframe");
     varframe.appendChild(div);

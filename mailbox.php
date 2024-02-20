@@ -39,13 +39,12 @@ if(isset($_POST['xhrload'])) {
 	function findlist($find) {
 		$findlist = "";
 		if(substr_count($find, '#') == 2) {
-			$diapazon = explode("#", $find)[1];
-			$diapazon = trim($diapazon);
-			$data1 = explode("-", $diapazon)[0];
-			$data2 = explode("-", $diapazon)[1];
+			$diapazon = trim(explode("#", $find)[1]);
+			$data1 = trim(explode("-", $diapazon)[0]);
+			$data2 = trim(explode("-", $diapazon)[1]);
 
-			$data1 = explode(".", $data1)[2] ."-" .explode(".", $data1)[1]."-" .explode(".", $data1)[0];
-			$data2 = explode(".", $data2)[2] ."-" .explode(".", $data2)[1]."-" .explode(".", $data2)[0];
+			$data1 = trim(explode(".", $data1)[2]) ."-" .trim(explode(".", $data1)[1])."-" .trim(explode(".", $data1)[0]);
+			$data2 = trim(explode(".", $data2)[2]) ."-" .trim(explode(".", $data2)[1])."-" .trim(explode(".", $data2)[0]);
 
 			$findlist = "and ((STR_TO_DATE(datevh, '%d.%m.%Y') BETWEEN '{$data1}' AND '$data2') OR (STR_TO_DATE(dateish, '%d.%m.%Y') BETWEEN '{$data1}' AND '$data2')) ";
 			$find = trim(explode("#", $find)[2]);

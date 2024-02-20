@@ -633,14 +633,22 @@ $("#find").load('findworkdoc.php #finddogovor',{
 
 
 function startfind_mail() {
-$("#find").load('findworkdoc.php #findmail',{
-		'contentmail':$("#findcontentmail").val()
-	},
-	function(){
-		$(".dateinput").mask("99.99.9999", {placeholder: "дд.мм.гггг" });
-		chkzamok();
-	}
-);
+	/*$("#find").load('findworkdoc.php #findmail',{
+			'contentmail':$("#findcontentmail").val()
+		},
+		function(){
+			$(".dateinput").mask("99.99.9999", {placeholder: "дд.мм.гггг" });
+			chkzamok();
+		}
+	);*/
+
+	let sendObject = {
+		"baseLayer": "findmail",
+		"tabNumber": "-1",
+		"page": 0,
+		"find": findcontentmail.value
+	};
+	xhrLoad(sendObject);
 
 }
 

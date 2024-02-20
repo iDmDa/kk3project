@@ -5,8 +5,10 @@ class MailTableGenerator {
 	layerID;
     dbData;
     fieldList;
+    static find;
 
     bigTitle() {
+        console.log(this.find);
         let tabName = !this.tabName ? "Таблица" : this.tabName;
         let tr = document.createElement("tr")
         let td = document.createElement("td");
@@ -262,6 +264,7 @@ class MailTableGenerator {
         })
 
         let sendObject = {};
+        let find = this.find;
         let pages = document.getElementById("pages");
         let tb = document.getElementById(this.tableID);
         let tablediv = document.getElementById(this.layerID);
@@ -274,7 +277,7 @@ class MailTableGenerator {
                     let sendObject = {
                         "tabNumber": tb.id.split("_")[1],
                         "page": event.target.innerText,
-                        "find": findline.value
+                        "find": find
                     };
                     xhrLoad(sendObject);
                 }
@@ -300,7 +303,7 @@ class MailTableGenerator {
                 let sendObject = {
                     "tabNumber": tableID.split("_")[1],
                     "page": 0,
-                    "find": findline.value
+                    "find": find
                 };
                 xhrLoad(sendObject);
             }
@@ -457,6 +460,7 @@ function xhrLoad (sendObject) {
         let table = new MailTableGenerator();
         table.tableID = `table_${sendObject.tabNumber}`;
         table.layerID = tableLayerName;
+        table.find = sendObject.find;
         table.tabName = "Переписка";
         table.fieldList = "datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, datereg, nomerreg, datecontrol, prim, dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish";
         if(sendObject.tabNumber == 0 || sendObject.tabNumber == -1) table.fieldList = "izdname, " + table.fieldList;

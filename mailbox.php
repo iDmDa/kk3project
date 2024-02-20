@@ -177,7 +177,7 @@ if(isset($_POST['finditems'])) {
 	let sendObject = {
 		"tabNumber": <?=$_GET['id']?>,
 		"page": 0,
-		"find": findline.value
+		"find": ""
 	};
 	xhrLoad(sendObject);
 </script>

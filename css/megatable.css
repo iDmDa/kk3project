@@ -148,19 +148,21 @@ table, tbody {
 .dateinput {
 	/*display: inline-block !important;*/
 	/*width: auto !important;*/
-	width:67px;
+	width:70px;
 	border: none;
 	outline: none;
 	background:inherit;
+	margin: 1px;
 }
 
 .dateinput:hover {
 	/*display: inline-block !important;*/
 	/*width: auto !important;*/
-	width:67px;
+	width:72px;
 	border: dashed 1px black;
 	/*outline: none;*/
 	background:inherit;
+	margin: 0px;
 }
 
 .tab_line_ready {

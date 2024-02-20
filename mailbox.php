@@ -48,6 +48,7 @@ if(isset($_POST['xhrload'])) {
 			$findlist = substr($findlist, 0, -4);
 			$findlist .= ")";
 		}
+		//$findlist = "and (STR_TO_DATE(datevh, '%d.%m.%Y') BETWEEN '2023-12-01' AND '2024-05-01') ";
 		return $findlist;
 	}
 	

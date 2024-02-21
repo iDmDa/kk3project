@@ -38,8 +38,9 @@ function findSelect(find) {
     if((find.match(/#/g) || []).length == 2) {
         find = find.split("#")[2].trim();
     }
-    let findSelect = document.querySelectorAll('tbody .simplefield');
+    if(find == "") return;
     console.log("findSelect: " + find);
+    let findSelect = document.querySelectorAll('tbody .simplefield');
     findSelect.forEach(item => {
         if(item.innerHTML.includes(find)) {
             let regex = new RegExp('(' + find + ')', 'gi');

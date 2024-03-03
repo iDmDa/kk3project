@@ -6,442 +6,275 @@ if($_GET['print'] == 1) echo "<link href='css/litemgtable.css' rel='stylesheet'>
 class mgtable extends megatable
 {
 
-public function table_big_header1() //заголовок таблицы
-{
-	echo "<tr>";
-	echo "<td class = 'table_big_header' colspan = 999 align = center><div style='float:left;width:100%;text-align:center;'>" .$this->header_big_name ."</div><div class = 'mg_table_button'><div class = 'printer_layer'><a onclick = window.open('" .basename($_SERVER['PHP_SELF']) ."?print=1" .$_SERVER['QUERY_STRING'] ."','Печать','widht=600,height=800,location=no');document.poisk.submit();><img src='include/Printer.png' alt='закрыто'></a></div></div></td>"; //малый заголовок
-	echo "</tr>";
-}
-
-public function table_content($r,$f,$j)
-{
-	for ($i=0; $i<mysql_num_fields($r); $i++) // чтение значений в строке
+	public function table_big_header1() //заголовок таблицы
 	{
-		if ($i==0) 
+		echo "<tr>";
+		echo "<td class = 'table_big_header' colspan = 999 align = center><div style='float:left;width:100%;text-align:center;'>" .$this->header_big_name ."</div><div class = 'mg_table_button'><div class = 'printer_layer'><a onclick = window.open('" .basename($_SERVER['PHP_SELF']) ."?print=1" .$_SERVER['QUERY_STRING'] ."','Печать','widht=600,height=800,location=no');document.poisk.submit();><img src='include/Printer.png' alt='закрыто'></a></div></div></td>"; //малый заголовок
+		echo "</tr>";
+	}
+
+	public function table_content($r,$f,$j)
+	{
+		for ($i=0; $i<mysql_num_fields($r); $i++) // чтение значений в строке
 		{
-			if($f['gotovnost'] == "100") echo "<tr class = 'tab_line_ready'>";
-			else {
-					if(strtotime(date("d.m.Y")) > strtotime($f['date']) and $f['date'] != "") echo "<tr class = 'tab_line_notready'>";
-					else echo "<tr>";
-				}
+			if ($i==0) 
+			{
+				if($f['gotovnost'] == "100") echo "<tr class = 'tab_line_ready'>";
+				else {
+						if(strtotime(date("d.m.Y")) > strtotime($f['date']) and $f['date'] != "") echo "<tr class = 'tab_line_notready'>";
+						else echo "<tr>";
+					}
+			}
+			$this->all_col($r,$f,$i,$j);
+			if($this->hide_field($r,$i)) continue;
+			$this->date_field_check($r,$f,$j,$i) ? $this->date_field($r,$f,$j,$i) : $this->normal_field($r,$f,$j,$i);
+			//$this->date_field($r,$f,$j,$i);
 		}
-		$this->all_col($r,$f,$i,$j);
-		if($this->hide_field($r,$i)) continue;
-		$this->date_field_check($r,$f,$j,$i) ? $this->date_field($r,$f,$j,$i) : $this->normal_field($r,$f,$j,$i);
-		//$this->date_field($r,$f,$j,$i);
 	}
-}
 
-public function hide_field($r,$i)  //функция сокрытия полей в соответствии с заданными условиями hidefield в settings
-{
-	$r_settings = mysql_query("SELECT * FROM settings where tablename = 'findworkdoc' and field = '" .mysql_field_name($r, $i) ."' ");
-	$f_settings = mysql_fetch_array($r_settings);
-
-	if ($f_settings['hidefield'] == "1") return true;
-}
-
-public function normal_field($r,$f,$j,$i)
-{
-	if(mysql_field_name($r, $i) == 'detid') 
+	public function hide_field($r,$i)  //функция сокрытия полей в соответствии с заданными условиями hidefield в settings
 	{
-		$r_detid = mysql_query("SELECT * FROM izdelie where id = '" .$f[$i] ."' ");
-		$f_detid = mysql_fetch_array($r_detid);
-		print "<td id = '" .$f['id'] ."_" .mysql_field_name($r, $i) ."_" .$this->dbtable ."' class = 'notsimplefield'>" .$f_detid['name'] ."</td>"; 
+		$r_settings = mysql_query("SELECT * FROM settings where tablename = 'findworkdoc' and field = '" .mysql_field_name($r, $i) ."' ");
+		$f_settings = mysql_fetch_array($r_settings);
+
+		if ($f_settings['hidefield'] == "1") return true;
 	}
-	else print "<td id = '" .$f['id'] ."_" .mysql_field_name($r, $i) ."_" .$this->dbtable ."' class = 'simplefield'>" .$f[$i] ."</td>"; 
-}
 
-
-	public function add_col($r,$f,$i,$j)
-{
-	require ("global_path.php");
-
-	
-	//Доп колонка Черновик
-	if(!isset($j) and $i == 14) print "<td class = 'table_header' style = 'width:70px;'>Черно-<br>вик</td>";  //заголовок
-	if(isset($j) and $i == 14) 
+	public function normal_field($r,$f,$j,$i)
 	{
-
-		$rr = mysql_query("SELECT * FROM uplfiles where id >= 0 and hide <> 1 and tabname = 'docwork' and detid = '" .$f['id'] ."' and type = 1 ORDER BY id");
-	
-		echo "<td class = 'table_field'>";
-
-		for ($ii=0; $ii<mysql_num_rows($rr); $ii++) //чтение строк
+		if(mysql_field_name($r, $i) == 'detid') 
 		{
-			$ff=mysql_fetch_array($rr);
-			$full_link_path = "http://" .$_SERVER['SERVER_NAME'] .$save_dir .$ff['local_path'] ."/" .$ff['prefix'] ."_";
+			$r_detid = mysql_query("SELECT * FROM izdelie where id = '" .$f[$i] ."' ");
+			$f_detid = mysql_fetch_array($r_detid);
+			print "<td id = '" .$f['id'] ."_" .mysql_field_name($r, $i) ."_" .$this->dbtable ."' class = 'notsimplefield'>" .$f_detid['name'] ."</td>"; 
+		}
+		else print "<td id = '" .$f['id'] ."_" .mysql_field_name($r, $i) ."_" .$this->dbtable ."' class = 'simplefield'>" .$f[$i] ."</td>"; 
+	}
+
+
+		public function add_col($r,$f,$i,$j)
+	{
+		require ("global_path.php");
+
+		
+		//Доп колонка Черновик
+		if(!isset($j) and $i == 14) print "<td class = 'table_header' style = 'width:70px;'>Черно-<br>вик</td>";  //заголовок
+		if(isset($j) and $i == 14) 
+		{
+
+			$rr = mysql_query("SELECT * FROM uplfiles where id >= 0 and hide <> 1 and tabname = 'docwork' and detid = '" .$f['id'] ."' and type = 1 ORDER BY id");
+		
+			echo "<td class = 'table_field'>";
+
+			for ($ii=0; $ii<mysql_num_rows($rr); $ii++) //чтение строк
+			{
+				$ff=mysql_fetch_array($rr);
+				$full_link_path = "http://" .$_SERVER['SERVER_NAME'] .$save_dir .$ff['local_path'] ."/" .$ff['prefix'] ."_";
+				
+				$file_icon = $this->icon_file($ff['filename']);
 			
-			$file_icon = $this->icon_file($ff['filename']);
-		
-			echo "<a href = '".$full_link_path .$ff['filename'] ."' target = '_blank'><img src= 'include/" .$file_icon ."' title = '" .$ff['maskname'] ."'></a>";
-			echo " ";
-		}
-		echo "<div class = 'button_field button_layer' style = 'display:none;'>";
-			echo "<a onClick = okno_show('dialog','&tabname=" .$this->dbtable ."&type=1&id=" .$f['id'] ."');><img src = 'include/new window.png' title = ''></a>";
-		echo "</div>";
+				echo "<a href = '".$full_link_path .$ff['filename'] ."' target = '_blank'><img src= 'include/" .$file_icon ."' title = '" .$ff['maskname'] ."'></a>";
+				echo " ";
+			}
+			echo "<div class = 'button_field button_layer' style = 'display:none;'>";
+				echo "<a onClick = okno_show('dialog','&tabname=" .$this->dbtable ."&type=1&id=" .$f['id'] ."');><img src = 'include/new window.png' title = ''></a>";
+			echo "</div>";
 
-		echo "</td>";  //колонка
-		
-	}
-
-	//Доп колонка Сканированный
-	if(!isset($j) and $i == 14) print "<td class = 'table_header' style = 'width:70px;'>Скани-<br>рован-<br>ный</td>";  //заголовок
-	if(isset($j) and $i == 14) 
-	{
-
-		$rr = mysql_query("SELECT * FROM uplfiles where id >= 0 and hide <> 1 and tabname = 'docwork' and detid = '" .$f['id'] ."' and type = 2 ORDER BY id");
-	
-		echo "<td class = 'table_field'>";
-
-		for ($ii=0; $ii<mysql_num_rows($rr); $ii++) //чтение строк
-		{
-			$ff=mysql_fetch_array($rr);
-			$full_link_path = "http://" .$_SERVER['SERVER_NAME'] .$save_dir .$ff['local_path'] ."/" .$ff['prefix'] ."_";
+			echo "</td>";  //колонка
 			
-			$file_icon = $this->icon_file($ff['filename']);
-		
-			echo "<a href = '".$full_link_path .$ff['filename'] ."' target = '_blank'><img src= 'include/" .$file_icon ."' title = '" .$ff['maskname'] ."'></a>";
-			echo " ";
 		}
-		echo "<div class = 'button_field button_layer' style = 'display:none;'>";
-			echo "<a onClick = okno_show('dialog','&tabname=" .$this->dbtable ."&type=2&id=" .$f['id'] ."');><img src = 'include/new window.png' title = ''></a>";
-		echo "</div>";
 
-		echo "</td>";  //колонка
+		//Доп колонка Сканированный
+		if(!isset($j) and $i == 14) print "<td class = 'table_header' style = 'width:70px;'>Скани-<br>рован-<br>ный</td>";  //заголовок
+		if(isset($j) and $i == 14) 
+		{
+
+			$rr = mysql_query("SELECT * FROM uplfiles where id >= 0 and hide <> 1 and tabname = 'docwork' and detid = '" .$f['id'] ."' and type = 2 ORDER BY id");
+		
+			echo "<td class = 'table_field'>";
+
+			for ($ii=0; $ii<mysql_num_rows($rr); $ii++) //чтение строк
+			{
+				$ff=mysql_fetch_array($rr);
+				$full_link_path = "http://" .$_SERVER['SERVER_NAME'] .$save_dir .$ff['local_path'] ."/" .$ff['prefix'] ."_";
+				
+				$file_icon = $this->icon_file($ff['filename']);
+			
+				echo "<a href = '".$full_link_path .$ff['filename'] ."' target = '_blank'><img src= 'include/" .$file_icon ."' title = '" .$ff['maskname'] ."'></a>";
+				echo " ";
+			}
+			echo "<div class = 'button_field button_layer' style = 'display:none;'>";
+				echo "<a onClick = okno_show('dialog','&tabname=" .$this->dbtable ."&type=2&id=" .$f['id'] ."');><img src = 'include/new window.png' title = ''></a>";
+			echo "</div>";
+
+			echo "</td>";  //колонка
+			
+		}
 		
 	}
-	
-}
 }
 
 class mgtablestage extends megatable
 {
 
-public function bd_query_text()
-{
-	if($this->filename == "") $this->filename = basename($_SERVER['PHP_SELF']); // обновить файл из которого вызван
-	if($this->show_hide == 0) $this->hfilter = " and hide <> 1 ";
-	//$dbquery = "SELECT " .$this->field ." FROM " .$this->dbtable ." where id >= 0 " .$this->hfilter .$this->filter ." ORDER BY " .$this->sortirovka;
-	$dbquery = " select stage.* from stage left join izdelie on izdelie.id = stage.detid where izdelie.hide <> 1 and stage.hide <> 1 " .$this->filter ." ORDER BY " .$this->sortirovka;
-	//$this->tabposcount = mysql_num_rows(mysql_query($dbquery));
-	$this->pages_rule($dbquery);
-	$dbquery .= " LIMIT " .$this->show_line .", " .$this->max_line;
-	return $dbquery;
-}
-
-public function pages_rule($dbquery)
-{
-	$this->tabposcount = mysql_num_rows(mysql_query($dbquery));
-	$this->max_pages = ceil($this->tabposcount / $this->max_line);
-	if($this->show_page == -1) $this->show_page = $this->max_pages;
-	if($this->show_page == 0) {$this->show_line = 0; $this->max_line = 1000; return;}
-	if($this->max_pages > 0) $this->show_line = ($this->show_page - 1) * $this->max_line;
-}
-
-public function hide_field($r,$i)  //функция сокрытия полей в соответствии с заданными условиями hidefield в settings
-{
-	$r_settings = mysql_query("SELECT * FROM settings where tablename = 'findstage' and field = '" .mysql_field_name($r, $i) ."' ");
-	$f_settings = mysql_fetch_array($r_settings);
-
-	if ($f_settings['hidefield'] == "1") return true;
-}
-
-public function normal_field($r,$f,$j,$i)
-{
-	if(mysql_field_name($r, $i) == 'detid') 
+	public function bd_query_text()
 	{
-		$r_detid = mysql_query("SELECT * FROM izdelie where id = '" .$f[$i] ."' ");
-		$f_detid = mysql_fetch_array($r_detid);
-		print "<td id = '" .$f['id'] ."_" .mysql_field_name($r, $i) ."_" .$this->dbtable ."' class = 'notsimplefield'>" .$f_detid['name'] ."</td>"; 
+		if($this->filename == "") $this->filename = basename($_SERVER['PHP_SELF']); // обновить файл из которого вызван
+		if($this->show_hide == 0) $this->hfilter = " and hide <> 1 ";
+		//$dbquery = "SELECT " .$this->field ." FROM " .$this->dbtable ." where id >= 0 " .$this->hfilter .$this->filter ." ORDER BY " .$this->sortirovka;
+		$dbquery = " select stage.* from stage left join izdelie on izdelie.id = stage.detid where izdelie.hide <> 1 and stage.hide <> 1 " .$this->filter ." ORDER BY " .$this->sortirovka;
+		//$this->tabposcount = mysql_num_rows(mysql_query($dbquery));
+		$this->pages_rule($dbquery);
+		$dbquery .= " LIMIT " .$this->show_line .", " .$this->max_line;
+		return $dbquery;
 	}
-	else print "<td id = '" .$f['id'] ."_" .mysql_field_name($r, $i) ."_" .$this->dbtable ."' class = 'simplefield ыыы'>" .$f[$i] ."</td>"; 
-}
+
+	public function pages_rule($dbquery)
+	{
+		$this->tabposcount = mysql_num_rows(mysql_query($dbquery));
+		$this->max_pages = ceil($this->tabposcount / $this->max_line);
+		if($this->show_page == -1) $this->show_page = $this->max_pages;
+		if($this->show_page == 0) {$this->show_line = 0; $this->max_line = 1000; return;}
+		if($this->max_pages > 0) $this->show_line = ($this->show_page - 1) * $this->max_line;
+	}
+
+	public function hide_field($r,$i)  //функция сокрытия полей в соответствии с заданными условиями hidefield в settings
+	{
+		$r_settings = mysql_query("SELECT * FROM settings where tablename = 'findstage' and field = '" .mysql_field_name($r, $i) ."' ");
+		$f_settings = mysql_fetch_array($r_settings);
+
+		if ($f_settings['hidefield'] == "1") return true;
+	}
+
+	public function normal_field($r,$f,$j,$i)
+	{
+		if(mysql_field_name($r, $i) == 'detid') 
+		{
+			$r_detid = mysql_query("SELECT * FROM izdelie where id = '" .$f[$i] ."' ");
+			$f_detid = mysql_fetch_array($r_detid);
+			print "<td id = '" .$f['id'] ."_" .mysql_field_name($r, $i) ."_" .$this->dbtable ."' class = 'notsimplefield'>" .$f_detid['name'] ."</td>"; 
+		}
+		else print "<td id = '" .$f['id'] ."_" .mysql_field_name($r, $i) ."_" .$this->dbtable ."' class = 'simplefield ыыы'>" .$f[$i] ."</td>"; 
+	}
 
 	public function add_col($r,$f,$i,$j)
-{
-	require ("global_path.php");
-
-		//Доп колонка договор заключен
-	if(!isset($j) and $i == 3) print "<td class = 'table_header' style = 'width:180px;'>Договор заключен</td>";  //заголовок
-	if(isset($j) and $i == 3) 
 	{
+		require ("global_path.php");
 
-		$rr = mysql_query("SELECT * FROM dogovor where detid = '" .$f['detid'] ."' ");
-		$ff = mysql_fetch_array($rr);
-
-		echo "<td class = 'table_field' align = center>";
-		
-		echo $ff['dogopen'] == 1 ? "<input type='checkbox' checked disabled>" : "<input type='checkbox'  disabled>";
-		//echo $f['detid'];
-
-		echo "</td>";  //колонка
-		
-	}
-
-
-	//Доп колонка Отчётные документы по этапу
-	if(!isset($j) and $i == 8) print "<td class = 'table_header' style = 'width:180px;'>Отчётные документы по этапу</td>";  //заголовок
-	if(isset($j) and $i == 8) 
-	{
-
-		$rr = mysql_query("SELECT * FROM uplfiles where id >= 0 and hide <> 1 and tabname = 'stage' and detid = '" .$f['id'] ."' and type = 1 ORDER BY id");
-	
-		echo "<td class = 'table_field'>";
-
-		for ($ii=0; $ii<mysql_num_rows($rr); $ii++) //чтение строк
+			//Доп колонка договор заключен
+		if(!isset($j) and $i == 3) print "<td class = 'table_header' style = 'width:180px;'>Договор заключен</td>";  //заголовок
+		if(isset($j) and $i == 3) 
 		{
-			$ff=mysql_fetch_array($rr);
-			$full_link_path = "http://" .$_SERVER['SERVER_NAME'] .$save_dir .$ff['local_path'] ."/" .$ff['prefix'] ."_";
-			
-			$file_icon = $this->icon_file($ff['filename']);
-		
-			echo "<a href = '".$full_link_path .$ff['filename'] ."' target = '_blank'><img src= 'include/" .$file_icon ."' title = '" .$ff['maskname'] ."'></a>";
-			echo " ";
-		}
-		echo "<div class = 'button_field button_layer' style = 'display:none;'>";
-			echo "<a onClick = okno_show('dialog','&tabname=" .$this->dbtable ."&type=1&id=" .$f['id'] ."');><img src = 'include/new window.png' title = ''></a>";
-		echo "</div>";
 
-		echo "</td>";  //колонка
+			$rr = mysql_query("SELECT * FROM dogovor where detid = '" .$f['detid'] ."' ");
+			$ff = mysql_fetch_array($rr);
+
+			echo "<td class = 'table_field' align = center>";
+			
+			echo $ff['dogopen'] == 1 ? "<input type='checkbox' checked disabled>" : "<input type='checkbox'  disabled>";
+			//echo $f['detid'];
+
+			echo "</td>";  //колонка
+			
+		}
+
+
+		//Доп колонка Отчётные документы по этапу
+		if(!isset($j) and $i == 8) print "<td class = 'table_header' style = 'width:180px;'>Отчётные документы по этапу</td>";  //заголовок
+		if(isset($j) and $i == 8) 
+		{
+
+			$rr = mysql_query("SELECT * FROM uplfiles where id >= 0 and hide <> 1 and tabname = 'stage' and detid = '" .$f['id'] ."' and type = 1 ORDER BY id");
 		
+			echo "<td class = 'table_field'>";
+
+			for ($ii=0; $ii<mysql_num_rows($rr); $ii++) //чтение строк
+			{
+				$ff=mysql_fetch_array($rr);
+				$full_link_path = "http://" .$_SERVER['SERVER_NAME'] .$save_dir .$ff['local_path'] ."/" .$ff['prefix'] ."_";
+				
+				$file_icon = $this->icon_file($ff['filename']);
+			
+				echo "<a href = '".$full_link_path .$ff['filename'] ."' target = '_blank'><img src= 'include/" .$file_icon ."' title = '" .$ff['maskname'] ."'></a>";
+				echo " ";
+			}
+			echo "<div class = 'button_field button_layer' style = 'display:none;'>";
+				echo "<a onClick = okno_show('dialog','&tabname=" .$this->dbtable ."&type=1&id=" .$f['id'] ."');><img src = 'include/new window.png' title = ''></a>";
+			echo "</div>";
+
+			echo "</td>";  //колонка
+			
+		}
 	}
-}
 }
 
 class mgtabledog extends megatable  //Договорные документы
 {
 
 	public function add_col($r,$f,$i,$j)
-{
-	require ("global_path.php");
-
-	
-	//Доп колонка Обоснование трудоемкости
-	if(!isset($j) and $i == 10) print "<td class = 'table_header' style = 'width:180px;'>Обоснование трудоемкости</td>";  //заголовок
-	if(isset($j) and $i == 10) 
 	{
+		require ("global_path.php");
 
-		$rr = mysql_query("SELECT * FROM uplfiles where id >= 0 and hide <> 1 and tabname = 'dogovor' and detid = '" .$f['id'] ."' and type = 1 ORDER BY " .$this->sortirovka);
-	
-		echo "<td class = 'table_field'>";
-
-		for ($ii=0; $ii<mysql_num_rows($rr); $ii++) //чтение строк
+		
+		//Доп колонка Обоснование трудоемкости
+		if(!isset($j) and $i == 10) print "<td class = 'table_header' style = 'width:180px;'>Обоснование трудоемкости</td>";  //заголовок
+		if(isset($j) and $i == 10) 
 		{
-			$ff=mysql_fetch_array($rr);
-			$full_link_path = "http://" .$_SERVER['SERVER_NAME'] .$save_dir .$ff['local_path'] ."/" .$ff['prefix'] ."_";
+
+			$rr = mysql_query("SELECT * FROM uplfiles where id >= 0 and hide <> 1 and tabname = 'dogovor' and detid = '" .$f['id'] ."' and type = 1 ORDER BY " .$this->sortirovka);
+		
+			echo "<td class = 'table_field'>";
+
+			for ($ii=0; $ii<mysql_num_rows($rr); $ii++) //чтение строк
+			{
+				$ff=mysql_fetch_array($rr);
+				$full_link_path = "http://" .$_SERVER['SERVER_NAME'] .$save_dir .$ff['local_path'] ."/" .$ff['prefix'] ."_";
+				
+				$file_icon = $this->icon_file($ff['filename']);
 			
-			$file_icon = $this->icon_file($ff['filename']);
-		
-			echo "<a href = '".$full_link_path .$ff['filename'] ."' target = '_blank'><img src= 'include/" .$file_icon ."' title = '" .$ff['maskname'] ."'></a>";
-			echo " ";
+				echo "<a href = '".$full_link_path .$ff['filename'] ."' target = '_blank'><img src= 'include/" .$file_icon ."' title = '" .$ff['maskname'] ."'></a>";
+				echo " ";
+			}
+			echo "<div class = 'button_field button_layer' style = 'display:none;'>";
+				echo "<a onClick = okno_show('dialog','&tabname=" .$this->dbtable ."&type=1&id=" .$f['id'] ."');><img src = 'include/new window.png' title = ''></a>";
+			echo "</div>";
+
+			echo "</td>";  //колонка
+			
 		}
-		echo "<div class = 'button_field button_layer' style = 'display:none;'>";
-			echo "<a onClick = okno_show('dialog','&tabname=" .$this->dbtable ."&type=1&id=" .$f['id'] ."');><img src = 'include/new window.png' title = ''></a>";
-		echo "</div>";
 
-		echo "</td>";  //колонка
-		
-	}
-
-	//Доп колонка Обоснование трудоемкости
-	if(!isset($j) and $i == 11) print "<td class = 'table_header' style = 'width:180px;'>Ведомость исполнения</td>";  //заголовок
-	if(isset($j) and $i == 11) 
-	{
-
-		$rr = mysql_query("SELECT * FROM uplfiles where id >= 0 and hide <> 1 and tabname = 'dogovor' and detid = '" .$f['id'] ."' and type = 2 ORDER BY " .$this->sortirovka);
-	
-		echo "<td class = 'table_field'>";
-
-		for ($ii=0; $ii<mysql_num_rows($rr); $ii++) //чтение строк
+		//Доп колонка Обоснование трудоемкости
+		if(!isset($j) and $i == 11) print "<td class = 'table_header' style = 'width:180px;'>Ведомость исполнения</td>";  //заголовок
+		if(isset($j) and $i == 11) 
 		{
-			$ff=mysql_fetch_array($rr);
-			$full_link_path = "http://" .$_SERVER['SERVER_NAME'] .$save_dir .$ff['local_path'] ."/" .$ff['prefix'] ."_";
+
+			$rr = mysql_query("SELECT * FROM uplfiles where id >= 0 and hide <> 1 and tabname = 'dogovor' and detid = '" .$f['id'] ."' and type = 2 ORDER BY " .$this->sortirovka);
+		
+			echo "<td class = 'table_field'>";
+
+			for ($ii=0; $ii<mysql_num_rows($rr); $ii++) //чтение строк
+			{
+				$ff=mysql_fetch_array($rr);
+				$full_link_path = "http://" .$_SERVER['SERVER_NAME'] .$save_dir .$ff['local_path'] ."/" .$ff['prefix'] ."_";
+				
+				$file_icon = $this->icon_file($ff['filename']);
 			
-			$file_icon = $this->icon_file($ff['filename']);
-		
-			echo "<a href = '".$full_link_path .$ff['filename'] ."' target = '_blank'><img src= 'include/" .$file_icon ."' title = '" .$ff['maskname'] ."'></a>";
-			echo " ";
-		}
-		echo "<div class = 'button_field button_layer' style = 'display:none;'>";
-			echo "<a onClick = okno_show('dialog','&tabname=" .$this->dbtable ."&type=2&id=" .$f['id'] ."');><img src = 'include/new window.png' title = ''></a>";
-		echo "</div>";
+				echo "<a href = '".$full_link_path .$ff['filename'] ."' target = '_blank'><img src= 'include/" .$file_icon ."' title = '" .$ff['maskname'] ."'></a>";
+				echo " ";
+			}
+			echo "<div class = 'button_field button_layer' style = 'display:none;'>";
+				echo "<a onClick = okno_show('dialog','&tabname=" .$this->dbtable ."&type=2&id=" .$f['id'] ."');><img src = 'include/new window.png' title = ''></a>";
+			echo "</div>";
 
-		echo "</td>";  //колонка
-		
-	}
-	
-}
-
-
-}
-
-class mailtable extends megatable
-{
-
-public function table_big_header() //заголовок таблицы
-{
-	echo "<tr>";
-	echo "<td class = 'table_big_header' colspan = 999 align = center><div style='float:left;width:100%;text-align:center;'>" .$this->header_big_name ."</div><div class = 'mg_table_button'><div class = 'printer_layer'><a onclick = window.open('" .basename($_SERVER['PHP_SELF']) ."?print=1" .$_SERVER['QUERY_STRING'] ."','Печать','widht=600,height=800,location=no')><img src='include/Printer.png' alt='закрыто'></a></div></div></td>"; //малый заголовок
-	echo "</tr>";
-	echo "<tr>";
-	echo "<td class = 'table_colspan_header' colspan = 9 align = center>Входящие</td>"; //малый заголовок
-	echo "<td class = 'table_colspan_header' colspan = 8 align = center>Исходящие</td>";
-	echo "</tr>";
-}
-
-public function table_content($r,$f,$j)
-{
-	for ($i=0; $i<mysql_num_fields($r); $i++) // чтение значений в строке
-	{
-		if ($i==0) echo "<tr>";
-		$this->all_col($r,$f,$i,$j);
-		if($this->hide_field($r,$i)) continue;
-		if (mysql_field_name($r, $i) == "datevh" or mysql_field_name($r, $i) == "dateish") print "<td><input type='text' id = '" .$f['id'] ."_" .mysql_field_name($r, $i) ."_" .$this->dbtable ."' class='dateinput' onchange='update_db(this.id,this.value);' value='" .$f[$i] ."'></td>"; //заполнение полей (ячейки в строке)
-		else print "<td id = '" .$f['id'] ."_" .mysql_field_name($r, $i) ."_" .$this->dbtable ."' class = 'simplefield'>" .$f[$i] ."</td>"; //заполнение полей (ячейки в строке)
-	}
-}
-
-public function bd_query_text1()
-{
-	if($this->show_hide == 0) $this->hfilter = " and hide <> 1 ";
-//$local_sortirovka = "if(datevh = '' or datevh is null, 1, 0), SUBSTRING_INDEX(mailbox.datevh,'.',-1), SUBSTRING_INDEX(SUBSTRING_INDEX(mailbox.datevh,'.',2),'.',-1), SUBSTRING_INDEX(mailbox.datevh,'.',1), id";
-
-	$dbquery = "SELECT " .$this->field ." FROM " .$this->dbtable ." where id >= 0 " .$this->hfilter .$this->filter ." ORDER BY " .$local_sortirovka ." LIMIT " .$this->show_line .", " .$this->max_line;
-	$this->tabposcount = mysql_num_rows(mysql_query($dbquery));
-	return $dbquery;
-}
-
-public function date_type_field($field)
-{
-	
-}
-
-public function filter_vvoda_listov($str_data1)
-{
-	$rule = array("A5", "А5", "A4", "А4", "A3", "А3",  "A2", "А2", "A1", "А1", "A0", "А0", "ф.", "н/ч", ",");
-	$newchar = array("*0.5", "*0.5", "*1", "*1", "*2", "*2", "*4", "*4", "*8", "*8", "*16", "*16", "", "", ".");
-
-	if ($str_data1 == "") $str_data1 = "0";
-
-	$str_data1 = str_replace("+", "<br>", $str_data1);
-	
-	$st1 = explode("<br>", $str_data1);
-
-	for($i=0;$i<count($st1);$i++)
-	{
-		$s1 = str_replace($rule, $newchar, $st1[$i]);
-		$str_s .= $s1;
-		$i < (count($st1) - 1) ? $str_s .= "+" : "";
-	}
-
-	return $str_s;
-}
-
-	public function add_col($r,$f,$i,$j)
-{
-	require ("global_path.php");
-
-	
-	//Доп колонка Скан входящие
-	if(!isset($j) and $i == 8) print "<td class = 'table_header' style = 'width:60px;'>Скан</td>";  //заголовок
-	if(isset($j) and $i == 8) 
-	{
-
-		$rr = mysql_query("SELECT * FROM uplfiles where id >= 0 and hide <> 1 and tabname = 'mailbox' and detid = '" .$f['id'] ."' and type = 1 ");
-	
-		echo "<td class = 'table_field'>";
-
-		for ($ii=0; $ii<mysql_num_rows($rr); $ii++) //чтение строк
-		{
-			$ff=mysql_fetch_array($rr);
-			$full_link_path = "http://" .$_SERVER['SERVER_NAME'] .$save_dir .$ff['local_path'] ."/" .$ff['prefix'] ."_";
+			echo "</td>";  //колонка
 			
-			$file_icon = $this->icon_file($ff['filename']);
-		
-			echo "<a href = '".$full_link_path .$ff['filename'] ."' target = '_blank'><img src= 'include/" .$file_icon ."' title = '" .$ff['maskname'] ."'></a>";
-			echo " ";
 		}
-		echo "<div class = 'button_field button_layer' style = 'display:none;'>";
-			echo "<a onClick = okno_show('dialog','&tabname=" .$this->dbtable ."&type=1&id=" .$f['id'] ."');><img src = 'include/new window.png' title = ''></a>";
-		echo "</div>";
-
-		echo "</td>";  //колонка
 		
 	}
-
-	//Доп колонка Скан исходящие
-	if(!isset($j) and $i == 14) print "<td class = 'table_header' style = 'width:60px;'>Скан</td>";  //заголовок
-	if(isset($j) and $i == 14) 
-	{
-
-		$rr = mysql_query("SELECT * FROM uplfiles where id >= 0 and hide <> 1 and tabname = 'mailbox' and detid = '" .$f['id'] ."' and type = 2 ");
-	
-		echo "<td class = 'table_field'>";
-
-		for ($ii=0; $ii<mysql_num_rows($rr); $ii++) //чтение строк
-		{
-			$ff=mysql_fetch_array($rr);
-			$full_link_path = "http://" .$_SERVER['SERVER_NAME'] .$save_dir .$ff['local_path'] ."/" .$ff['prefix'] ."_";
-			
-			$file_icon = $this->icon_file($ff['filename']);
-		
-			echo "<a href = '".$full_link_path .$ff['filename'] ."' target = '_blank'><img src= 'include/" .$file_icon ."' title = '" .$ff['maskname'] ."'></a>";
-			echo " ";
-		}
-		echo "<div class = 'button_field button_layer' style = 'display:none;'>";
-			echo "<a onClick = okno_show('dialog','&tabname=" .$this->dbtable ."&type=2&id=" .$f['id'] ."');><img src = 'include/new window.png' title = ''></a>";
-		echo "</div>";
-
-		echo "</td>";  //колонка
-		
-	}
-
-
-	//Доп колонка расчетная
-	if(!isset($j) and $i == 10) print "<td class = 'table_header' style = 'width:50px;'>Трудо-<br>емкость</td>";  //заголовок
-	if(isset($j) and $i == 10) 
-	{
-
-		echo "<td class = 'table_field' title = '" ."(" .$this->filter_vvoda_listov($f['countlistvh']) .")*0.5" ."' date-id = " .$f['id'] .">";
-
-		echo $f['sumnormchasvh'];
-
-		echo "</td>";  //колонка
-		
-	}	
-
-	//Доп колонка расчетная
-	if(!isset($j) and $i == 16) print "<td class = 'table_header' style = 'width:50px;'>Трудо-<br>емкость</td>";  //заголовок
-	if(isset($j) and $i == 16) 
-	{
-
-		echo "<td class = 'table_field' title = '" ."(" .$this->filter_vvoda_listov($f['countlistish']) .")*0.5" ."' date-id = " .$f['id'] .">";
-
-		echo $f['sumnormchasish'];
-
-		echo "</td>";  //колонка
-		
-	}	
-
-	if(!isset($j) and $i == 1) print "<td class = 'table_header' style = 'width:50px;'>Изделие";  //заголовок
-	if(isset($j) and $i == 1) 
-	{
-
-		echo "<td class = 'table_field'>";
-		
-		$rm = mysql_query("SELECT * FROM izdelie where id = " .$f['detid'] ." ");
-		$fm=mysql_fetch_array($rm);
-		echo $fm['name'];
-
-		echo "</td>";  //колонка
-		
-	}	
-	
-}
 }
 
 //border: none; outline: none;background:inherit; - невидимое поле
-echo "<div>";
+echo "<div id = 'findblock'>";
 if ($_GET['print'] == 1) echo "<form name='poisk' action='findworkdoc.php' target='newwin' method='post'>";
 echo "<table class = 'autotable razdel'><tr><td class = 'table_header' colspan = 999 align = center>Документы и работа</td></tr></table>";
 echo "<div id = 'poiskdocwork' class = '' style = 'display:block;'>";
@@ -457,24 +290,29 @@ echo "<br>";
 ?>
 <table class = 'autotable razdel'><tr><td class = 'table_header' colspan = 999 align = center>Переписка</td></tr></table>
 <div id = 'poiskstage' class = '' style = 'display:none;'>
-<div id="findlayer" style="margin-top: 15px;"><input id = 'findcontentmail' type='text'  style='width:60%;' title = 'Введите дату, номер или содержание письма'><button onclick='startfind_mail();'> Найти</button>
-<script>
-	let img = document.createElement("img");
-    img.src = `include/question.png`;
-    let div2 = document.createElement("div");
-    div2.classList.add("mailQuestion");
-    div2.style.marginLeft = 5 + 'px';
-    div2.dataset.title = "Поиск по диапазону дат:\n- указать диапазон между знаками # #;\n\
-- после можно указать поисковое слово.\n\nНапример:\
-\n#10.01.2022-16.03.2022#\nБудут выведены все строки между указанными \nдатами включая 10 и 16 число.\n\
-\n#10.01.2022-16.03.2022# изделие\n\
-В указанном диапазоне будет задан поиск \nпо слову 'изделие'.";
-div2.appendChild(img);
-findlayer.appendChild(div2);
-</script>
-</div>
+	<div id="findlayer" style="margin-top: 15px;">
+		<input id = 'findcontentmail' type='text'  style='width:60%;' title = 'Введите дату, номер или содержание письма'><button onclick='startfind_mail();'> Найти</button>
+		<script>
+			let img = document.createElement("img");
+			img.src = `include/question.png`;
+			let div = document.createElement("div");
+			div.classList.add("mailQuestion");
+			div.style.marginLeft = 5 + 'px';
+			div.dataset.title = "Поиск по диапазону дат:\n- указать диапазон между знаками # #;\n- после можно указать поисковое слово.\n\nНапример:\n#10.01.2022-16.03.2022#\nБудут выведены все строки между указанными \nдатами включая 10 и 16 число.\n\n#10.01.2022-16.03.2022# изделие\nВ указанном диапазоне будет задан поиск \nпо слову 'изделие'.";
+			div.appendChild(img);
+			findlayer.appendChild(div);
+		</script>
+	</div>
 </div>
 <br>
+
+<table class = 'autotable razdel'><tr><td class = 'table_header' colspan = 999 align = center>Извещения</td></tr></table>
+<div class = 'poiskstage' style = 'display:none;'>
+	<br>
+	<input id = 'izvesheniefind' type='text'  style='width:60%;' title = ''><button onclick='startfind_izveshenie();'> Найти</button>
+</div>
+<br>
+
 <?
 echo "<table class = 'autotable razdel'><tr><td class = 'table_header' colspan = 999 align = center>Этапы договора</td></tr></table>";
 echo "<div id = 'poiskstage' class = '' style = 'display:none;'>";
@@ -536,11 +374,11 @@ $dtable->sortirovka = "if(date = '' or date is null, 1, 0), SUBSTRING_INDEX(docw
 //if(isset($_GET['page'])) $dtable->show_page = $_GET['page'];
 if($_POST['naimenovenie'] != "" or $_POST['otd'] != "" or $_POST['fio'] != "" or $_POST['datebegin'] != "" or $_POST['dateend'] != "") $dtable->datatable();
 
-echo "<br>";
 
 echo "</div>"; //find (Конец обновляемого блока)
 
 echo "<div id='finddogovor'>"; //Обновляемый блок 2
+
 
 require ("dbconnect.php");
 $dtablest = new mgtablestage;
@@ -563,9 +401,6 @@ $dtablest->pos_nomer_col = 0;
 $dtablest->sortirovka = "if(stage.datestop = '' or stage.datestop is null, 1, 0), SUBSTRING_INDEX(stage.datestop,'.',-1), SUBSTRING_INDEX(SUBSTRING_INDEX(stage.datestop,'.',2),'.',-1), SUBSTRING_INDEX(stage.datestop,'.',1), stage.id";
 if($_POST['datedog1'] != "" or $_POST['datedog2'] != "") $dtablest->datatable();
 
-echo "<br>";
-echo "<br>";
-
 echo "</div>"; //finddogovor (Конец обновляемого блока 2)
 
 echo "<div id='finddog'>"; //Обновляемый блок 3
@@ -581,28 +416,15 @@ $dtabledog->date_field_list = "date";
 $dtabledog->filter = " and dogopen = '" .$_POST['dogopen'] ."' ";
 if($_POST['dogopen'] != "") $dtabledog->datatable();
 
-echo "<br>";
-echo "<br>";
-
 echo "</div>"; //finddogovor (Конец обновляемого блока 3)
 
 echo "<div id='findmail'>"; //Обновляемый блок 4
 
-require ("dbconnect.php");
-$dtablemail = new mailtable;
+echo "</div>"; //findmail (Конец обновляемого блока 4)
 
-$dtablemail->htag = "findmail";
-$dtablemail->dbtable = "mailbox";
-$dtablemail->header_big_name = "Переписка";
-$dtablemail->pos_nomer_col = 0;
-$dtablemail->date_field_list = "datevh,dateish";
-$dtablemail->filter = " and (contentvh like '%" .$_POST['contentmail'] ."%' or contentish like '%" .$_POST['contentmail'] ."%' or datevh like '%" .$_POST['contentmail'] ."%' or dateish like '%" .$_POST['contentmail'] ."%' or nomervh like '%" .$_POST['contentmail'] ."%' or nomerish like '%" .$_POST['contentmail'] ."%' or fioispish like '%" .$_POST['contentmail'] ."%' or adresvh like '%" .$_POST['contentmail'] ."%' or adresish like '%" .$_POST['contentmail'] ."%' )";
-if($_POST['contentmail'] != "") $dtablemail->datatable();
+echo "<div id='findizveshenie'>"; //Обновляемый блок 5
 
-echo "<br>";
-echo "<br>";
-
-echo "</div>"; //finddogovor (Конец обновляемого блока 4)
+echo "</div>"; //findizveshenie (Конец обновляемого блока 5)
 
 ?>
 <script>
@@ -665,6 +487,16 @@ function startfind_mail() {
 	};
 	xhrLoad(sendObject);
 
+}
+
+function startfind_izveshenie() {
+	let sendObject = {
+		"baseLayer": "findizveshenie",
+		"tab_id": "-1",
+		"page": 0,
+		"find": izvesheniefind.value
+	};
+	izvLoad(sendObject);
 }
 
 

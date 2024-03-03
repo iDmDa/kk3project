@@ -340,6 +340,8 @@ class MailTableGenerator {
 		table.appendChild(this.theadCreate());
         table.appendChild(this.tbodyCreate());
         document.getElementById(this.layerID).append(table);
+        console.log("this.layerID:");
+        console.log(this.layerID);
         this.createNumberLine();
         this.createMiddleSize();
         this.addColorStyle();

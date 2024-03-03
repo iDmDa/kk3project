@@ -7,6 +7,7 @@ class IzvTableGenerator {
     fieldList;
     showLine;
     midTitle;
+    static find;
 
     bigTitle() {
         let tabName = !this.tabName ? "Таблица" : this.tabName;
@@ -179,6 +180,7 @@ class IzvTableGenerator {
 
     createEvents() {
         let table = document.getElementById(this.tableID);
+        let find = this.find;
 		table.addEventListener("click", function(event) {
             let type = "";
             if(event.target.classList == "button_field"){
@@ -197,7 +199,12 @@ class IzvTableGenerator {
                 if(event.target.classList.contains("menuitem")) {
                     tablediv.innerHTML = "";
                     //xhrLoad("xhrload", tb.id.split("_")[1], event.target.innerText, findline.value);
-                    izvLoad("izv", tableID.split("_")[1], event.target.innerText, findline.value);
+                    sendObject = {
+                        "tab_id": tableID.split("_")[1], 
+                        "page": event.target.innerText, 
+                        "find": find
+                    }
+                    izvLoad(sendObject);
                 }
             })
         }
@@ -218,7 +225,12 @@ class IzvTableGenerator {
                 console.log("id: " + id);
 
                 tablediv.innerHTML = "";
-                izvLoad("izv", tableID.split("_")[1], 0, findline.value);
+                sendObject = {
+                    "tab_id": tableID.split("_")[1], 
+                    "page": 0, 
+                    "find": find
+                }
+                izvLoad(sendObject);
                 //xhrLoad("xhrload", tableID.split("_")[1], 0, findline.value);
             }
         })
@@ -255,6 +267,8 @@ class IzvTableGenerator {
 		table.appendChild(this.theadCreate());
         table.appendChild(this.tbodyCreate());
         document.getElementById(this.layerID).append(table);
+        console.log("this.layerID:");
+        console.log(this.layerID);
         this.createNumberLine();
         this.createAddButton();
         this.loadAllFileIcon();
@@ -265,14 +279,11 @@ class IzvTableGenerator {
     
 }
 
-function izvLoad (izv, tab_id, page, find, showLine = 100) {
+function izvLoad (sendObject) {
     let data = new FormData();
-    data.append(izv, "value");
-    data.append("tab_id", tab_id)
-    data.append("page", page);
-    data.append("find", find);
-    data.append("showLine", showLine);
-
+    data.append("izv", "value");
+    data.append("showLine", 100);
+    for(let key in sendObject) data.append(key, sendObject[key]);
 
     let xhr = new XMLHttpRequest();
     xhr.open('POST', 'izveshenie.php', true);
@@ -280,25 +291,36 @@ function izvLoad (izv, tab_id, page, find, showLine = 100) {
     xhr.onload = function () {
         let resp = xhr.response; //Результат запроса
         resultArray = JSON.parse(resp);
-        console.log(resultArray);
+
+        let baseLayer = !sendObject.baseLayer ? "varframe" : sendObject.baseLayer;
+        let tableLayerName = !sendObject.tableLayerName ? "tablediv" : sendObject.tableLayerName;
+
+        if(!document.getElementById(tableLayerName)) {
+            let tablayer = document.createElement("div");
+            tablayer.id = tableLayerName;
+            varframe = document.getElementById(baseLayer);
+            varframe.appendChild(tablayer);
+        }
 
         let table = new IzvTableGenerator();
-        table.tableID = `table_${tab_id}`;
-        table.layerID = "tablediv";
+        table.tableID = `table_${sendObject.tab_id}`;
+        table.layerID = tableLayerName;
+        table.find = sendObject.find;
         table.tabName = "Извещения";
-        table.midTitle = document.getElementById(`${tab_id}_name_izdelie`).innerHTML.replace(/<br>/g, '');
-        table.showLine = showLine;
+        if(sendObject.tab_id != -1) table.midTitle = document.getElementById(`${sendObject.tab_id}_name_izdelie`).innerHTML.replace(/<br>/g, '');
+        if(sendObject.tab_id == -1) table.midTitle = "Найти";
+        table.showLine = 100;
         table.fieldList = resultArray[0]['showField'];
         table.dbData = resultArray;
 
-        table.createTable(tab_id);
+        table.createTable();
     }
 
 	xhr.onloadend = function(event) {
         zamok == 1 ? open_edit() : close_edit();
 		$(".dateinput").mask("99.99.9999", {placeholder: "дд.мм.гггг" });
     	console.log("(izvLoad)Загрузка завершена");
-        if(find != "") findSelect(find);
+        if(sendObject.find != "") findSelect(sendObject.find);
   	}
 }
 
@@ -320,9 +342,12 @@ function izvfindbox(tabid) {
     
     let findline = document.getElementById("findline");
     findline.addEventListener("change", function(event) {
-            izvLoad("izv", tabid, 0, findline.value);
+            let sendObject = {
+                "tab_id": tabid, 
+                "page": 0, 
+                "find": findline.value
+            }
+            izvLoad(sendObject);
             console.log(`tabid: ${tabid}; findline.value: ${findline.value}`);
-            //document.querySelectorAll('.simplefield')[2].innerHTML = "0";
-            //console.log(document.querySelectorAll('.simplefield').innerHTML = "0");
     });
 }

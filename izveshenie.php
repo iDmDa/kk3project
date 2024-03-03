@@ -37,7 +37,8 @@ if(isset($_POST['izv'])) {
 						SUBSTRING_INDEX(date, '.', 1)) as txtToDate";
 		$sortirovka = "CASE WHEN txtToDate = '' THEN 1 ELSE 0 END, txtToDate ASC, CASE WHEN txtToDate = '' THEN id END";
 		$findlist = findlist($find, $fieldForSearch);
-		$r = $db->prepare("SELECT {$fieldList}{$fieldCreate} FROM {$tableName} WHERE hide = 0 and doctype = 1 and detid = '{$table_id}' {$findlist} ORDER BY {$sortirovka} LIMIT {$page}, {$limitLine}");
+		if($table_id != "0") $r = $db->prepare("SELECT {$fieldList}{$fieldCreate} FROM {$tableName} WHERE hide = 0 and doctype = 1 and detid = '{$table_id}' {$findlist} ORDER BY {$sortirovka} LIMIT {$page}, {$limitLine}");
+		if($table_id == "-1") $r = $db->prepare("SELECT {$fieldList}{$fieldCreate} FROM {$tableName} WHERE hide = 0 and doctype = 1 {$findlist} ORDER BY {$sortirovka} LIMIT {$page}, {$limitLine}");
 		$r->execute();
 		return $r->fetchAll(PDO::FETCH_ASSOC);
 	}
@@ -45,7 +46,8 @@ if(isset($_POST['izv'])) {
 	function maxResult($tableName, $table_id, $find = "", $fieldForSearch) {
 		$db = db_connect();
 		$findlist = findlist($find, $fieldForSearch);
-		$r = $db->prepare("SELECT COUNT(id) as maxResult FROM {$tableName} WHERE hide = 0 and doctype = 1 and detid = '{$table_id}' {$findlist}");
+		if($table_id != "0") $r = $db->prepare("SELECT COUNT(id) as maxResult FROM {$tableName} WHERE hide = 0 and doctype = 1 and detid = '{$table_id}' {$findlist}");
+		if($table_id == "-1") $r = $db->prepare("SELECT COUNT(id) as maxResult FROM {$tableName} WHERE hide = 0 and doctype = 1 {$findlist}");
 		$r->execute();
 		return $r->fetchAll(PDO::FETCH_ASSOC)[0]['maxResult'];
 	}
@@ -145,12 +147,10 @@ if(isset($_POST['add'])) {
 		varframe.innerHTML = "<p style='font-size: 25px;'>Версия вашего браузера устарела и не может отобразить эту страницу! Скачайте новую версию браузера по <a href = 'http://server-kk3/projectdata/docwork/1706508740_FirefoxPortable112.zip'>ссылке</a></p>";
 	}
 
-	if(!document.getElementById("tablediv")) {
-		let tablayer = document.createElement("div");
-		tablayer.id = "tablediv";
-		varframe = document.getElementById("varframe");
-		varframe.appendChild(tablayer);
+	let sendObject = {
+		"tab_id": <?=$_GET['id']?>, 
+		"page": 0, 
+		"find": ""
 	}
-
-    izvLoad("izv", <?=$_GET['id']?>);
+    izvLoad(sendObject);
 </script>

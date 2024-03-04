@@ -345,7 +345,7 @@ class MailTableGenerator {
         this.createNumberLine();
         this.createMiddleSize();
         this.addColorStyle();
-        this.createAddButton();
+        if(this.tableID.split("_")[1] != "-1") this.createAddButton();
         this.pages();
         this.createEvents();
         this.loadAllFileIcon();

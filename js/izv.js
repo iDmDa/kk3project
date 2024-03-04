@@ -270,7 +270,8 @@ class IzvTableGenerator {
         console.log("this.layerID:");
         console.log(this.layerID);
         this.createNumberLine();
-        this.createAddButton();
+        console.log("this.tableID:" + this.tableID);
+        if(this.tableID.split("_")[1] != "-1") this.createAddButton();
         this.loadAllFileIcon();
         this.pages();
         this.createEvents();

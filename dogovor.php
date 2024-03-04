@@ -185,7 +185,7 @@ class mgtablestage extends megatable //Этапы договора
 			for ($ii=0; $ii<mysql_num_rows($r_date_mailbox); $ii++) //чтение строк
 			{
 				$f_date_mailbox=mysql_fetch_array($r_date_mailbox);
-				$all_normachas_ish += $f_date_mailbox['sumnormchasish'];
+				@$all_normachas_ish += $f_date_mailbox['sumnormchasish'];
 			}
 
 		}

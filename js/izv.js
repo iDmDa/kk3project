@@ -199,7 +199,7 @@ class IzvTableGenerator {
                 if(event.target.classList.contains("menuitem")) {
                     tablediv.innerHTML = "";
                     //xhrLoad("xhrload", tb.id.split("_")[1], event.target.innerText, findline.value);
-                    sendObject = {
+                    let sendObject = {
                         "tab_id": tableID.split("_")[1], 
                         "page": event.target.innerText, 
                         "find": find
@@ -225,7 +225,7 @@ class IzvTableGenerator {
                 console.log("id: " + id);
 
                 tablediv.innerHTML = "";
-                sendObject = {
+                let sendObject = {
                     "tab_id": tableID.split("_")[1], 
                     "page": 0, 
                     "find": find

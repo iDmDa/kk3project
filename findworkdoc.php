@@ -542,6 +542,11 @@ $("#findcontentmail").keyup(function(e) {
 if(e.keyCode==13){startfind_mail();}
 });
 
+$("#izvesheniefind").keyup(function(e) {
+if(e.keyCode==13){startfind_izveshenie();}
+});
+
+
 $("input[name='findgotovnost']").change(function() {
 radiofindgotovnost = this.value;
 startfind();

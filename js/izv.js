@@ -170,8 +170,7 @@ class IzvTableGenerator {
     createAddButton() {
         let addbutton = document.createElement("img");
         addbutton.src = `include/addline.png`;
-        //addbutton.classList.add("button_field");
-        this.tableID.split("_")[1] != 0 ? addbutton.classList.add("button_field") : addbutton.classList.add("notshow_any");
+        (this.tableID.split("_")[1] != 0 && this.tableID.split("_")[1] != "-1") ? addbutton.classList.add("button_field") : addbutton.classList.add("notshow_any");
         addbutton.id = "addButton";
         if(zamok == 0) addbutton.style.display = "none";
         let table = document.getElementById(this.tableID);
@@ -267,11 +266,8 @@ class IzvTableGenerator {
 		table.appendChild(this.theadCreate());
         table.appendChild(this.tbodyCreate());
         document.getElementById(this.layerID).append(table);
-        console.log("this.layerID:");
-        console.log(this.layerID);
         this.createNumberLine();
-        console.log("this.tableID:" + this.tableID);
-        if(this.tableID.split("_")[1] != "-1") this.createAddButton();
+        this.createAddButton();
         this.loadAllFileIcon();
         this.pages();
         this.createEvents();

@@ -39,6 +39,11 @@ class IzvTableGenerator {
         let fieldList = this.fieldList.split(", ");
         for(let item in fieldList) {
             td = document.createElement("td");
+            switch(fieldList[item]) {
+                case "izdname":
+                    td.style.minWidth = "140px";
+                break;
+            }
             td.innerHTML = `${this.dbData[0][fieldList[item]]}`;
             td.classList.add("table_header");
             td.classList.add("bottomTitle");
@@ -115,6 +120,11 @@ class IzvTableGenerator {
                 input.setAttribute("onchange", "update_db(this.id,this.value)");
                 input.setAttribute("value", `${value}`);
                 td.appendChild(input);
+                break;
+            case "izdname":
+                td.classList.add("table_item_header");
+                td.innerHTML = `${value}`;
+                td.id = itemID;
                 break;
             default:
                 td.classList.add("simplefield");

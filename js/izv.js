@@ -252,6 +252,27 @@ class IzvTableGenerator {
                 //xhrLoad("xhrload", tableID.split("_")[1], 0, findline.value);
             }
         })
+         
+        let colSort = document.querySelector("[data-column='numii']");
+        if(localStorage.getItem('sort_col') == "1") {
+            colSort.classList.add("sortColumn");
+        }
+        colSort.addEventListener("click", function(event) {
+            colSort.classList.toggle("sortColumn");
+            if(colSort.classList.contains("sortColumn")) {
+                localStorage.setItem('sort_col', "1");
+            }
+            else {
+                localStorage.setItem('sort_col', "0");
+            }
+
+            let sendObject = {
+                "tab_id": tableID.split("_")[1], 
+                "page": 0, 
+                "find": find
+            }
+            izvLoad(sendObject);
+        })
 
     }
 
@@ -299,6 +320,7 @@ function izvLoad (sendObject) {
     let data = new FormData();
     data.append("izv", "value");
     data.append("showLine", 100);
+    data.append("sort_col", localStorage.getItem('sort_col'));
     for(let key in sendObject) data.append(key, sendObject[key]);
 
     let xhr = new XMLHttpRequest();

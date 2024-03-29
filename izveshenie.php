@@ -33,10 +33,16 @@ if(isset($_POST['izv'])) {
 
     function getDatatable($tableName, $table_id, $fieldList, $page, $limitLine, $find = "", $fieldForSearch = ""){
 		$db = db_connect();
-		$fieldCreate = ", CONCAT(SUBSTRING_INDEX(date, '.', -1), 
+		if($_POST['sort_col'] != "1") {		
+			$fieldCreate = ", CONCAT(SUBSTRING_INDEX(date, '.', -1), 
 						SUBSTRING_INDEX(SUBSTRING_INDEX(date, '.', 2), '.', -1), 
 						SUBSTRING_INDEX(date, '.', 1)) as txtToDate";
-		$sortirovka = "CASE WHEN txtToDate = '' THEN 1 ELSE 0 END, txtToDate ASC, CASE WHEN txtToDate = '' THEN docwork.id END";
+			$sortirovka = "CASE WHEN txtToDate = '' THEN 1 ELSE 0 END, txtToDate ASC, CASE WHEN txtToDate = '' THEN docwork.id END";
+		}
+		if($_POST['sort_col'] == "1") {
+			$fieldCreate = ", SUBSTRING_INDEX(numii, '.', -1) AS onlynum";
+			$sortirovka = "CASE WHEN onlynum = '' then 2 ELSE 1 END, onlynum +0 ASC, id ASC";
+		}
 		$findlist = findlist($find, $fieldForSearch);
 		if($table_id != "0") $r = $db->prepare("SELECT {$fieldList}{$fieldCreate} FROM {$tableName} WHERE hide = 0 and doctype = 1 and detid = '{$table_id}' {$findlist} ORDER BY {$sortirovka} LIMIT {$page}, {$limitLine}");
 		if($table_id == "-1") $r = $db->prepare("SELECT name as izdname, docwork.{$fieldList}{$fieldCreate} FROM {$tableName} LEFT JOIN izdelie ON izdelie.id = docwork.detid WHERE docwork.hide = 0 and doctype = 1 {$findlist} ORDER BY {$sortirovka} LIMIT {$page}, {$limitLine}");

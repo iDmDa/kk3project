@@ -189,7 +189,8 @@ if(isset($_POST['finditems'])) {
 	let sendObject = {
 		"tabNumber": <?=$_GET['id']?>,
 		"page": 0,
-		"find": ""
+		"find": "",
+		"fieldList": "datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, datereg, nomerreg, datecontrol, prim, dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish"
 	};
 	xhrLoad(sendObject);
 </script>

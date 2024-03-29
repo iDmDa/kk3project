@@ -1,14 +1,30 @@
 class MailTableGenerator {
 
+    constructor() {
+        if(typeof MailTableGenerator.instance === 'object') {
+            return MailTableGenerator.instance;
+        }
+
+        //this.fieldList = null;
+        MailTableGenerator.instance = this;
+    }
+
 	tableID;
     tabName;
 	layerID;
     dbData;
-    fieldList;
-    static find;
+    static fieldList;
+    find;
 
     bigTitle() {
-        console.log(this.find);
+        // console.log("----Mail data-----");
+        // console.log("tableID: " + this.tableID);
+        // console.log("tabName: " + this.tabName);
+        // console.log("layerID: " + this.layerID);
+        // console.log("dbData: " + this.dbData);
+        // console.log("fieldList: " + this.fieldList);
+        // console.log("find: " + this.find);
+        // console.log("--------");
         let tabName = !this.tabName ? "Таблица" : this.tabName;
         let tr = document.createElement("tr")
         let td = document.createElement("td");
@@ -297,7 +313,7 @@ class MailTableGenerator {
             xhr.onload = function () {
                 let id = xhr.response; //Результат запроса
                 //resultArray = JSON.parse(resp);
-                console.log("id: " + id);
+                //console.log("id: " + id);
 
                 tablediv.innerHTML = "";
                 let sendObject = {
@@ -311,7 +327,7 @@ class MailTableGenerator {
     }
 
     loadAllFileIcon() {
-        console.log("loadAllFileIcon");
+        //console.log("loadAllFileIcon");
         let td = document.querySelectorAll('[id$="_scanvh_mailbox"]');
         let items = [];
         td.forEach(item => {
@@ -395,7 +411,7 @@ function createIconPanel() {
         
         if(e.target.dataset.colrule) {
             let col = e.target.dataset.column;
-            console.log(e.target);
+            //console.log(e.target);
             colHide (document.querySelector(`[data-column="${col}"]`), 1, titleResize);
             document.getElementById(`${col}_div`).style.display = "";
             localStorage.setItem(`${col}Col`, "1");
@@ -461,8 +477,10 @@ function xhrLoad (sendObject) {
         table.tableID = `table_${sendObject.tabNumber}`;
         table.layerID = tableLayerName;
         table.find = sendObject.find;
+        // console.log("sendObject.fieldList: " + sendObject.fieldList);
+        // console.log("table.fieldList: " + table.fieldList);
+        if(typeof sendObject.fieldList !== "undefined") table.fieldList = sendObject.fieldList;
         table.tabName = "Переписка";
-        table.fieldList = "datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, datereg, nomerreg, datecontrol, prim, dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish";
         if(sendObject.tabNumber == 0 || sendObject.tabNumber == -1) table.fieldList = "izdname, " + table.fieldList;
         table.dbData = resultArray;
 

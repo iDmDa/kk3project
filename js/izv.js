@@ -1,13 +1,22 @@
 class IzvTableGenerator {
 
+    constructor() {
+        if(typeof IzvTableGenerator.instance === 'object') {
+            return IzvTableGenerator.instance;
+        }
+
+        //this.fieldList = null;
+        IzvTableGenerator.instance = this;
+    }
+
 	tableID;
     tabName;
 	layerID;
     dbData;
-    fieldList;
+    static fieldList;
     showLine;
     midTitle;
-    static find;
+    find;
 
     bigTitle() {
         let tabName = !this.tabName ? "Таблица" : this.tabName;
@@ -94,7 +103,7 @@ class IzvTableGenerator {
     }
 
     tbodyColRules (colName, dbLine) {
-        console.log("tbodyColRules");
+        //console.log("tbodyColRules");
         let td = document.createElement("td");
         let itemID = `${dbLine["id"]}_${colName}_${this.dbData[0]["db"]}`;
         let value = `${dbLine[colName]}`;
@@ -231,7 +240,7 @@ class IzvTableGenerator {
             xhr.onload = function () {
                 let id = xhr.response; //Результат запроса
                 //resultArray = JSON.parse(resp);
-                console.log("id: " + id);
+                //console.log("id: " + id);
 
                 tablediv.innerHTML = "";
                 let sendObject = {
@@ -247,7 +256,7 @@ class IzvTableGenerator {
     }
 
     loadAllFileIcon() {
-        console.log("loadAllFileIcon");
+        //console.log("loadAllFileIcon");
         let td = document.querySelectorAll('[id$="_scan_docwork"]');
         let items = [];
         td.forEach(item => {
@@ -355,6 +364,6 @@ function izvfindbox(tabid) {
                 "find": findline.value
             }
             izvLoad(sendObject);
-            console.log(`tabid: ${tabid}; findline.value: ${findline.value}`);
+            //console.log(`tabid: ${tabid}; findline.value: ${findline.value}`);
     });
 }

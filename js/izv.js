@@ -257,13 +257,17 @@ class IzvTableGenerator {
         if(localStorage.getItem('sort_col') == "1") {
             colSort.classList.add("sortColumn");
         }
+        if(localStorage.getItem('sort_col') == null) {
+            colSort.classList.add("unSortColumn");
+        }
         colSort.addEventListener("click", function(event) {
             colSort.classList.toggle("sortColumn");
+            colSort.classList.toggle("unSortColumn");
             if(colSort.classList.contains("sortColumn")) {
                 localStorage.setItem('sort_col', "1");
             }
             else {
-                localStorage.setItem('sort_col', "0");
+                localStorage.removeItem('sort_col');
             }
 
             let sendObject = {

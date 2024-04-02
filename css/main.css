@@ -404,14 +404,14 @@ u {
 	white-space: pre; /* Разрешить использование символа переноса строки */
 }
 
-.sortColumn::before {
+.sortColumn::after {
     content: "\25BC"; /* Unicode символ для треугольника вниз */
     display: inline-block; /* Позволяет элементу быть встроенным в текст */
-    margin-right: 5px; /* Пространство между символом и текстом */
+    margin-left: 5px; /* Пространство между символом и текстом */
 }
 
-.unSortColumn::before {
-    content: "\25A0"; /* Unicode символ для треугольника вниз */
+.unSortColumn::after {
+    content: "\25B6"; /* Unicode символ для треугольника вниз */
     display: inline-block; /* Позволяет элементу быть встроенным в текст */
-    margin-right: 5px; /* Пространство между символом и текстом */
+    margin-left: 5px; /* Пространство между символом и текстом */
 }

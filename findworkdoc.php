@@ -483,6 +483,7 @@ function startfind_mail() {
 		"baseLayer": "findmail",
 		"tabNumber": "-1",
 		"page": 0,
+		"fieldList": "datevh, nomervh, adresvh, contentvh, scanvh, countlistvh, sumnormchasvh, datereg, nomerreg, datecontrol, prim, dateish, nomerish, adresish, contentish, scanish, countlistish, sumnormchasish, fioispish",
 		"find": findcontentmail.value
 	};
 	xhrLoad(sendObject);

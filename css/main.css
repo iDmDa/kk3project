@@ -444,4 +444,14 @@ u {
 	position: absolute;
 	top: 50%;
 	transform: translate(-50%, -50%);
+	cursor: pointer;
+}
+
+#test_ver_div2:hover {
+	color: red;
+}
+
+#test_ver_div1 span{
+	cursor: pointer;
+	text-decoration: underline;
 }

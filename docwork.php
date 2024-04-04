@@ -146,12 +146,42 @@ if(isset($_POST['add'])) {
 //echo "izv";
 ?>
 <div id="test_version">
-	<div id = "test_ver_div1">Тестовая версия (переключиться в старую версию)</div>
-	<div id = "test_ver_div2">❌</div>
+	<div id = "test_ver_div1"></div>
+	<div id = "test_ver_div2">✖</div>
 </div>
 <script>
 	try {
-		docworkfindbox(<?=$_GET['id']?>);
+		
+		let msg1 = document.getElementById("test_version");
+		if(sessionStorage.getItem("msg1_hide") == "1") msg1.style.display = "none";
+		function msg_view(msg1) {
+			if(localStorage.getItem("docwork_test_table") == null){
+				msg1.childNodes[1].innerHTML = "Тестовая версия (<span>переключиться в старую версию</span>)";
+				document.cookie = "onlyNew=0";
+			}
+			else {
+				msg1.childNodes[1].innerHTML = "Старая версия (<span>переключиться в новую версию</span>)";
+				document.cookie = "onlyNew=1";
+			}
+		}
+
+		msg_view(msg1)
+
+		msg1.addEventListener("click", function(event){
+			if(event.target.nodeName == "SPAN" ) {
+				if(localStorage.getItem("docwork_test_table") == null) localStorage.setItem("docwork_test_table", "old");
+				else localStorage.removeItem("docwork_test_table");
+				msg_view(msg1);
+				refresh('docwork.php', 'varframe', "&id=" + izdelieid);
+			}
+
+			if(event.target.id == "test_ver_div2") {
+				msg1.style.display = "none";
+				sessionStorage.setItem("msg1_hide", "1");
+			}
+		})
+
+		if(localStorage.getItem("docwork_test_table") == null) docworkfindbox(<?=$_GET['id']?>);
 	}
 	catch {
 		console.log("errrrrrr");
@@ -164,7 +194,7 @@ if(isset($_POST['add'])) {
 		"page": 0, 
 		"find": ""
 	}
-    docworkLoad(sendObject);
+    if(localStorage.getItem("docwork_test_table") == null) docworkLoad(sendObject);
 </script>
 
 
@@ -184,7 +214,7 @@ if(isset($_POST['add'])) {
 
 
 <?
-//exit;
+if($_COOKIE["onlyNew"] != "1") exit;
 require ("megatable.php");
 
 if($_GET['print'] == 1) echo "<link href='css/litemgtable.css' rel='stylesheet'>";

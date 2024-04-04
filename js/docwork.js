@@ -116,9 +116,11 @@ class DocworkTableGenerator {
                 break;
             case "scan":
                 td.id = itemID;
+                td.style.width = 65 + "px";
                 break;
-            case "trudoemc":
+            case "chernovik":
                 td.id = itemID;
+                td.style.width = 65 + "px";
                 break;
             case "date":
                 td.id = itemID;

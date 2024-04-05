@@ -25,6 +25,7 @@ class MailTableGenerator {
         // console.log("fieldList: " + this.fieldList);
         // console.log("find: " + this.find);
         // console.log("--------");
+        console.log(this.fieldList);
         let tabName = !this.tabName ? "Таблица" : this.tabName;
         let tr = document.createElement("tr")
         let td = document.createElement("td");
@@ -462,7 +463,7 @@ function xhrLoad (sendObject) {
     xhr.onload = function () {
         let resp = xhr.response; //Результат запроса
         resultArray = JSON.parse(resp);
-
+        console.log(resultArray);
         let baseLayer = !sendObject.baseLayer ? "varframe" : sendObject.baseLayer;
         let tableLayerName = !sendObject.tableLayerName ? "tablediv" : sendObject.tableLayerName;
 
@@ -481,7 +482,7 @@ function xhrLoad (sendObject) {
         // console.log("table.fieldList: " + table.fieldList);
         if(typeof sendObject.fieldList !== "undefined") table.fieldList = sendObject.fieldList;
         table.tabName = "Переписка";
-        if(sendObject.tabNumber == 0 || sendObject.tabNumber == -1) table.fieldList = "izdname, " + table.fieldList;
+        if(sendObject.tabNumber == 0 || sendObject.tabNumber == -1) if(table.fieldList.indexOf("izdname") < 0) table.fieldList = "izdname, " + table.fieldList;
         table.dbData = resultArray;
 
         table.createTable();

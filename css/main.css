@@ -455,3 +455,8 @@ u {
 	cursor: pointer;
 	text-decoration: underline;
 }
+
+.table_body_block tr:nth-child(2n) {
+	/*background-color: rgb(222, 237, 237);*/
+	/*background-color: rgb(215, 230, 230);*/
+}

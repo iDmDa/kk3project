@@ -130,6 +130,7 @@ width:100%;
 	font-size:12px;
 	font-weight: 600;
 	margin: 2px;
+	user-select: none;
 }
 
 .close_catalog .menuitem {
@@ -152,14 +153,13 @@ width:100%;
 	display: none;
 }
 
-.menuitem:hover {
+.menuitem:hover, .topmenuitem:hover {
 	background: linear-gradient(to right, pink, pink);
 	/*background-color:pink;*/
 }
 
-.topmenuitem:hover {
-	background: linear-gradient(to right, pink, pink);
-	/*background-color:pink;*/
+.menuitem:active, .topmenuitem:active {
+	background: linear-gradient(to right, rgb(255, 155, 171),  rgb(255, 155, 171));
 }
 
 .menuactive {

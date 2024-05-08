@@ -1,16 +1,3 @@
-div1 {
-	padding: 5px;	/*поля внутри элемента; */
-	border: dashed 1px orange;  /* окантовка*/
-}
-
-table1 {
-	border: dashed 1px orange; /* */
-}
-
-td1 {
-	border: dashed 1px orange; /* */	}
-
-
 body{
 	margin: 0;
 	padding: 0;

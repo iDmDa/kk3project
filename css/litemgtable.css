@@ -1,7 +1,7 @@
 .autotable { 
-	width: 100%; /* Ширина таблицы */
-	/*border: 4px double black; /* Рамка вокруг таблицы */
-	border-collapse: collapse; /* Отображать только одинарные линии */
+	width: 100%; /* пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ */
+	/*border: 4px double black; /* пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ */
+	border-collapse: collapse; /* пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ */
 	font-family: "Trebuchet MS", Helvetica, sans-serif; 
 	/*border: solid 1px orange; /* */
 	/*background: #FDE7A1;/*
@@ -13,8 +13,8 @@
 }
 
 .simplefield, .notsimplefield { 
-	padding: 5px; /* Поля вокруг содержимого ячеек */
-	/*border: 1px solid #D19405; /* Граница вокруг ячеек */
+	padding: 5px; /* пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ */
+	/*border: 1px solid #D19405; /* пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ */
 	/*font-family: "Trebuchet MS", Helvetica, sans-serif; */
 	/*font-family: Georgia, serif; */
 	/*font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif; */
@@ -38,7 +38,7 @@
 	font-size:15px;
 	font-weight: bold;
 	/* background: #F2AD53; */
-	/*background: linear-gradient(to top, #55ABFF, #AAD8EB);  //цвет низ, верх (to top) */
+	/*background: linear-gradient(to top, #55ABFF, #AAD8EB);  //пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ (to top) */
    }
 
 .table_header { 
@@ -59,21 +59,6 @@
 	/*background: linear-gradient(to top, #8ac5ff, #8ac5ff);*/
 }
 
-
-
-   .tablebox1 { 
-    width: 100%; /* Ширина таблицы */
-    //border: 4px double black; /* Рамка вокруг таблицы */
-    border-collapse: collapse; /* Отображать только одинарные линии */
-    background: #FDE7A1;
-    box-shadow: 0 0 3px;
-   }
-   th1 { 
-    text-align: left; /* Выравнивание по левому краю */
-    //background: #ccc; /* Цвет фона ячеек */
-    padding: 5px; /* Поля вокруг содержимого ячеек */
-    border: 1px solid black; /* Граница вокруг ячеек */
-   }
 
 
    .table_title_header1 { 

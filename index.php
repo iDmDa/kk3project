@@ -1,4 +1,7 @@
-<?session_start();?>
+<?
+	session_start();
+	require("pluglogin/login.php");
+?>
 <!DOCTYPE html>
 <html>
     <head>

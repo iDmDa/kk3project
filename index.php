@@ -1,23 +1,23 @@
 <?
 	session_start();
-	require("pluglogin/login.php");
+	require("login/login.php");
 ?>
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
         <title>Проекты КК-3</title>
-	<link href="jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet">
-	<link href="css/main.css?v=<?=time();?>" rel="stylesheet">
-	<link href="css/megatable.css?v=<?=time();?>" rel="stylesheet">
-	<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
-	<link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
-	<link rel="manifest" href="favicon_io/site.webmanifest">
-	<style>
+		<link href="jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet">
+		<link href="css/main.css?v=<?=time();?>" rel="stylesheet">
+		<link href="css/megatable.css?v=<?=time();?>" rel="stylesheet">
+		<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
+		<link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
+		<link rel="manifest" href="favicon_io/site.webmanifest">
+		<style>
 
-	</style>
+		</style>
 
     </head>
     <body>
@@ -42,37 +42,36 @@ require ("dbconnect.php");
 var activefile = "none"; //переменная для определения текущей страницы для обновления страницы
 var contentold={};   //объявляем переменную для хранения неизменного текста
 var contentid = 0;
-      function savedata(elementidsave,contentsave) {   // функция для сохранения отредактированного текста с помощью ajax
-        $.ajax({
-                    url: 'save.php',				// php файл в который отправляется запрос
-                    type: 'POST',				//метод POST
-                    data: {
-                              content: contentsave,     	//первый параметр запроса
-                              id:elementidsave		//второй параметр
-                    },				
-                    success:function (data) {      	//в случае удачи выполения запросов выполняется
+function savedata(elementidsave,contentsave) {   // функция для сохранения отредактированного текста с помощью ajax
+	$.ajax({
+		url: 'save.php',				// php файл в который отправляется запрос
+		type: 'POST',				//метод POST
+		data: {
+			content: contentsave,     	//первый параметр запроса
+			id:elementidsave		//второй параметр
+		},				
+		success:function (data) {      	//в случае удачи выполения запросов выполняется
+			if (data == contentsave)   //сервер прислал нам отредактированый текст, значит всё ок
+			{                                                                      
+				$('#'+elementidsave).html(data);        //записываем присланные данные от сервера в элемент, который редактировался
+			}
+		}
+	});
+};
 
-                        if (data == contentsave)   //сервер прислал нам отредактированый текст, значит всё ок
-                        {                                                                      
-                          $('#'+elementidsave).html(data);        //записываем присланные данные от сервера в элемент, который редактировался
-                        }
-                    }
-                   });
-       };
+function update_db(id_pole_table,contentsave) {   // функция для сохранения отредактированного текста с помощью ajax
+	$.ajax({
+		url: 'save.php',				// php файл в который отправляется запрос
+		type: 'POST',				//метод POST
+		data: {
+			content: contentsave,     	//первый параметр запроса
+			id:id_pole_table		//второй параметр
+		},				
+		success:function (data) {      	//в случае удачи выполения запросов выполняется
 
-      function update_db(id_pole_table,contentsave) {   // функция для сохранения отредактированного текста с помощью ajax
-        $.ajax({
-                    url: 'save.php',				// php файл в который отправляется запрос
-                    type: 'POST',				//метод POST
-                    data: {
-                              content: contentsave,     	//первый параметр запроса
-                              id:id_pole_table		//второй параметр
-                    },				
-                    success:function (data) {      	//в случае удачи выполения запросов выполняется
-
-                    }
-                   });
-       };
+		}
+	});
+};
 
 function findsave(){					//сохраняет найденный в фокусе текст
 $('[contenteditable="true"]').unbind();  //уничтожить ранее вызванный элемент

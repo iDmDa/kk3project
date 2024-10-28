@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="login/style.css?v=<?=time();?>" rel="stylesheet" />
+    <title>Авторизация</title>
+</head>
+
+<body>
+    <div>
+        <form id="loginForm" method="post">
+            <div class="name">Авторизация</div>
+            <div class="login-box">
+                <label for="log">Логин:</label>
+                <input id="log" name="log" type="text" />
+            </div>
+            <div class="pass-box">
+                <label for="pass">Пароль:</label>
+                <input id="pass" name="pass" type="password" />
+            </div>
+            <div>
+                <button type="submit" id="enterButton">Войти</button>
+                <button id="newUser">Регистрация</button>
+            </div>
+        </form>
+
+        <form id="regForm" method="post" style="display: none;">
+            <div class="name">Регистрация</div>
+            <div class="login-box">
+                <label for="log">Логин:</label>
+                <input id="log" name="log" type="text" />
+            </div>
+            <div class="pass-box">
+                <label for="pass">Пароль:</label>
+                <input id="pass" name="pass" type="password" />
+            </div>
+            <div class="name-box">
+                <label for="name">Пароль:</label>
+                <input id="name" name="name" type="text" />
+            </div>
+            <div>
+                <button type="submit" id="regButton">Регистрация</button>
+            </div>
+        </form>
+    </div>
+    <script src="login/md5.min.js"></script>
+    <script src="login/logscr.js?v=<?=time();?>"></script>
+</body>
+
+</html>

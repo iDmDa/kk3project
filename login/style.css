@@ -1,10 +1,4 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
+#loginLayer {
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -15,8 +9,13 @@ body {
   font-size: 13px;
   background: #DDEEEE;
 }
-
-#loginForm, #regForm {
+#loginLayer * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+#loginLayer #loginForm,
+#loginLayer #regForm {
   display: flex;
   background-color: whitesmoke;
   flex-direction: column;
@@ -27,7 +26,8 @@ body {
   gap: 15px;
   position: relative;
 }
-#loginForm .name, #regForm .name {
+#loginLayer #loginForm .name,
+#loginLayer #regForm .name {
   display: flex;
   padding: 5px;
   flex-direction: row;
@@ -38,18 +38,25 @@ body {
   margin: -11px -11px 5px -11px;
   width: 350px;
 }
-#loginForm .login-box, #loginForm .pass-box, #regForm .login-box, #regForm .pass-box {
+#loginLayer #loginForm .login-box,
+#loginLayer #loginForm .pass-box,
+#loginLayer #regForm .login-box,
+#loginLayer #regForm .pass-box {
   width: 100%;
 }
-#loginForm input, #regForm input {
+#loginLayer #loginForm input,
+#loginLayer #regForm input {
   width: 100%;
   height: 22px;
+  padding: 0px 7px;
 }
-#loginForm button, #regForm button {
+#loginLayer #loginForm button,
+#loginLayer #regForm button {
   width: 100px;
   height: 25px;
   background: linear-gradient(to top, #BAC1E1, #D2D5E1);
 }
-#loginForm button:hover, #regForm button:hover {
+#loginLayer #loginForm button:hover,
+#loginLayer #regForm button:hover {
   background: linear-gradient(to top, #D2D5E1, #BAC1E1);
 }/*# sourceMappingURL=style.css.map */

@@ -348,24 +348,26 @@ function newlocate(func, table, newdetid, id, newpos){
 	<div class = 'menuitem_header'></div>
 	<?include('divtree.php');?>
 	<div id = "menu_edit_field" class = 'button_field button_layer' style = 'display:none;float:left;'>
-		<a onClick = okno_settings('dialog','&htag=dialog&dbtable=izdelie');><img src = 'include/new window.png' title = ''></a>
+		<a onClick = "okno_settings('dialog','&htag=dialog&dbtable=izdelie');"><img src = 'include/new window.png' title = ''></a>
 	</div>
 </div>
 
 <div id = "right_box">
 	<div id = "topmenu_box">
 		<div>
-			<div class = 'topmenuitem' onClick=menuchoice('0','1');>Договорные документы</div>
-			<div class = 'topmenuitem' onClick=menuchoice('0','2');>Документы и работа</div>
-			<div class = 'topmenuitem' onClick=menuchoice('0','izv');>Извещения</div>
-			<div class = 'topmenuitem' onClick=menuchoice('0','3');>Переписка</div>
-			<div class = 'topmenuitem' style = "color:red;" onClick=menuchoice('0','ctrl');>На контроле</div>
-			<div class = 'topmenuitem' onClick=menuchoice('0','4');>Контрагенты</div>
-			<!--<div class = 'topmenuitem' onClick=menuchoice('0','5');>Статистика</div>-->
-			<div class = 'topmenuitem' onClick=menuchoice('0','6');>Развитие проекта</div>
-			<div class = 'topmenuitem' onClick=menuchoice('0','7');>Выборка документов</div>
+			<div class = 'topmenuitem' onClick="menuchoice('0','1');">Договорные документы</div>
+			<div class = 'topmenuitem' onClick="menuchoice('0','2');">Документы и работа</div>
+			<div class = 'topmenuitem' onClick="menuchoice('0','izv');">Извещения</div>
+			<div class = 'topmenuitem' onClick="menuchoice('0','3');">Переписка</div>
+			<div class = 'topmenuitem' style = "color:red;" onClick="menuchoice('0','ctrl');">На контроле</div>
+			<div class = 'topmenuitem' onClick="menuchoice('0','4');">Контрагенты</div>
+			<!--<div class = 'topmenuitem' onClick="menuchoice('0','5');">Статистика</div>-->
+			<div class = 'topmenuitem' onClick="menuchoice('0','6');">Развитие проекта</div>
+			<div class = 'topmenuitem' onClick="menuchoice('0','7');">Выборка документов</div>
 		</div>
+		<div class="space_filer"></div>
 		<div id = "open_close"><a onclick = 'open_edit();'><img src='include/lock.png' alt='закрыто'></a></div>
+		<div id="menu_box"></div>
 	</div>
 	<div id = "varframe"></div>
 </div>

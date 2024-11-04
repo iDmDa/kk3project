@@ -1,0 +1,454 @@
+body{
+	margin: 0;
+	padding: 0;
+	background: #DDEEEE;
+	display: flex;
+	flex-direction: row;
+	scrollbar-width: thin;
+}
+
+html, body{ 
+	height: 100%; 
+}
+
+
+/* слои внутри базовой таблицы*/
+#leftmenu_box {
+	/*position: fixed;*/
+	width: 150px;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+#right_box {
+	display: flex;
+	flex-direction: column;
+	width: 100vw;
+	margin-left: 5px;
+	overflow: auto;
+}
+
+#menuframe {  /*  div поле со списком изделий (внутри ячейки izdeliecell) */
+	height:100vh; 
+	overflow: auto;
+	overflow-y: scroll;
+}
+
+#varframe { /* поле для загрузки (внутри ячейки cellforload)*/
+	font-family: "Trebuchet MS", Helvetica, sans-serif; 
+	font-size:13px;
+	overflow: auto;
+	scrollbar-width: thin;
+	height: 100%;
+}
+
+#loader_layer { /* слой для анимации загрузки */
+	position: fixed;
+	left:155px;
+	top:40px;
+	right:0px;
+	bottom:0px;
+	background: #DDEEEE;
+	z-index: 999;
+	opacity: 0.7;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.layer_center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/******************* слои внутри базовой таблицы*/
+
+/* таблица со списком изделий*/
+#leftmenu1 {  /*  таблица со списком изделий */
+width:100%;
+}
+
+.menufielditem {  /*  ячейки с индексами изделий */
+width:100%;
+}
+
+
+
+/******************* таблица со списком изделий*/
+#topmenu_box {
+	display: flex;
+	flex-direction: row;
+	background:#DDEEEE;
+	height: 30px;
+	margin-top: 1px;
+	margin-bottom: 9px;
+	margin-left: 1px;
+	justify-content: space-between;
+	.space_filer {
+		flex: 1;
+	}
+	div {
+		display: flex;
+		flex-direction: row;
+		/*justify-content: flex-start;*/
+	}
+	#menu_box {
+		margin-right: 15px;
+	}
+}
+
+/* стили слоев ячеек меню */
+.menuitem {
+	background: linear-gradient(to top, #BAC1E1, #D2D5E1);
+	/*background:#C2CBE1; */
+	border: solid 1px DarkBlue;
+	border-radius: 6px; 
+	max-width:100%;
+	padding: 5px;	/*поля внутри элемента; */
+	font-family: "Trebuchet MS", Helvetica, sans-serif; 
+	font-size:12px;
+	font-weight: 600;
+}
+
+.topmenuitem {
+	background: linear-gradient(to top, #BAC1E1, #D2D5E1);
+	/*background:#C2CBE1; */
+	border: solid 1px DarkBlue;
+	border-radius: 6px; 
+	padding: 5px;	/*поля внутри элемента; */
+	font-family: "Trebuchet MS", Helvetica, sans-serif; 
+	font-size:12px;
+	font-weight: 600;
+	margin: 2px;
+	user-select: none;
+}
+
+.close_catalog .menuitem {
+	background:none;
+	/*background:#C2CBE1; */
+	border: solid 0px DarkBlue;
+	border-radius: 0px; 
+	max-width:0px;
+	padding: 0px;	/*поля внутри элемента; */
+	font-family: "Trebuchet MS", Helvetica, sans-serif; 
+	font-size:12px;
+	font-weight: 600;
+}
+
+.menuitem_header {
+	background-color:#dddddd;
+	max-width:100%;
+	padding: 4px;	/*поля внутри элемента; */
+	text-align: center;
+	display: none;
+}
+
+.menuitem:hover, .topmenuitem:hover {
+	background: linear-gradient(to right, pink, pink);
+	/*background-color:pink;*/
+}
+
+.menuitem:active, .topmenuitem:active {
+	background: linear-gradient(to right, rgb(255, 155, 171),  rgb(255, 155, 171));
+}
+
+.menuactive {
+	background: linear-gradient(to right, lime, lime);
+	/*background-color:lime;*/
+}
+
+.treemenuactive {
+	/*background: linear-gradient(to right, lime, lime);*/
+	/*background-color:lime;*/
+	font-family: "Trebuchet MS", Helvetica, sans-serif; 
+	font-size:12px;
+	font-weight: 600;
+	background: lime;
+}
+
+li span:hover {
+	/*background: linear-gradient(to right, pink, pink);*/
+	/*background-color:pink;*/
+}
+
+ul {
+	padding: 0;
+	margin: 0;
+list-style-position: outside;
+/*list-style-image: url(../include/treeimg/open.gif);*/
+}
+
+.li_style {
+	list-style-type: none;
+	/*background-image : url(../include/treeimg/i.gif);
+	background-position : top left;
+	background-repeat : repeat-y;*/
+	padding-left: 18px;
+	text-indent: -18px; /* смещение первой строки текста*/
+	zoom: 1;
+}
+
+.vertical_line {
+	list-style-type: none;
+	background-image : url(../include/treeimg/i.gif);
+	background-position : top left;
+	background-repeat : repeat-y;
+	padding-left: 18px;
+	text-indent: -18px; /* смещение первой строки текста*/
+	zoom: 1;
+}
+
+.vertical_line_down {
+	list-style-type: none;
+	background-image : url(../include/treeimg/l.gif);
+	background-position : top left;
+	background-repeat : repeat-y;
+	padding-left: 18px;
+	text-indent: -18px; /* смещение первой строки текста*/
+	zoom: 1;
+}
+
+/*li div {
+    background-image: url(../include/treeimg/expand_leaf.gif);
+}*/
+
+li span {
+	font-family: "Trebuchet MS", Helvetica, sans-serif; 
+	font-weight: 600;
+	font-size:12px;
+	
+}
+
+.pattern_field {
+	width: 18px;
+	height: 18px;
+	position: relative;
+	left: -18px; /* смещение блока относительно первоначального положения*/
+/*background: lime;*/
+	background-image: url(../include/treeimg/t.gif);
+	float: left;
+}
+
+.pattern_field_up {
+	width: 18px;
+	height: 18px;
+	position: relative;
+	left: -18px; /* смещение блока относительно первоначального положения*/
+/*background: lime;*/
+	background-image: url(../include/treeimg/t.gif);
+	float: left;
+}
+
+.pattern_field_down {
+	width: 18px;
+	height: 18px;
+	position: relative;
+	left: -18px; /* смещение блока относительно первоначального положения*/
+/*background: lime;*/
+	background-image: url(../include/treeimg/l.gif);
+	float: left;
+}
+
+.catalog_open_field {
+	background-image: url(../include/treeimg/expand_minus.gif);
+}
+
+.catalog_minus {
+	width: 18px;
+	height: 18px;
+	position: relative;
+	background-image: url(../include/treeimg/minus.gif);
+	left: -36px; 
+	float: left;
+}
+
+.catalog_txt {
+	text-indent: -36px;
+}
+
+.begin_field1 {
+	background-image: url(../include/treeimg/expand_leaf.gif);
+}
+
+.end_field {
+	background-image: url(../include/treeimg/i_half.gif);
+}
+
+.catalog_open {
+	display: block;
+}
+
+.catalog_close {
+	display: none;
+}
+
+/************** стили ячеек меню */
+
+
+#open_close {  /* поле с замком */
+	/*right: 30px; */
+	height: 30px;
+	width: 30px;
+	margin-right: -15px;
+	margin-top: 7px;
+	float: right; 
+	align-self: center;
+}
+
+.topmenuitem, .menuitem, .treemenuitem {
+	cursor: default;
+}
+
+.notshow_any {
+	display: none;
+}
+
+.scrollbar {
+	scrollbar-width: thin;
+}
+
+#menu_edit_field {
+	padding-bottom: 30px;
+}
+
+.mailbox_pages {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin-top: 20px;
+	margin-bottom: 50px;
+}
+
+.mailbox_pages div {
+	width: fit-content;
+	margin-left: 2px;
+	margin-right: 2px;
+}
+
+.regstyle {
+	background-color: #d2e3e3;
+}
+
+#inbox {
+	position: relative;
+	border-width: 0px;
+}
+
+#inbox div {
+	margin-left: 3px;
+}
+
+#iconPanel {
+	position: absolute;
+	display: flex;
+  	inset: 4px 5px 2px 2px;
+	flex-direction: row;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+[data-colrule]:hover {
+	background: linear-gradient(to right, rgb(237, 221, 221), rgb(237, 221, 221));
+}
+
+u {
+	color: crimson;
+}
+
+#tablediv {
+	overflow: auto;
+	scrollbar-width: thin;
+	height: calc(100% - 35px);
+}
+
+#findlayer {
+	margin-top: 3px;
+	margin-bottom: 10px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+#findlayer input{
+	margin-left: 3px;
+}
+
+  
+.mailQuestion {
+    /*display: inline-block; /* Строчно-блочный элемент */
+    position: relative; /* Относительное позиционирование */
+}
+
+.mailQuestion:hover::after {
+    /*content: attr(data-title); /* Выводим текст */
+	content: attr(data-title) "\a" attr(data-second-line); /* Используем \A для перевода на новую строку */
+    position: absolute; /* Абсолютное позиционирование */
+    left: 20%; top: 30%; /* Положение подсказки */
+    z-index: 1; /* Отображаем подсказку поверх других элементов */
+    background: rgba(255,255,230,0.9); /* Полупрозрачный цвет фона */
+    font-family: Arial, sans-serif; /* Гарнитура шрифта */
+    font-size: 13px; /* Размер текста подсказки */
+    padding: 5px 10px; /* Поля */
+    border: 1px solid #333; /* Параметры рамки */
+	/*white-space: nowrap;/* Текст не переносится на новую строку */
+	white-space: pre; /* Разрешить использование символа переноса строки */
+}
+
+.sortColumn::after {
+    content: "\25BC"; /* Unicode символ для треугольника вниз */
+    display: inline-block; /* Позволяет элементу быть встроенным в текст */
+    margin-left: 5px; /* Пространство между символом и текстом */
+}
+
+.unSortColumn::after {
+    content: "\25B6"; /* Unicode символ для треугольника вниз */
+    display: inline-block; /* Позволяет элементу быть встроенным в текст */
+    margin-left: 5px; /* Пространство между символом и текстом */
+}
+
+#test_version {
+	background-color: #ffcb00;
+	height: 30px;
+	margin-bottom: 10px;
+	max-width: 100vw;
+	align-content: center;
+	justify-content: center;
+	display: grid;
+	font-weight: bold;
+	position: relative;
+}
+
+#test_version div {
+	
+}
+
+#test_ver_div1 {
+	position: absolute;
+	transform: translate(-50%, -50%);
+	top: 50%;
+  	left: 50%;
+}
+
+#test_ver_div2 {
+	right: 10px;
+	position: absolute;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	cursor: pointer;
+}
+
+#test_ver_div2:hover {
+	color: red;
+}
+
+#test_ver_div1 span{
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.table_body_block tr:nth-child(2n) {
+	/*background-color: rgb(222, 237, 237);*/
+	/*background-color: rgb(215, 230, 230);*/
+}

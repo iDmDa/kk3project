@@ -228,6 +228,7 @@
 
     #tree_button_favorites div {
         background-image: url('tree_star.png');
+        background-image: url('svg_star.svg');
         background-size: 20px;
         display: inline-block;
         width: 20px;

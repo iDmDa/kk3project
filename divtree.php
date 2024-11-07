@@ -249,10 +249,23 @@
     }
 
     .tree_favorites {
-        border-color: goldenrod!important;
-        border-style: solid!important;
-        border: 2px;
+        position: relative;
+        border-color: #B8860B!important;
+        /*border-style: solid!important;/*
+        /*border: 2px;*/
     }
+
+    .tree_favorites::before {
+        content: "";
+        background-image: url('svg_star.svg');
+        display: inline-block;
+        width: 13px; 
+        height: 13px;
+        background-size: contain;
+        position: relative;
+        margin: -2px auto;
+    }
+
 
 </style>
 </head>

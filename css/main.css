@@ -286,7 +286,7 @@ li span {
   /*right: 30px; */
   height: 30px;
   width: 30px;
-  margin-right: -15px;
+  margin-right: 0px;
   margin-top: 7px;
   float: right;
   align-self: center;

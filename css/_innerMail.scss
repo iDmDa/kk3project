@@ -1,0 +1,93 @@
+$btnColor: blue;
+@mixin colHeaderStyle {
+    padding: 5px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    vertical-align: top;
+    background: linear-gradient(to top, #AAD8EB, #AAD8EB);
+    cursor: pointer;
+    user-select: none;    
+}
+
+.btnInnerMail {
+    color:#666666;
+    /*font-weight: lighter;*/
+    color: white; /* Основной цвет текста */
+    font-weight: lighter;
+    text-shadow: 
+        1px 1px 0px $btnColor,   /* Обводка справа и снизу */
+        -1px -1px 0px $btnColor, /* Обводка слева и сверху */
+        1px -1px 0px $btnColor,  /* Обводка справа и сверху */
+        -1px 1px 0px $btnColor;  /* Обводка слева и снизу */
+}
+
+.innerMail {
+    border-collapse: collapse;
+
+    td {
+        border: solid 1px black;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .tableHeader {
+        td {
+            padding: 5px;
+            text-align: center;
+            font-size: 15px;
+            font-weight: bold;
+            background: linear-gradient(to top, #55ABFF, #AAD8EB);
+        }
+    }
+
+    .groupHeader {
+        td {
+            padding: 5px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: bold;
+            vertical-align: top;
+            background: linear-gradient(to top, #8ac5ff, #8ac5ff);
+        }
+        .outbox {
+            border-left-width: 2px;
+        }
+    }
+    
+    .colHeader {
+        td {
+            @include colHeaderStyle;      
+        }
+        .nomer {
+            width: 25px;
+        }
+        .datevh {
+            width: 70px;
+        }
+        .scanvh, .scanish {
+            min-width: 45px;
+        }
+        .sumnormchasvh {
+            width: 50px;
+        }
+        .dateish {
+            border-left-width: 2px; 
+            width: 70px;
+        }
+        .sumnormchasish {
+            width: 50px;
+        }
+    }
+
+    tbody {
+        .nomer {
+            @include colHeaderStyle;
+        }
+        .dateish {
+            border-left-width: 2px; 
+        }
+    }
+}

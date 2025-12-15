@@ -1,6 +1,5 @@
 <?
 	session_start();
-	require("login/login.php");
 ?>
 <!DOCTYPE html>
 <html>
@@ -74,8 +73,8 @@ function update_db(id_pole_table,contentsave) {   // функция для со�
 };
 
 function findsave(){					//сохраняет найденный в фокусе текст
-$('[contenteditable="true"]').unbind();  //уничтожить ранее вызванный элемент
-$('[contenteditable="true"]')                 // поиск всех элементов где contenteditable="true"
+	$('[contenteditable="true"]').unbind();  //уничтожить ранее вызванный элемент
+	$('[contenteditable="true"]')                 // поиск всех элементов где contenteditable="true"
 	.mousedown(function (e)                       //  обрабатываем событие нажатие мышки 
 	{
 		if(contentid != this.id) //блокировать повторное переназначение исходного текста
@@ -117,8 +116,7 @@ $('[contenteditable="true"]')                 // поиск всех элеме�
 	});
 };
 
-function refresh(loadfile, htag, getdata) 
-{
+function refresh(loadfile, htag, getdata) {
 	$.ajax({
 
 	success: function(data)
@@ -133,8 +131,8 @@ function refresh(loadfile, htag, getdata)
 
 }; 
 
-function add_refresh(table, field, fieldvalue, loadfile, htag, getdata) 
-{
+
+function add_refresh(table, field, fieldvalue, loadfile, htag, getdata) {
 	console.log("(add_refresh)");
 	$.ajax({
 	url: 'add.php?table=' + table + "&field=" + field + "&value=" + fieldvalue, 
@@ -146,17 +144,15 @@ function add_refresh(table, field, fieldvalue, loadfile, htag, getdata)
 }; 
 
 var pass= 1;
-function delete_refresh(table, id, loadfile, htag, getdata) 
-{
-x=prompt('Введите пароль для удаления:', 'Введите: 1');
-if (x==pass) 
-	delete_refresh_pass(table, id, loadfile, htag, getdata);
-else  
-	alert('Вы ввели неправильный пароль.');
+function delete_refresh(table, id, loadfile, htag, getdata) {
+	x=prompt('Введите пароль для удаления:', 'Введите: 1');
+	if (x==pass) 
+		delete_refresh_pass(table, id, loadfile, htag, getdata);
+	else  
+		alert('Вы ввели неправильный пароль.');
 }
 
-function delete_refresh_pass(table, id, loadfile, htag, getdata) 
-{
+function delete_refresh_pass(table, id, loadfile, htag, getdata) {
 	$.ajax({
 	url: 'delete.php?table=' + table + "&id=" + id,
 	success: function(data)
@@ -171,8 +167,7 @@ function delete_refresh_pass(table, id, loadfile, htag, getdata)
 
 var izdelieid=0;
 var sectionid=0;
-function menuchoice(izdelie, section)
-{
+function menuchoice(izdelie, section) {
 	if (izdelie != 0 ) {izdelieid = izdelie;}
 	if (section != 0 ) {sectionid = section;}
 	if (izdelieid != 0 && sectionid != 0) {loadsection(izdelieid, sectionid);}
@@ -184,8 +179,7 @@ function menuchoice(izdelie, section)
 	if (sectionid == 25) {loadsection(izdelieid, sectionid);}
 };
 
-function loadsection(izdelieid, sectionid)
-{
+function loadsection(izdelieid, sectionid) {
 	switch (sectionid)
 	{
 	case "1":
@@ -204,6 +198,18 @@ function loadsection(izdelieid, sectionid)
 	case "ctrl":
 		document.getElementById("varframe").innerHTML = "";
 		refresh('mailbox.php', 'varframe', "&id=0");
+	break;
+
+	case "innermail":
+		document.getElementById("varframe").innerHTML = "";
+		//refresh('api/innermail.php', 'varframe', "&id=0");
+		console.log(`innermail: ${izdelieid}, ${sectionid}`);
+		import("./js/innerMail/script.js?v=<?=time();?>")
+			.then(module => {
+				// Вызываем функцию из модуля
+				module.loadInnerMail(izdelieid);
+			})
+			.catch(err => console.error("Ошибка загрузки innermail script.js:", err));
 	break;
 
 	case "izv":
@@ -236,6 +242,7 @@ function loadsection(izdelieid, sectionid)
 	break;
 	}
 };
+
 var zamok = 0;
 var x_ecopass = 0;
 function open_edit()
@@ -244,8 +251,7 @@ function open_edit()
 	if(sectionid != 1 || x_ecopass==ecopass) {all_open();}
 };
 
-function all_open()
-{
+function all_open() {
 	zamok = 1;
 	$('.simplefield').attr('contenteditable', 'true');
 	$('.dateinput').removeAttr('readonly');
@@ -359,10 +365,11 @@ function newlocate(func, table, newdetid, id, newpos){
 			<div class = 'topmenuitem' onClick="menuchoice('0','2');">Документы и работа</div>
 			<div class = 'topmenuitem' onClick="menuchoice('0','izv');">Извещения</div>
 			<div class = 'topmenuitem' onClick="menuchoice('0','3');">Переписка</div>
+			<div class = 'topmenuitem btnInnerMail' onClick="menuchoice('0','innermail');">Внутренняя переписка</div>
 			<div class = 'topmenuitem' style = "color:red;" onClick="menuchoice('0','ctrl');">На контроле</div>
 			<div class = 'topmenuitem' onClick="menuchoice('0','4');">Контрагенты</div>
 			<!--<div class = 'topmenuitem' onClick="menuchoice('0','5');">Статистика</div>-->
-			<div class = 'topmenuitem' onClick="menuchoice('0','6');">Развитие проекта</div>
+			<div class = 'topmenuitem' onClick="menuchoice('0','6');">Описание</div>
 			<div class = 'topmenuitem' onClick="menuchoice('0','7');">Выборка документов</div>
 		</div>
 		<div class="space_filer"></div>

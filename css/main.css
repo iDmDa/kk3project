@@ -443,4 +443,86 @@ u {
 .table_body_block tr:nth-child(2n) {
   /*background-color: rgb(222, 237, 237);*/
   /*background-color: rgb(215, 230, 230);*/
+}
+
+.btnInnerMail {
+  color: #666666;
+  /*font-weight: lighter;*/
+  color: white; /* Основной цвет текста */
+  font-weight: lighter;
+  text-shadow: 1px 1px 0px blue, -1px -1px 0px blue, 1px -1px 0px blue, -1px 1px 0px blue; /* Обводка слева и снизу */
+}
+
+.innerMail {
+  border-collapse: collapse;
+}
+.innerMail td {
+  border: solid 1px black;
+}
+.innerMail a {
+  text-decoration: none;
+}
+.innerMail .tableHeader td {
+  padding: 5px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: bold;
+  background: linear-gradient(to top, #55ABFF, #AAD8EB);
+}
+.innerMail .groupHeader td {
+  padding: 5px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+  vertical-align: top;
+  background: linear-gradient(to top, #8ac5ff, #8ac5ff);
+}
+.innerMail .groupHeader .outbox {
+  border-left-width: 2px;
+}
+.innerMail .colHeader td {
+  padding: 5px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+  vertical-align: top;
+  background: linear-gradient(to top, #AAD8EB, #AAD8EB);
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+.innerMail .colHeader .nomer {
+  width: 25px;
+}
+.innerMail .colHeader .datevh {
+  width: 70px;
+}
+.innerMail .colHeader .scanvh, .innerMail .colHeader .scanish {
+  min-width: 45px;
+}
+.innerMail .colHeader .sumnormchasvh {
+  width: 50px;
+}
+.innerMail .colHeader .dateish {
+  border-left-width: 2px;
+  width: 70px;
+}
+.innerMail .colHeader .sumnormchasish {
+  width: 50px;
+}
+.innerMail tbody .nomer {
+  padding: 5px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+  vertical-align: top;
+  background: linear-gradient(to top, #AAD8EB, #AAD8EB);
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+.innerMail tbody .dateish {
+  border-left-width: 2px;
 }/*# sourceMappingURL=main.css.map */

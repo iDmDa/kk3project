@@ -176,8 +176,8 @@ li span:hover {
 ul {
 	padding: 0;
 	margin: 0;
-list-style-position: outside;
-/*list-style-image: url(../include/treeimg/open.gif);*/
+	list-style-position: outside;
+	/*list-style-image: url(../include/treeimg/open.gif);*/
 }
 
 .li_style {
@@ -246,7 +246,7 @@ li span {
 	height: 18px;
 	position: relative;
 	left: -18px; /* смещение блока относительно первоначального положения*/
-/*background: lime;*/
+	/*background: lime;*/
 	background-image: url(../include/treeimg/l.gif);
 	float: left;
 }
@@ -452,3 +452,5 @@ u {
 	/*background-color: rgb(222, 237, 237);*/
 	/*background-color: rgb(215, 230, 230);*/
 }
+
+@import 'innerMail';

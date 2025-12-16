@@ -24,6 +24,7 @@ $btnColor: blue;
 
 .innerMail {
     border-collapse: collapse;
+    margin-bottom: 20px;
 
     td {
         border: solid 1px black;
@@ -90,4 +91,12 @@ $btnColor: blue;
             border-left-width: 2px; 
         }
     }
+}
+
+.pagesBlock {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 50px;
+    gap: 4px;
 }

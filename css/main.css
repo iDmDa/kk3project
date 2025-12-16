@@ -97,31 +97,21 @@ html, body {
 }
 
 /* стили слоев ячеек меню */
-.menuitem {
+.menuitem, .topmenuitem {
   background: linear-gradient(to top, #BAC1E1, #D2D5E1);
-  /*background:#C2CBE1; */
-  border: solid 1px DarkBlue;
-  border-radius: 6px;
-  max-width: 100%;
-  padding: 5px; /*поля внутри элемента; */
-  font-family: "Trebuchet MS", Helvetica, sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.topmenuitem {
-  background: linear-gradient(to top, #BAC1E1, #D2D5E1);
-  /*background:#C2CBE1; */
   border: solid 1px DarkBlue;
   border-radius: 6px;
   padding: 5px; /*поля внутри элемента; */
   font-family: "Trebuchet MS", Helvetica, sans-serif;
   font-size: 12px;
   font-weight: 600;
-  margin: 2px;
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
+}
+
+.topmenuitem {
+  margin: 2px;
 }
 
 .close_catalog .menuitem {
@@ -455,6 +445,7 @@ u {
 
 .innerMail {
   border-collapse: collapse;
+  margin-bottom: 20px;
 }
 .innerMail td {
   border: solid 1px black;
@@ -525,4 +516,12 @@ u {
 }
 .innerMail tbody .dateish {
   border-left-width: 2px;
+}
+
+.pagesBlock {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 50px;
+  gap: 4px;
 }/*# sourceMappingURL=main.css.map */

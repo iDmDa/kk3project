@@ -1,15 +1,16 @@
 import { iconLinkCreate } from "./iconLinkCreate.js";
+import { listNum } from "./listNum.js";
 import { loadDBTable } from "./loadBDTable.js";
 
 export function loadInnerMail(izdelieid, page = -1) {
 
     function tbodyCreate(data) {
         let tbody = "";
-        console.log("data: ", data[0])
-        if(data[0]) data[0].forEach((item, i) => {
+        console.log("data: ", data)
+        if(data) data.forEach((item, i) => {
             let tr = /*html*/`
             <tr>
-                <td class="nomer">${i+1}</td>
+                <td class="nomer" data-id="${item.id}">${i+1}</td>
                 <td class="datevh" data-column="datevh">${item.datevh}</td>
                 <td class="nomervh" data-column="nomervh">${item.nomervh}</td>
                 <td class="adresvh" data-column="adresvh">${item.adresvh}</td>
@@ -35,6 +36,7 @@ export function loadInnerMail(izdelieid, page = -1) {
     }
 
     const varframe = document.getElementById("varframe");
+    varframe.innerHTML = "";
     const tableHeader = /*html*/`
         <thead class="table_header_block" id="table_header_block">
             <tr class="tableHeader">
@@ -74,12 +76,18 @@ export function loadInnerMail(izdelieid, page = -1) {
         const table = /*html*/`
             <table id="table_${izdelieid}" class="innerMail">
                 ${tableHeader}
-                ${tbodyCreate(data)}
+                ${tbodyCreate(data[0])}
             </table>
         `;
 
         const maintable = document.createRange().createContextualFragment(table);
         varframe.append(maintable);
+
+        varframe.append(listNum(data.pages, izdelieid, page)); //Страницы
+
+        varframe.scrollTop = varframe.scrollHeight - varframe.clientHeight; //Прокрутка страницы вниз
+        //varframe.scrollTo({ top: varframe.scrollHeight, behavior: 'smooth' }); //Прокрутка вниз плавно
+
     });
 
 

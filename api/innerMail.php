@@ -41,7 +41,7 @@ $pageSize = 100;
 $totalPages = ceil($totalResults / $pageSize);
 
 // Получим данные для последней страницы
-$startLine = $page > 0 ? $page * $pageSize : ($totalPages - 1) * $pageSize;
+$startLine = $page >= 0 ? $page * $pageSize : ($totalPages - 1) * $pageSize;
 
 $sortfield = "if(datevh != '', datevh, dateish) as summ ";
 $sortirovka = "if(summ = '' or summ is null, 1, 0), SUBSTRING_INDEX(summ,'.',-1), SUBSTRING_INDEX(SUBSTRING_INDEX(summ,'.',2),'.',-1), SUBSTRING_INDEX(summ,'.',1), id";
@@ -65,7 +65,7 @@ try {
     $result = findLinks($result, $pdo);
     
     if ($result) {
-        echo json_encode([$result, $totalPages]);
+        echo json_encode([$result, "pages" => $totalPages]);
     } else {
         //echo "Пользователь не найден.";
     }

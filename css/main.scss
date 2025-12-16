@@ -100,29 +100,19 @@ width:100%;
 }
 
 /* стили слоев ячеек меню */
-.menuitem {
+.menuitem, .topmenuitem {
 	background: linear-gradient(to top, #BAC1E1, #D2D5E1);
-	/*background:#C2CBE1; */
 	border: solid 1px DarkBlue;
 	border-radius: 6px; 
-	max-width:100%;
 	padding: 5px;	/*поля внутри элемента; */
 	font-family: "Trebuchet MS", Helvetica, sans-serif; 
 	font-size:12px;
 	font-weight: 600;
+	user-select: none;
 }
 
 .topmenuitem {
-	background: linear-gradient(to top, #BAC1E1, #D2D5E1);
-	/*background:#C2CBE1; */
-	border: solid 1px DarkBlue;
-	border-radius: 6px; 
-	padding: 5px;	/*поля внутри элемента; */
-	font-family: "Trebuchet MS", Helvetica, sans-serif; 
-	font-size:12px;
-	font-weight: 600;
 	margin: 2px;
-	user-select: none;
 }
 
 .close_catalog .menuitem {

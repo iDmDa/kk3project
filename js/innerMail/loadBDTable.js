@@ -11,7 +11,6 @@ export function loadDBTable(izdelieid, page) {
     })
     .then(res => res.json())
     .then(data => {
-        //console.log(data)
         return data;
     });
         

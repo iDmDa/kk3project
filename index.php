@@ -38,6 +38,7 @@ require ("dbconnect.php");
 <script type="text/javascript" src="include/jquery.slimscroll.min.js"></script>
 
 <script>
+window.openStatus = "fff";
 var activefile = "none"; //переменная для определения текущей страницы для обновления страницы
 var contentold={};   //объявляем переменную для хранения неизменного текста
 var contentid = 0;
@@ -244,10 +245,12 @@ function loadsection(izdelieid, sectionid) {
 };
 
 var zamok = 0;
+
 var x_ecopass = 0;
 function open_edit()
 {
 	zamok = 1;
+	window.openStatus = "1";
 	if(sectionid != 1 || x_ecopass==ecopass) {all_open();}
 };
 
@@ -272,6 +275,7 @@ function open_eco_edit()
 {
 	x_ecopass=prompt('Введите пароль:', '');
 	if (x_ecopass==ecopass) {
+		window.openStatus = "1";
 		zamok = 1;
 		all_open();
 		$('#eco_pass_field').empty()
@@ -283,6 +287,7 @@ function open_eco_edit()
 function close_edit()
 {
 	zamok = 0;
+	window.openStatus = "0";
 	x_ecopass = 0;
 	$('.simplefield').attr('contenteditable', 'false');
 	$('.dateinput').attr('readonly', 'readonly');

@@ -26,7 +26,7 @@ html, body{
 	flex-direction: column;
 	width: 100vw;
 	margin-left: 5px;
-	overflow: auto;
+	overflow: hidden; /*Важно*/
 }
 
 #menuframe {  /*  div поле со списком изделий (внутри ячейки izdeliecell) */
@@ -36,11 +36,14 @@ html, body{
 }
 
 #varframe { /* поле для загрузки (внутри ячейки cellforload)*/
-	font-family: "Trebuchet MS", Helvetica, sans-serif; 
-	font-size:13px;
-	overflow: auto;
-	scrollbar-width: thin;
+	display: flex;
+	flex-direction: column;
 	height: 100%;
+	overflow: hidden;
+	font-family: "Trebuchet MS", Helvetica, sans-serif; 
+	font-size: 13px;
+	overflow-wrap: break-word; /*автоперенос свехдлинных слов*/
+	scrollbar-width: thin;
 }
 
 #loader_layer { /* слой для анимации загрузки */

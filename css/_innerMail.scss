@@ -22,6 +22,20 @@ $btnColor: blue;
         -1px 1px 0px $btnColor;  /* Обводка слева и снизу */
 }
 
+.findBoxInnerMail {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.tableBox {
+    flex: 1 1 auto;       /* занимает всё остальное */
+    overflow: auto;     /* ПРОКРУТКА ТУТ */
+    scrollbar-width: thin;
+}
+
 .innerMail {
     border-collapse: collapse;
     margin-bottom: 20px;

@@ -1,4 +1,4 @@
-export function loadDBTable(izdelieid, page) {
+export function loadData(izdelieid, page) {
     const obj = {
         izdelieid: izdelieid,
         page: page,

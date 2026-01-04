@@ -1,4 +1,4 @@
-export function varControlEvt({varName, action} = {}) {
+export function varControlEvt({varName, callback} = {}) {
     Object.defineProperty(window, `${varName}`, {
         get() { return this._value; },
         set(val) {
@@ -6,7 +6,7 @@ export function varControlEvt({varName, action} = {}) {
             //console.log("Плагин реагирует на изменение:", val);
 
             try {
-                action(val);
+                callback(val);
             }
             catch {}
         }

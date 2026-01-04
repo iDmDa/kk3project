@@ -462,7 +462,7 @@ u {
 
 .innerMail {
   border-collapse: collapse;
-  margin-bottom: 20px;
+  /*margin-bottom: 20px;*/
 }
 .innerMail td {
   border: solid 1px black;
@@ -541,4 +541,5 @@ u {
   justify-content: center;
   margin-bottom: 50px;
   gap: 4px;
+  margin-top: 20px;
 }/*# sourceMappingURL=main.css.map */

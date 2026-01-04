@@ -1,6 +1,6 @@
 import { iconLinkCreate } from "./iconLinkCreate.js";
 import { listNum } from "./listNum.js?v=1";
-import { loadData } from "./loadData.js";
+import { loadData } from "../common/loadData.js";
 
 export function createTable({layer, izdelieid, page, action} = {}) {
     function tbodyCreate(data) {
@@ -8,9 +8,9 @@ export function createTable({layer, izdelieid, page, action} = {}) {
         console.log("data: ", data)
         if(data) data.forEach((item, i) => {
             let tr = /*html*/`
-            <tr>
+            <tr data-id="${item.id}">
                 <td class="nomer" data-id="${item.id}">${i+1}</td>
-                <td class="datevh editable" data-column="datevh">
+                <td class="datevh" data-column="datevh">
                     <input class="dateinput" type="text" value="${item.datevh}">
                 </td>
                 <td class="nomervh editable" data-column="nomervh">${item.nomervh}</td>
@@ -19,11 +19,11 @@ export function createTable({layer, izdelieid, page, action} = {}) {
                 <td class="scanvh" data-column="scanvh">${iconLinkCreate(item.scanvh)}</td>
                 <td class="countlistvh editable" data-column="countlistvh">${item.countlistvh}</td>
 
-                <td class="dateish editable" data-column="dateish">
+                <td class="dateish" data-column="dateish">
                     <input class="dateinput" type="text" value="${item.dateish}">
                 </td>
                 <td class="nomerish editable" data-column="nomerish">${item.nomerish}</td>
-                <td class="bottomTitle editable" data-column="adresish">${item.adresish}</td>
+                <td class="adresish editable" data-column="adresish">${item.adresish}</td>
                 <td class="contentish editable" data-column="contentish">${item.contentish}</td>
                 <td class="scanish" data-column="scanish">${iconLinkCreate(item.scanish)}</td>
                 <td class="countlistish editable" data-column="countlistish">${item.countlistish}</td>
@@ -72,7 +72,7 @@ export function createTable({layer, izdelieid, page, action} = {}) {
         console.log("Данные получены: ", data);
 
         const table = /*html*/`
-            <table id="table_${izdelieid}" class="innerMail" data-id="${izdelieid}">
+            <table id="table_${izdelieid}" class="innerMail" data-table="mailbox" data-id="${izdelieid}">
                 ${tableHeader}
                 ${tbodyCreate(data[0])}
             </table>
@@ -86,7 +86,7 @@ export function createTable({layer, izdelieid, page, action} = {}) {
         $(".dateinput").mask("99.99.9999", {placeholder: "дд.мм.гггг" });
 
         action();
-        console.log("createTable: ", window.openStatus)
+        //console.log("createTable: ", window.openStatus)
 
         mainframe.scrollTop = mainframe.scrollHeight - mainframe.clientHeight; //Прокрутка страницы вниз
         //mainframe.scrollTo({ top: mainframe.scrollHeight, behavior: 'smooth' }); //Прокрутка вниз плавно

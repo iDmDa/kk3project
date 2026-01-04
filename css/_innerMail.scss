@@ -38,7 +38,7 @@ $btnColor: blue;
 
 .innerMail {
     border-collapse: collapse;
-    margin-bottom: 20px;
+    /*margin-bottom: 20px;*/
 
     td {
         border: solid 1px black;
@@ -113,4 +113,5 @@ $btnColor: blue;
     justify-content: center;
     margin-bottom: 50px;
     gap: 4px;
+    margin-top: 20px;
 }

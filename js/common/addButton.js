@@ -1,6 +1,6 @@
 import { addNewLine } from "./addNewLine.js";
 
-export function addButton({table, id, hide, callback} = {}) {
+export function addButton({table, id, hide, reload} = {}) {
     const button = /*html*/`
         <div class="addButton">
             <img src="./include/addline.png">
@@ -14,9 +14,8 @@ export function addButton({table, id, hide, callback} = {}) {
             table: table, 
             id: id, 
             hide: hide,
-            callback: () => callback(),
+            reload: () => reload(),
         }
-        console.log("adb: ", data);
         addNewLine(data);
     })
     return addButton;

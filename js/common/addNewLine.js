@@ -1,4 +1,4 @@
-export function addNewLine({table, id, hide, callback} = {}) {
+export function addNewLine({table, id, hide, reload} = {}) {
     const obj = {
         table: table,
         id: id,
@@ -12,8 +12,8 @@ export function addNewLine({table, id, hide, callback} = {}) {
     })
     .then(res => res.json())
     .then(data => {
-        if (callback && typeof callback === "function") {
-            callback();  // Передаем данные в колбэк
+        if (reload && typeof reload === "function") {
+            reload();  // Передаем данные в колбэк
         }
         return data;
     });

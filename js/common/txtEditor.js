@@ -11,18 +11,23 @@ export function txtEditor(el) {
                 defaultValue = editElement.innerHTML;
             }            
         }
+        
     })
 
     el.addEventListener('focusout', (e) => {
-        console.log('Смена фокуса с элемента: ', e.target, e.target.innerHTML);
-        console.log('Элемент: ', e.target.closest("table").dataset.table, e.target.dataset.column, e.target.closest("tr").dataset.id);
+        
         const data = {
             table: e.target.closest("table").dataset.table,
-            column: e.target.dataset.column,
+            column: e.target.closest("td").dataset.column,
             id: e.target.closest("tr").dataset.id,
             content: e.target.innerHTML,
         }
         if(defaultValue !== e.target.innerHTML) saveData(data);
+        if(e.target.classList.contains("dateinput") && window.openStatus == "1") {
+            data.content = e.target.value;
+            saveData(data);
+            console.log("sv: ", e.target.value, data, window.openStatus);
+        }
     });
 
     el.addEventListener("keydown", e => {

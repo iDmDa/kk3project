@@ -3,6 +3,8 @@ import { createTable } from "./createTable.js";
 import { findInTable } from "./findInTable.js";
 import { txtEditor } from "../common/txtEditor.js";
 import { varControlEvt } from "../common/varControl.js";
+import { state } from "./state.js";
+import { editFunctions } from "./editFunctions.js";
 
 export function loadInnerMail(izdelieid, page = -1) {
 
@@ -14,40 +16,21 @@ export function loadInnerMail(izdelieid, page = -1) {
     const varframe = document.getElementById("varframe");
     const maintable = document.createRange().createContextualFragment(content);
     varframe.append(maintable);
-        
-    createTable({layer: ".tableBox", izdelieid: izdelieid, page: page, action: () => action({value: window.openStatus})});
+
+    state.openStatus = window.openStatus;
+    console.log("(script)state.openStatus: ", state.openStatus);
+
+    createTable({layer: ".tableBox", izdelieid: izdelieid, page: page})
+    
     findInTable({layer: ".findBoxInnerMail"});
 
     //action(window.openStatus);
-    varControlEvt({varName: "openStatus", callback: (val) => action({value: val})});
+    varControlEvt({varName: "openStatus", callback: (val) => {
+        console.log("Триггер varControlEvt")
+        editFunctions({openStatus: val, reload: () => createTable({layer: ".tableBox", izdelieid: izdelieid, page: page})});
+        state.openStatus = val;
+    }});
 
     const table = document.querySelector(".tableBox");
     txtEditor(table);
-}
-
-function action({value} = {}) {
-    const tableBox = document.querySelector(".tableBox");
-    const table = document.querySelector(".innerMail");
-    const editable = table.querySelectorAll(".editable");
-
-    const tabInfo = {
-        table: table.dataset.table,
-        id: table.dataset.id,
-        hide: 0,
-        callback: () => createTable({layer: ".tableBox", izdelieid: table.dataset.id, page: -1, action: () => action({value: value})}),
-    }
-
-    if(value === "1") {
-        console.log("editable ", editable)
-        editable.forEach(item => {
-            item.setAttribute("contenteditable", "true");
-        })
-        table.after(addButton(tabInfo));
-    }
-    if(value !== "1") {
-        editable.forEach(item => {
-            item.removeAttribute("contenteditable", "true");
-        })
-        tableBox.querySelector(".addButton")?.remove(); // '?' проверяет существование объекта и если есть запускает функцию
-    }
 }

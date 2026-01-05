@@ -1,17 +1,21 @@
 import { iconLinkCreate } from "./iconLinkCreate.js";
 import { listNum } from "./listNum.js?v=1";
 import { loadData } from "../common/loadData.js";
+import { varControlEvt } from "../common/varControl.js";
+import { state } from "./state.js";
+import { editFunctions } from "./editFunctions.js";
 
-export function createTable({layer, izdelieid, page, action} = {}) {
+export function createTable(ctx = {}) {
+    const {layer, izdelieid, page} = ctx;
     function tbodyCreate(data) {
         let tbody = "";
-        console.log("data: ", data)
+        //console.log("data: ", data)
         if(data) data.forEach((item, i) => {
             let tr = /*html*/`
             <tr data-id="${item.id}">
                 <td class="nomer" data-id="${item.id}">${i+1}</td>
                 <td class="datevh" data-column="datevh">
-                    <input class="dateinput" type="text" value="${item.datevh}">
+                    <input class="dateinput" type="text" readonly="readonly" value="${item.datevh}">
                 </td>
                 <td class="nomervh editable" data-column="nomervh">${item.nomervh}</td>
                 <td class="adresvh editable" data-column="adresvh">${item.adresvh}</td>
@@ -20,7 +24,7 @@ export function createTable({layer, izdelieid, page, action} = {}) {
                 <td class="countlistvh editable" data-column="countlistvh">${item.countlistvh}</td>
 
                 <td class="dateish" data-column="dateish">
-                    <input class="dateinput" type="text" value="${item.dateish}">
+                    <input class="dateinput" type="text" readonly="readonly" value="${item.dateish}">
                 </td>
                 <td class="nomerish editable" data-column="nomerish">${item.nomerish}</td>
                 <td class="adresish editable" data-column="adresish">${item.adresish}</td>
@@ -81,12 +85,17 @@ export function createTable({layer, izdelieid, page, action} = {}) {
         const maintable = document.createRange().createContextualFragment(table);
 
         mainframe.append(maintable);
-        mainframe.append(listNum({allPages: data.pages, izdelieid: izdelieid, activePage: page, action: () => action()})); //Поле со счетчиком страниц
+        mainframe.append(listNum({allPages: data.pages, activePage: page, clkEvt: (data) => {
+            createTable({...ctx, page: data - 1}) //Функция будет вызвана по клику номера страницы
+        }})); //Поле со счетчиком страниц
         
         $(".dateinput").mask("99.99.9999", {placeholder: "дд.мм.гггг" });
 
-        action();
-        //console.log("createTable: ", window.openStatus)
+        editFunctions({openStatus: window.openStatus, reload: () => createTable({...ctx, page: -1})});
+        
+        console.log("(createTable)window.openStatus: ", window.openStatus)
+        console.log("(createTable)state.openStatus: ", state.openStatus)
+        console.log("(createTable)ctx: ", ctx)
 
         mainframe.scrollTop = mainframe.scrollHeight - mainframe.clientHeight; //Прокрутка страницы вниз
         //mainframe.scrollTo({ top: mainframe.scrollHeight, behavior: 'smooth' }); //Прокрутка вниз плавно

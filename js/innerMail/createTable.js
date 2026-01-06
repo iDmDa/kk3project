@@ -2,7 +2,7 @@ import { iconLinkCreate } from "./iconLinkCreate.js";
 import { listNum } from "./listNum.js?v=1";
 import { loadData } from "../common/loadData.js";
 import { varControlEvt } from "../common/varControl.js";
-import { state } from "./state.js";
+import { state } from "../common/state.js";
 import { editFunctions } from "./editFunctions.js";
 
 export function createTable(ctx = {}) {

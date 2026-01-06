@@ -3,8 +3,9 @@ import { createTable } from "./createTable.js";
 import { findInTable } from "./findInTable.js";
 import { txtEditor } from "../common/txtEditor.js";
 import { varControlEvt } from "../common/varControl.js";
-import { state } from "./state.js";
+import { state } from "../common/state.js";
 import { editFunctions } from "./editFunctions.js";
+import { fileChoiceEvt } from "./fileChoiceEvt.js";
 
 export function loadInnerMail(izdelieid, page = -1) {
 
@@ -31,6 +32,8 @@ export function loadInnerMail(izdelieid, page = -1) {
         state.openStatus = val;
     }});
 
-    const table = document.querySelector(".tableBox");
-    txtEditor(table);
+    const tableBox = document.querySelector(".tableBox");
+    txtEditor(tableBox);
+    fileChoiceEvt({evtPoint: tableBox})
 }
+

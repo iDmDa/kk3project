@@ -11,7 +11,6 @@ export function txtEditor(el) {
                 defaultValue = editElement.innerHTML;
             }            
         }
-        
     })
 
     el.addEventListener('focusout', (e) => {

@@ -1,9 +1,9 @@
 import { moveResize } from "./moveResize.js";
 
-export function createWindow ({windowClass = "tmpWin", headerName = "Список файлов", content = ""} = {}) {
-    if(document.querySelector(`.${windowClass}`)) document.querySelector(`.${windowClass}`).remove();
+export function createWindow ({windowClass = "tmpWin", headerName = "Список файлов", content = "", contentLoader} = {}) {
+    document.querySelector(`.${windowClass}`)?.remove();
     const window = /*html*/ `
-        <div class="modalWindowBox ${windowClass}">
+        <div class="modalWindowBox ${windowClass}" style="height: 200px">
             <div class="tmp_box">
 
                 <div class="tmp_header">
@@ -26,4 +26,6 @@ export function createWindow ({windowClass = "tmpWin", headerName = "Списо�
     const body = document.querySelector("body");
     body.append(fragment);
     moveResize({slideLayer: body, windowClass: `.${windowClass}`});
+
+    contentLoader();
 }

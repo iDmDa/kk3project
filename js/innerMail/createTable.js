@@ -1,12 +1,14 @@
 import { iconLinkCreate } from "./iconLinkCreate.js";
 import { listNum } from "./listNum.js?v=1";
-import { loadData } from "../common/loadData.js";
+import { loadData } from "./loadData.js";
 import { varControlEvt } from "../common/varControl.js";
 import { state } from "../common/state.js";
 import { editFunctions } from "./editFunctions.js";
 
 export function createTable(ctx = {}) {
     const {layer, izdelieid, page} = ctx;
+    state.mainTable = () => createTable(ctx);
+
     function tbodyCreate(data) {
         let tbody = "";
         //console.log("data: ", data)
@@ -20,7 +22,7 @@ export function createTable(ctx = {}) {
                 <td class="nomervh editable" data-column="nomervh">${item.nomervh}</td>
                 <td class="adresvh editable" data-column="adresvh">${item.adresvh}</td>
                 <td class="contentvh editable" data-column="contentvh">${item.contentvh}</td>
-                <td class="scanvh" data-column="scanvh">${iconLinkCreate(item.scanvh)}</td>
+                <td class="scanvh" data-column="scanvh" data-type = "1">${iconLinkCreate(item.scanvh)}</td>
                 <td class="countlistvh editable" data-column="countlistvh">${item.countlistvh}</td>
 
                 <td class="dateish" data-column="dateish">
@@ -29,7 +31,7 @@ export function createTable(ctx = {}) {
                 <td class="nomerish editable" data-column="nomerish">${item.nomerish}</td>
                 <td class="adresish editable" data-column="adresish">${item.adresish}</td>
                 <td class="contentish editable" data-column="contentish">${item.contentish}</td>
-                <td class="scanish" data-column="scanish">${iconLinkCreate(item.scanish)}</td>
+                <td class="scanish" data-column="scanish" data-type = "2">${iconLinkCreate(item.scanish)}</td>
                 <td class="countlistish editable" data-column="countlistish">${item.countlistish}</td>
                 <td class="fioispish editable" data-column="fioispish">${item.fioispish}</td>
             </tr>`;
@@ -43,7 +45,7 @@ export function createTable(ctx = {}) {
     const mainframe = document.querySelector(layer);
     mainframe.innerHTML = "";
     const tableHeader = /*html*/`
-        <thead class="table_header_block" id="table_header_block">
+        <thead class="headerSection">
             <tr class="tableHeader">
                 <td colspan="999">Внутренняя переписка и служебные записки</td>
             </tr>
@@ -96,6 +98,16 @@ export function createTable(ctx = {}) {
         console.log("(createTable)window.openStatus: ", window.openStatus)
         console.log("(createTable)state.openStatus: ", state.openStatus)
         console.log("(createTable)ctx: ", ctx)
+
+        /* анимация удаления строки из таблицы
+        document.querySelectorAll("tr").forEach(item => {
+            item.addEventListener("click", () => {
+                item.classList.add("hide");
+                setTimeout(() => {
+                    item.remove(); // или display: none
+                }, 200);
+            })
+        })*/
 
         mainframe.scrollTop = mainframe.scrollHeight - mainframe.clientHeight; //Прокрутка страницы вниз
         //mainframe.scrollTo({ top: mainframe.scrollHeight, behavior: 'smooth' }); //Прокрутка вниз плавно

@@ -14,24 +14,29 @@ export function editFunctions(ctx = {}) {
         reload: () => reload(),
     }
 
+    tableBox.querySelector(".addButton")?.remove();
+
     if(openStatus === "1") {
         editable.forEach(item => item.setAttribute("contenteditable", "true"))
         dateinput.forEach(item => item.removeAttribute("readonly"))
         table.after(addButton(tabInfo));
-        scanIco({icon: "on"});
+        newWindowIcon({icon: "on"});
     }
     if(openStatus !== "1") {
         editable.forEach(item => item.removeAttribute("contenteditable", "true"))
         dateinput.forEach(item => item.setAttribute("readonly", "readonly"))
         tableBox.querySelector(".addButton")?.remove(); // '?' проверяет существование объекта и если есть запускает функцию
-        scanIco({icon: "off"});
+        newWindowIcon({icon: "off"});
     }
 
-    function scanIco({icon} = {}) {
+    function newWindowIcon({icon} = {}) {
         const scanCell = table.querySelectorAll("tbody .scanvh, tbody .scanish");
         const addFileBtn = /*html*/`
             <img class="addFileBtn" src="./include/new window.png" style="float: right;">
         `;
+
+        document.querySelectorAll(".addFileBtn")?.forEach(item => item.remove());
+
         if(icon === "on") {
             scanCell.forEach(item => {
                 const fragment = document.createRange().createContextualFragment(addFileBtn);

@@ -9,7 +9,7 @@ function createIcons(resultArray, scanArr) {
         let a = document.createElement("a");
         let img = document.createElement("img");
         let textNode = document.createTextNode(" ");
-        a.href = `/projectdata/${resultArray[i]["tabname"]}/${resultArray[i]["prefix"]}_${resultArray[i]["filename"]}`;
+        a.href = `/projectdata/${resultArray[i]["local_path"]}/${resultArray[i]["prefix"]}_${resultArray[i]["filename"]}`;
         a.target = "_blank";
         extList.indexOf(filetype) < 0 ? img.src = `include/ico/unknow.png` : img.src = `include/ico/${filetype}.png`;
         img.title = `${resultArray[i]["filename"]}`;

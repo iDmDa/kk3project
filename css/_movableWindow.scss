@@ -1,13 +1,14 @@
 .modalWindowBox {
-    width: 400px;
+    width: 500px;
     z-index: 99999;
     position: fixed;
     font-family: "Trebuchet MS", Helvetica, sans-serif;
+    font-size: 13px;
     top: 35%;
-    left: 50%;
+    left: 40%;
     box-shadow: 0 8px 24px rgba(0,0,0,0.15);
     border-radius: 8px;
-    background: #fff;
+    background: #DDEEEE;
     overflow: hidden;
     border: 1px black solid;
     user-select: none; /* базовая защита от выделения */
@@ -15,6 +16,10 @@
     .tmp_hide {
         display: none;
         color: brown;
+    }
+
+    .fileListTable {
+        width: 100%;
     }
 
     .tmp_box {

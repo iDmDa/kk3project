@@ -36,9 +36,27 @@ $btnColor: blue;
     scrollbar-width: thin;
 }
 
-.innerMail {
+.innerMail, .fileListTable {
     border-collapse: collapse;
     /*margin-bottom: 20px;*/
+
+    tr {
+        transition: opacity 0.2s ease;
+    }
+
+    tr.hide {
+        opacity: 0;
+    }
+
+    /* анимируем содержимое */
+    tr.hide td {
+        padding-top: 0;
+        padding-bottom: 0;
+        line-height: 0;
+        font-size: 0;
+        border-width: 0;
+        transition: all 0.2s ease;
+    }
 
     td {
         border: solid 1px black;
@@ -46,6 +64,13 @@ $btnColor: blue;
 
     a {
         text-decoration: none;
+    }
+
+    .headerSection {
+        position: sticky;
+        top: 0px;
+        background: black; /*Иначе при прокрутке окантовка исчезает*/
+        border-top: 2px solid #AAD8EB;
     }
 
     .tableHeader {

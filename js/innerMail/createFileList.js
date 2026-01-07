@@ -1,0 +1,104 @@
+import { editFunctions } from "./editFunctions.js";
+import { loadFileList } from "../common/loadFileList.js";
+import { state } from "../common/state.js";
+
+export function createFileList(ctx = {}) {
+    const {layer, detid, type, tableName} = ctx;
+
+    console.log("ctx: ", ctx)
+    function tbodyCreate(data) {
+        let tbody = "";
+        //console.log("data: ", data)
+        if(data) data.forEach((item, i) => {
+            let tr = /*html*/`
+            <tr data-id="${item.id}">
+                <td class="nomer" data-id="${item.id}">${i+1}</td>
+                <td class="fileIcon" data-column="fileIcon"></td>
+                <td class="maskname editable" data-column="maskname">${item.maskname}</td>
+                <td class="prim editable" data-column="prim">${item.prim}</td>
+            </tr>`;
+
+            tbody += tr;
+        });
+        
+        return `<tbody>${tbody}</tbody>`;
+    }
+
+    const mainframe = document.querySelector(layer);
+    mainframe.innerHTML = "";
+    const tableHeader = /*html*/`
+        <thead class="headerSection">
+            <tr class="colHeader">
+                <td class="nomer">№</td>
+                <td class="fileicon">\u200B</td>
+                <td class="maskname" data-column="maskname">Имя файла</td>
+                <td class="prim" data-column="prim">Примечание</td>
+            </tr>
+        </thead>
+    `;
+    
+    loadFileList(ctx).then(data => {
+
+        console.log("(loadFileList)Данные получены: ", data);
+
+        const table = /*html*/`
+            <table class="fileListTable" data-table="uplfiles" data-id="${detid}">
+                ${tableHeader}
+                ${tbodyCreate(data)}
+            </table>
+            <div class="addFileIconBox">
+                <img src="./include/file_add.png">
+                <input type="file" id="fileInput" style="display: none;">
+            </div>
+        `;
+
+        const maintable = document.createRange().createContextualFragment(table);
+
+        mainframe.append(maintable);
+        
+        document.querySelector(".addFileIconBox img").addEventListener("click", () => {
+            document.getElementById("fileInput").click();  // Программно вызываем окно выбора файла
+        });
+
+        document.getElementById("fileInput").addEventListener("change", (event) => {
+            const files = event.target.files;
+            if (files.length > 0) {
+                sendFilesToServer(files, detid, type, tableName, () => {
+                    createFileList(ctx);
+                    state.mainTable();
+                });
+            }
+        });
+    });
+}
+
+function sendFilesToServer(files, detid, type, tableName, reload) {
+    const formData = new FormData();
+
+    formData.append("detid", detid);
+    formData.append("type", type);
+    formData.append("tableName", tableName);
+    
+    // Добавляем файлы в FormData
+    Array.from(files).forEach(file => {
+        formData.append("files[]", file);
+    });
+
+    // Отправляем файлы через fetch
+    fetch("./api/uloadFiles.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+        console.log("Файлы успешно загружены!");
+        reload();
+        } else {
+        console.error("Ошибка загрузки файлов.");
+        }
+    })
+    .catch(error => {
+        console.error("Ошибка при отправке файлов:", error);
+    });
+}

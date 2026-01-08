@@ -265,6 +265,9 @@ function all_open() {
 	$('.meganomer').addClass('context-menu-megaclass-one');
 	//$('.relocnomer').addClass('context-submenu-megaclass-one');
 	$('.relocnomer').addClass('context-document');
+	$('.docwork-context').addClass('docwork-context-menu');
+	$('.izv-context').addClass('izv-context-menu');
+	$('.mail-context').addClass('mail-context-menu');
 	$('#open_close').empty()
 	.append("<a onclick = 'close_edit();'><img src='include/lock_open.png' alt='открыто'></a>");
 	findsave();
@@ -298,6 +301,9 @@ function close_edit()
 	$('.meganomer').removeClass('context-menu-megaclass-one');
 	//$('.relocnomer').removeClass('context-submenu-megaclass-one');
 	$('.relocnomer').removeClass('context-document');
+	$('.docwork-context').removeClass('docwork-context-menu');
+	$('.izv-context').removeClass('izv-context-menu');
+	$('.mail-context').removeClass('mail-context-menu');
 	$('#open_close').empty()
 	.append("<a onclick = 'open_edit();'><img src='include/lock.png' alt='закрыто'></a>");
 	$('#eco_pass_field').empty()
@@ -423,58 +429,70 @@ $.contextMenu({  //меню удаления
     }
 });
 
+const projList = {
+	<?php 
+		$r = mysql_query("SELECT * FROM izdelie where hide <> 1 and notactive = 0 order by if(name = '', 1, 0), sort, name, id");
+		$numRows = mysql_num_rows($r);
+		$itemsPerPage = 25;
+		for($j=0; $j<($numRows/$itemsPerPage); $j++) {
+			echo "menuitem" . $j . ": {name: '" . ($j*$itemsPerPage+1) ." - " .($j+1)*$itemsPerPage ."', items: {";
+			for($i=0; $i<$itemsPerPage; $i++) {
+				$n++;
+				if ($n > $numRows) break;
+				$f = mysql_fetch_array($r);
+				echo "pos" .$i .": {name: '" .$f['name'] ."', callback: function(key, options) {newlocate('move', $(this).data('table'), '" .$f['id'] ."', $(this).data('id'), '" .$f['name'] ."');}},";
+			}
+			echo "}";
+			echo "},";
+		}
+	?>
+};
+
+//console.log("projlist: ", projList);
+
+const menuItem_Delete = {
+	name: 'Удалить',
+	callback: function(key, options) {
+		console.log("(Удалить строку) htag: " + $(this).data('htag') + "; table: " + $(this).data('table') + "; id: " + $(this).data('id') + "; getdata: " + $(this).data('getdata') + "; file: " + $(this).data('actfile'));
+		delete_refresh($(this).data('table'), $(this).data('id'), $(this).data('actfile'), $(this).data('htag'), $(this).data('getdata'));
+	}
+}
+
+const menuItem_movetoizv = {
+	name: "Перевести в раздел 'Извещение'",
+	callback: function(key, options) {
+		changeDoctype('1', this[0].dataset.id);
+		loadsection(izdelieid, sectionid);
+		console.log("(Перевести в Извещение) htag: " + $(this).data('htag') + "; table: " + $(this).data('table') + "; id: " + $(this).data('id') + "; getdata: " + $(this).data('getdata') + "; file: " + $(this).data('actfile'));
+	}
+}
+
+const menuItem_movetodoc = {
+	name: "Перевести в раздел 'Документы'",
+	callback: function(key, options) {
+		changeDoctype('0', this[0].dataset.id);
+		loadsection(izdelieid, sectionid);
+		console.log("(Перевести в Документы) htag: " + $(this).data('htag') + "; table: " + $(this).data('table') + "; id: " + $(this).data('id') + "; getdata: " + $(this).data('getdata') + "; file: " + $(this).data('actfile'));
+	}
+}
+
+const menuItem_movetoInnermail = {
+	name: "Перевести в раздел 'Внутренняя переписка'",
+	callback: function() {
+
+	}
+}
 
 $.contextMenu({  //меню удаления с подменю
     selector: '.context-document',
     items: {
-        delete: {
-			name: 'Удалить',
-			callback: function(key, options) {
-				console.log("(Удалить строку) htag: " + $(this).data('htag') + "; table: " + $(this).data('table') + "; id: " + $(this).data('id') + "; getdata: " + $(this).data('getdata') + "; file: " + $(this).data('actfile'));
-				delete_refresh($(this).data('table'), $(this).data('id'), $(this).data('actfile'), $(this).data('htag'), $(this).data('getdata'));
-			}
-		},
-
-		movetoizv: {
-			name: "Перевести в раздел 'Извещение'",
-			callback: function(key, options) {
-				changeDoctype('1', this[0].dataset.id);
-				loadsection(izdelieid, sectionid);
-				console.log("(Перевести в Извещение) htag: " + $(this).data('htag') + "; table: " + $(this).data('table') + "; id: " + $(this).data('id') + "; getdata: " + $(this).data('getdata') + "; file: " + $(this).data('actfile'));
-			}
-		},
-
-		movetodoc: {
-			name: "Перевести в раздел 'Документы'",
-			callback: function(key, options) {
-				changeDoctype('0', this[0].dataset.id);
-				loadsection(izdelieid, sectionid);
-				console.log("(Перевести в Извещение) htag: " + $(this).data('htag') + "; table: " + $(this).data('table') + "; id: " + $(this).data('id') + "; getdata: " + $(this).data('getdata') + "; file: " + $(this).data('actfile'));
-			}
-		},
-
+        delete: menuItem_Delete,
+		movetoizv: menuItem_movetoizv,
+		movetodoc: menuItem_movetodoc,
 		submenu: {
 			name: 'Переместить',
-			items: {
-				<?php 
-				$r = mysql_query("SELECT * FROM izdelie where hide <> 1 and notactive = 0 order by if(name = '', 1, 0), sort, name, id");
-				$numRows = mysql_num_rows($r);
-				$itemsPerPage = 25;
-				for($j=0; $j<($numRows/$itemsPerPage); $j++) {
-					echo "menuitem" . $j . ": {name: '" . ($j*$itemsPerPage+1) ." - " .($j+1)*$itemsPerPage ."', items: {";
-					for($i=0; $i<$itemsPerPage; $i++) {
-						$n++;
-						if ($n > $numRows) break;
-						$f = mysql_fetch_array($r);
-						echo "pos" .$i .": {name: '" .$f['name'] ."', callback: function(key, options) {newlocate('move', $(this).data('table'), '" .$f['id'] ."', $(this).data('id'), '" .$f['name'] ."');}},";
-					}
-					echo "}";
-					echo "},";
-				}
-				?>
-			}
+			items: projList,
 		},
-
         sep1: '---------',
         quit: {
 			name: 'Выйти',
@@ -482,6 +500,58 @@ $.contextMenu({  //меню удаления с подменю
 		}
     }
 });
+
+$.contextMenu({  //меню удаления с подменю
+    selector: '.docwork-context-menu',
+    items: {
+        delete: menuItem_Delete,
+		movetoizv: menuItem_movetoizv,
+		submenu: {
+			name: 'Переместить',
+			items: projList,
+		},
+        sep1: '---------',
+        quit: {
+			name: 'Выйти',
+			callback: function(key, options) {}
+		}
+    }
+});
+
+$.contextMenu({  //меню удаления с подменю
+    selector: '.izv-context-menu',
+    items: {
+        delete: menuItem_Delete,
+		movetodoc: menuItem_movetodoc,
+		submenu: {
+			name: 'Переместить',
+			items: projList,
+		},
+        sep1: '---------',
+        quit: {
+			name: 'Выйти',
+			callback: function(key, options) {}
+		}
+    }
+});
+
+$.contextMenu({  //меню удаления с подменю
+    selector: '.mail-context-menu',
+    items: {
+        delete: menuItem_Delete,
+		move: menuItem_movetoInnermail,
+		submenu: {
+			name: 'Переместить',
+			items: projList,
+		},
+        sep1: '---------',
+        quit: {
+			name: 'Выйти',
+			callback: function(key, options) {}
+		}
+    }
+});
+
 
 $( "#dialog" ).dialog({
 	autoOpen: false,

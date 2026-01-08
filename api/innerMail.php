@@ -5,6 +5,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
+function findlist($find) {
+    $findlist = "";
+    if(substr_count($find, '#') == 2) {
+        $diapazon = trim(explode("#", $find)[1]);
+        $data1 = trim(explode("-", $diapazon)[0]);
+        $data2 = trim(explode("-", $diapazon)[1]);
+
+        $data1 = trim(explode(".", $data1)[2]) ."-" .trim(explode(".", $data1)[1])."-" .trim(explode(".", $data1)[0]);
+        $data2 = trim(explode(".", $data2)[2]) ."-" .trim(explode(".", $data2)[1])."-" .trim(explode(".", $data2)[0]);
+
+        $findlist = "and ((STR_TO_DATE(datevh, '%d.%m.%Y') BETWEEN '{$data1}' AND '$data2') OR (STR_TO_DATE(dateish, '%d.%m.%Y') BETWEEN '{$data1}' AND '$data2')) ";
+        $find = trim(explode("#", $find)[2]);
+    }
+
+    if($find != null and $find != "" and $find != "undefined") {
+        $fieldForSearch = "contentvh, datevh, nomervh, adresvh, contentvh, countlistvh, dateish, nomerish, adresish, contentish, countlistish, fioispish";
+        $arrSearchList = explode(",", trim($fieldForSearch));
+        $findlist .= "and (";
+        foreach ($arrSearchList as $value) {
+            $findlist .= "{$value} LIKE '%{$find}%' or ";
+        }
+        $findlist = substr($findlist, 0, -4);
+        $findlist .= ")";
+    }
+    return $findlist;
+}
+
 // Читаем "сырое" тело запроса (JSON)
 $raw = file_get_contents('php://input');
 $data = json_decode($raw, true);
@@ -19,6 +46,7 @@ if (json_last_error() !== JSON_ERROR_NONE) {
 
 $detid = $data['izdelieid'];
 $page = (int) $data['page'];
+$filter = findlist($data['filter']);
 
 include("../dbdata.php");
 
@@ -32,7 +60,7 @@ try {
 }
 
 // Подсчитаем общее количество результатов
-$stmt = $pdo->prepare("SELECT COUNT(*) as total FROM mailbox WHERE hide = 0 AND detid = :detid");
+$stmt = $pdo->prepare("SELECT COUNT(*) as total FROM mailbox WHERE hide = 0 {$filter} AND detid = :detid");
 $stmt->execute(['detid' => $detid]);
 $totalResults = $stmt->fetchColumn();
 
@@ -45,7 +73,7 @@ $startLine = $page >= 0 ? $page * $pageSize : ($totalPages - 1) * $pageSize;
 
 $sortfield = "if(datevh != '', datevh, dateish) as summ ";
 $sortirovka = "if(summ = '' or summ is null, 1, 0), SUBSTRING_INDEX(summ,'.',-1), SUBSTRING_INDEX(SUBSTRING_INDEX(summ,'.',2),'.',-1), SUBSTRING_INDEX(summ,'.',1), id";
-$query = "SELECT *, {$sortfield} FROM mailbox where hide = 0 and detid = :detid ORDER BY {$sortirovka} LIMIT :pageSize OFFSET :startLine";
+$query = "SELECT *, {$sortfield} FROM mailbox where hide = 0 {$filter} and detid = :detid ORDER BY {$sortirovka} LIMIT :pageSize OFFSET :startLine";
 
 try {
     // Подготовка запроса

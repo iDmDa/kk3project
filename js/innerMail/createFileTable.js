@@ -1,8 +1,10 @@
 import { editFunctions } from "./editFunctions.js";
 import { loadFileList } from "../common/loadFileList.js";
 import { state } from "../common/state.js";
+import { iconLinkCreate } from "./iconLinkCreate.js";
+import { txtEditor } from "../common/txtEditor.js";
 
-export function createFileList(ctx = {}) {
+export function createFileTable(ctx = {}) {
     const {layer, detid, type, tableName} = ctx;
 
     console.log("ctx: ", ctx)
@@ -13,9 +15,8 @@ export function createFileList(ctx = {}) {
             let tr = /*html*/`
             <tr data-id="${item.id}">
                 <td class="nomer" data-id="${item.id}">${i+1}</td>
-                <td class="fileIcon" data-column="fileIcon"></td>
-                <td class="maskname editable" data-column="maskname">${item.maskname}</td>
-                <td class="prim editable" data-column="prim">${item.prim}</td>
+                <td class="maskname editable" data-column="maskname"><div class="filenameBox"><div>${iconLinkCreate([item])}</div>&nbsp;<div class="fileName" contenteditable="true">${item.maskname}</div></div></td>
+                <td class="prim editable" data-column="prim" contenteditable="true">${item.prim}</td>
             </tr>`;
 
             tbody += tr;
@@ -30,7 +31,6 @@ export function createFileList(ctx = {}) {
         <thead class="headerSection">
             <tr class="colHeader">
                 <td class="nomer">№</td>
-                <td class="fileicon">\u200B</td>
                 <td class="maskname" data-column="maskname">Имя файла</td>
                 <td class="prim" data-column="prim">Примечание</td>
             </tr>
@@ -55,6 +55,7 @@ export function createFileList(ctx = {}) {
         const maintable = document.createRange().createContextualFragment(table);
 
         mainframe.append(maintable);
+        txtEditor(mainframe);
         
         document.querySelector(".addFileIconBox img").addEventListener("click", () => {
             document.getElementById("fileInput").click();  // Программно вызываем окно выбора файла
@@ -64,7 +65,7 @@ export function createFileList(ctx = {}) {
             const files = event.target.files;
             if (files.length > 0) {
                 sendFilesToServer(files, detid, type, tableName, () => {
-                    createFileList(ctx);
+                    createFileTable(ctx);
                     state.mainTable();
                 });
             }

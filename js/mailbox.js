@@ -210,7 +210,7 @@ class MailTableGenerator {
             td = document.createElement("td");
             td.innerText = i + 1;
             td.classList.add("table_nomeric_col");
-            td.classList.add("relocnomer");
+            td.classList.add("mail-context");
             td.dataset.id = document.querySelectorAll(`#${this.tableID} tbody tr`)[i].children[1].id.split("_")[0];
             td.dataset.table = document.querySelectorAll(`#${this.tableID} tbody tr`)[i].children[1].id.split("_")[2];
             td.dataset.actfile = "mailbox.php";

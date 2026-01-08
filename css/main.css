@@ -479,6 +479,9 @@ u {
   border-width: 0;
   transition: all 0.2s ease;
 }
+.innerMail [contentEditable], .fileListTable [contentEditable] {
+  outline: none; /*Убирает синюю рамку полей contenteditable*/
+}
 .innerMail td, .fileListTable td {
   border: solid 1px black;
 }
@@ -588,6 +591,20 @@ u {
 }
 .modalWindowBox .fileListTable {
   width: 100%;
+}
+.modalWindowBox .fileListTable .filenameBox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.modalWindowBox .fileListTable .filenameBox .fileName {
+  flex: 1;
+}
+.modalWindowBox .fileListTable .prim {
+  width: 25%;
+}
+.modalWindowBox .fileListTable tbody td {
+  padding-left: 5px;
 }
 .modalWindowBox .tmp_box {
   display: flex;

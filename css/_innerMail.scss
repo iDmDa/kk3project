@@ -58,6 +58,10 @@ $btnColor: blue;
         transition: all 0.2s ease;
     }
 
+    [contentEditable] {
+        outline: none; /*Убирает синюю рамку полей contenteditable*/
+    }
+
     td {
         border: solid 1px black;
     }

@@ -1,5 +1,5 @@
 import { createWindow } from "../common/createWindow.js";
-import { createFileList } from "./createFileList.js";
+import { createFileTable } from "./createFileTable.js";
 
 export function fileChoiceEvt({evtPoint} = {}) {
     evtPoint.addEventListener("click", (e) => {
@@ -8,7 +8,7 @@ export function fileChoiceEvt({evtPoint} = {}) {
             const detid = e.target.closest("tr").dataset.id;
             const type = e.target.closest("td").dataset.type;
             const tableName = e.target.closest("table").dataset.table;
-            createWindow({contentLoader: () => createFileList({layer: ".tmp_content", detid: detid, type: type, tableName: tableName})});
+            createWindow({contentLoader: () => createFileTable({layer: ".tmp_content", detid: detid, type: type, tableName: tableName})});
             
         }
     })

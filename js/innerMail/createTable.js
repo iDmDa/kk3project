@@ -1,17 +1,15 @@
 import { iconLinkCreate } from "./iconLinkCreate.js";
 import { listNum } from "./listNum.js?v=1";
 import { loadData } from "./loadData.js";
-import { varControlEvt } from "../common/varControl.js";
 import { state } from "../common/state.js";
 import { editFunctions } from "./editFunctions.js";
 
 export function createTable(ctx = {}) {
-    const {layer, izdelieid, page} = ctx;
-    state.mainTable = () => createTable(ctx);
+    const {layer, izdelieid, page, filter, callback = () => {}} = ctx;
+    state.mainTable = (patch = {}) => createTable({...ctx, ...patch});
 
     function tbodyCreate(data) {
         let tbody = "";
-        //console.log("data: ", data)
         if(data) data.forEach((item, i) => {
             let tr = /*html*/`
             <tr data-id="${item.id}">
@@ -73,9 +71,7 @@ export function createTable(ctx = {}) {
         </thead>
     `;
      
-    loadData(izdelieid, page).then(data => {
-
-        console.log("Данные получены: ", data);
+    loadData(ctx).then(data => {
 
         const table = /*html*/`
             <table id="table_${izdelieid}" class="innerMail" data-table="mailbox" data-id="${izdelieid}">
@@ -95,9 +91,6 @@ export function createTable(ctx = {}) {
 
         editFunctions({openStatus: window.openStatus, reload: () => createTable({...ctx, page: -1})});
         
-        console.log("(createTable)window.openStatus: ", window.openStatus)
-        console.log("(createTable)state.openStatus: ", state.openStatus)
-        console.log("(createTable)ctx: ", ctx)
 
         /* анимация удаления строки из таблицы
         document.querySelectorAll("tr").forEach(item => {
@@ -111,6 +104,8 @@ export function createTable(ctx = {}) {
 
         mainframe.scrollTop = mainframe.scrollHeight - mainframe.clientHeight; //Прокрутка страницы вниз
         //mainframe.scrollTo({ top: mainframe.scrollHeight, behavior: 'smooth' }); //Прокрутка вниз плавно
+
+        callback();
 
     });
 }

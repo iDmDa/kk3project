@@ -8,7 +8,7 @@ export function iconLinkCreate(obj) {
         if(icons.indexOf(ext.toLowerCase()) < 0) ext = "unknow";
         const text = /*html*/`
             <a href="../projectdata/${link.local_path}/${link.prefix}_${link.filename}" target="_blank">
-                <img src="./include/ico/${ext}.png" title="${link.maskname}">
+                <img src="./include/ico/${ext}.png" title="${link.filename}">
             </a>
         `
         result += text;

@@ -3,7 +3,7 @@ export function listNum({allPages, activePage, clkEvt} = {}) {
     let pages = "";
     for (let i = 0; i < allPages; i++) {
         const page = /*html*/`
-            <div class="menuitem ${activePage == i ? "menuactive": ""}">${i+1}</div>
+            <div class="menuitem button ${activePage == i ? "menuactive": ""}">${i+1}</div>
         `;
         pages += page;
     }
@@ -14,7 +14,7 @@ export function listNum({allPages, activePage, clkEvt} = {}) {
 
     const pageBlock = fragment.querySelector(".pagesBlock");
     pageBlock.addEventListener("click", (e) => {
-        clkEvt(e.target.innerText);
+        if(e.target.classList.contains("button")) clkEvt(e.target.innerText);
     })
 
     return fragment;

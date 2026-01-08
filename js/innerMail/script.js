@@ -19,7 +19,7 @@ export function loadInnerMail(izdelieid, page = -1) {
     varframe.append(maintable);
 
     state.openStatus = window.openStatus;
-    console.log("(script)state.openStatus: ", state.openStatus);
+    //console.log("(script)state.openStatus: ", state.openStatus);
 
     createTable({layer: ".tableBox", izdelieid: izdelieid, page: page})
     

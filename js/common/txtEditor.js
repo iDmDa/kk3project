@@ -1,6 +1,7 @@
 import { saveData } from "./saveData.js";
 
-export function txtEditor(el) { 
+export function txtEditor(el) { //el точка привязки событий
+    //Сохранение изменений текста в полях contentEditable
     let defaultValue = "";
     let editElement;
 

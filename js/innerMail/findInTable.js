@@ -1,3 +1,5 @@
+import { state } from "../common/state.js";
+
 export function findInTable({layer} = {}) {
     const info = 
 /*html*/`Поиск по диапазону дат:
@@ -14,7 +16,7 @@ export function findInTable({layer} = {}) {
 
     const content = /*html*/`
         <span>Найти:</span>
-            <input type="search" style="width: 600px;">
+            <input class="filter" type="search" style="width: 600px;">
             <div class="mailQuestion" style="margin-left: 5px;" data-title="${info}"><img src="include/question.png">
             </div>
     `
@@ -23,4 +25,36 @@ export function findInTable({layer} = {}) {
 
     mainframe.append(resultBlock);
 
+    mainframe.addEventListener("change", (e) => {
+        if(e.target.classList.contains("filter")) {
+            state.mainTable({filter: e.target.value, callback: () => findSelect(e.target.value)});
+        }
+    })
+}
+
+function findSelect(find) {
+    // Если текст имеет символ #, то очищаем его
+    if ((find.match(/#/g) || []).length == 2) {
+        find = find.split("#")[2].trim();
+    }
+    
+    if (find == "") return;
+
+    // Находим все ячейки таблицы
+    const findSelect = document.querySelectorAll('table tbody td');
+
+    findSelect.forEach(item => {
+        // Получаем текстовое содержимое ячейки
+        let text = item.textContent || item.innerText;
+
+        // Проверяем, есть ли нужный текст с игнорированием регистра
+        if (text.match(new RegExp(find, 'gi'))) {
+            // Заменяем текст с подсветкой
+            let highlightedText = item.innerHTML.replace(
+                new RegExp(`(${find})`, 'gi'), 
+                '<u>$1</u>'
+            );
+            item.innerHTML = highlightedText;
+        }
+    });
 }

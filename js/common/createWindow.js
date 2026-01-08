@@ -3,7 +3,7 @@ import { moveResize } from "./moveResize.js";
 export function createWindow ({windowClass = "tmpWin", headerName = "Список файлов", content = "", contentLoader} = {}) {
     document.querySelector(`.${windowClass}`)?.remove();
     const window = /*html*/ `
-        <div class="modalWindowBox ${windowClass}" style="height: 200px">
+        <div class="modalWindowBox ${windowClass}" style="height: 270px">
             <div class="tmp_box">
 
                 <div class="tmp_header">

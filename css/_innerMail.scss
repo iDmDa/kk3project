@@ -105,7 +105,7 @@ $btnColor: blue;
         td {
             @include colHeaderStyle;      
         }
-        .nomer {
+        .linenumber {
             width: 25px;
         }
         .datevh {
@@ -127,7 +127,8 @@ $btnColor: blue;
     }
 
     tbody {
-        .nomer {
+        .linenumber {
+            width: 25px;
             @include colHeaderStyle;
         }
         .dateish {

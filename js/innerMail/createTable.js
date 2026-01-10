@@ -13,7 +13,7 @@ export function createTable(ctx = {}) {
         if(data) data.forEach((item, i) => {
             let tr = /*html*/`
             <tr data-id="${item.id}">
-                <td class="nomer" data-id="${item.id}">${i+1}</td>
+                <td class="linenumber mail-context" data-id="${item.id}" data-table="mailbox">${i+1}</td>
                 <td class="datevh" data-column="datevh">
                     <input class="dateinput" type="text" readonly="readonly" value="${item.datevh}">
                 </td>

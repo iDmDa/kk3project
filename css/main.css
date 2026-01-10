@@ -524,7 +524,7 @@ u {
      -moz-user-select: none;
           user-select: none;
 }
-.innerMail .colHeader .nomer, .fileListTable .colHeader .nomer {
+.innerMail .colHeader .linenumber, .fileListTable .colHeader .linenumber {
   width: 25px;
 }
 .innerMail .colHeader .datevh, .fileListTable .colHeader .datevh {
@@ -543,7 +543,8 @@ u {
 .innerMail .colHeader .sumnormchasish, .fileListTable .colHeader .sumnormchasish {
   width: 50px;
 }
-.innerMail tbody .nomer, .fileListTable tbody .nomer {
+.innerMail tbody .linenumber, .fileListTable tbody .linenumber {
+  width: 25px;
   padding: 5px;
   text-align: center;
   font-size: 12px;

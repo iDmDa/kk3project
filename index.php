@@ -429,26 +429,42 @@ $.contextMenu({  //меню удаления
     }
 });
 
-const projList = {
-	<?php 
-		$r = mysql_query("SELECT * FROM izdelie where hide <> 1 and notactive = 0 order by if(name = '', 1, 0), sort, name, id");
-		$numRows = mysql_num_rows($r);
-		$itemsPerPage = 25;
-		for($j=0; $j<($numRows/$itemsPerPage); $j++) {
-			echo "menuitem" . $j . ": {name: '" . ($j*$itemsPerPage+1) ." - " .($j+1)*$itemsPerPage ."', items: {";
-			for($i=0; $i<$itemsPerPage; $i++) {
-				$n++;
-				if ($n > $numRows) break;
-				$f = mysql_fetch_array($r);
-				echo "pos" .$i .": {name: '" .$f['name'] ."', callback: function(key, options) {newlocate('move', $(this).data('table'), '" .$f['id'] ."', $(this).data('id'), '" .$f['name'] ."');}},";
+function getIzdList(lineCount = 20) {
+	let blocks = {}, line = {}, j = 0;
+	const izdList = document.querySelectorAll('.tree_item.menuitem');
+	izdList.forEach((item, i) => {
+		line[`lineName_${i}`] = {
+			name: `${item.innerText}`, callback: function() {
+				newlocate('move', this[0].dataset.table, item.dataset.izdnomer, this[0].dataset.id, item.innerText)
 			}
-			echo "}";
-			echo "},";
 		}
-	?>
-};
+		if(i%lineCount == 0 && i > 0) {
+			blocks[`block_${j++}`] = {name: `${(j-1)*lineCount+1} - ${i}`, items: line}
+			line = {};
+		}
+	})
+	blocks[`block_${j++}`] = {name: `${(j-1)*lineCount+1} - ${izdList.length}`, items: line}
 
-//console.log("projlist: ", projList);
+	return {name: "Переместить", items: blocks};
+}
+
+/* структура меню плагина $.contextMenu
+	let obj = {
+		name: "catalog",
+		items: {
+
+			"блок1": {
+				name: "список 1",
+				items: {
+					"имя": {name: "имя3", callback: () => {}},
+					"имя1": {name: "имя4", callback: () => {}},
+				}
+			},
+
+		}
+	}
+*/
+
 
 const menuItem_Delete = {
 	name: 'Удалить',
@@ -489,10 +505,7 @@ $.contextMenu({  //меню удаления с подменю
         delete: menuItem_Delete,
 		movetoizv: menuItem_movetoizv,
 		movetodoc: menuItem_movetodoc,
-		submenu: {
-			name: 'Переместить',
-			items: projList,
-		},
+		move: getIzdList(),
         sep1: '---------',
         quit: {
 			name: 'Выйти',
@@ -506,10 +519,7 @@ $.contextMenu({  //меню удаления с подменю
     items: {
         delete: menuItem_Delete,
 		movetoizv: menuItem_movetoizv,
-		submenu: {
-			name: 'Переместить',
-			items: projList,
-		},
+		move: getIzdList(),
         sep1: '---------',
         quit: {
 			name: 'Выйти',
@@ -523,10 +533,7 @@ $.contextMenu({  //меню удаления с подменю
     items: {
         delete: menuItem_Delete,
 		movetodoc: menuItem_movetodoc,
-		submenu: {
-			name: 'Переместить',
-			items: projList,
-		},
+		move: getIzdList(),
         sep1: '---------',
         quit: {
 			name: 'Выйти',
@@ -538,12 +545,9 @@ $.contextMenu({  //меню удаления с подменю
 $.contextMenu({  //меню удаления с подменю
     selector: '.mail-context-menu',
     items: {
-        delete: menuItem_Delete,
+		delete: menuItem_Delete,
 		move: menuItem_movetoInnermail,
-		submenu: {
-			name: 'Переместить',
-			items: projList,
-		},
+		move: getIzdList(),
         sep1: '---------',
         quit: {
 			name: 'Выйти',

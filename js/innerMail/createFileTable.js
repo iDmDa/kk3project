@@ -14,7 +14,7 @@ export function createFileTable(ctx = {}) {
         if(data) data.forEach((item, i) => {
             let tr = /*html*/`
             <tr data-id="${item.id}">
-                <td class="nomer" data-id="${item.id}">${i+1}</td>
+                <td class="linenumber context-menu-megaclass-one" data-id="${item.id}" data-table="uplfiles">${i+1}</td>
                 <td class="maskname editable" data-column="maskname"><div class="filenameBox"><div>${iconLinkCreate([item])}</div>&nbsp;<div class="fileName" contenteditable="true">${item.maskname}</div></div></td>
                 <td class="prim editable" data-column="prim" contenteditable="true">${item.prim}</td>
             </tr>`;

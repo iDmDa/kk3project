@@ -11,7 +11,7 @@ export function editFunctions(ctx = {}) {
     const tabInfo = {
         table: table.dataset.table,
         id: table.dataset.id,
-        hide: 0,
+        hide: 2,
         reload: () => reload(),
     }
 

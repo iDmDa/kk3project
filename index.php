@@ -493,9 +493,22 @@ const menuItem_movetodoc = {
 }
 
 const menuItem_movetoInnermail = {
-	name: "Перевести в раздел 'Внутренняя переписка'",
+	name: "Перенести в раздел 'Внутренняя переписка'",
 	callback: function() {
-
+		import("./js/common/saveData.js?v=<?=time();?>")
+		.then(module => {
+			// Вызываем функцию из модуля
+			const data = {
+				table: this[0].dataset.table,
+				column: 'hide',
+				id: this[0].dataset.id,
+				content: 2,
+			}
+			module.saveData(data).then(dt => {
+				loadsection(izdelieid, sectionid);
+			});
+		})
+		.catch(err => console.error("Ошибка загрузки innermail script.js:", err));
 	}
 }
 
@@ -546,7 +559,7 @@ $.contextMenu({  //меню удаления с подменю
     selector: '.mail-context-menu',
     items: {
 		delete: menuItem_Delete,
-		move: menuItem_movetoInnermail,
+		moveToInnermail: menuItem_movetoInnermail,
 		move: getIzdList(),
         sep1: '---------',
         quit: {

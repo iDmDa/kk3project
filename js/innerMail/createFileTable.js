@@ -65,18 +65,20 @@ export function createFileTable(ctx = {}) {
                 delete: {
                     name: 'Удалить',
                     callback: function() {
-                        const data = {
-                            table: this[0].dataset.table,
-                            column: 'hide',
-                            id: this[0].dataset.id,
-                            content: 1,
+                        if (prompt("Для подтверждения удаления введите '1'", 'Введите: 1') == true) {
+                            const data = {
+                                table: this[0].dataset.table,
+                                column: 'hide',
+                                id: this[0].dataset.id,
+                                content: 1,
+                            }
+                            saveData(data).then(dt => {
+                                createFileTable(ctx);
+                                state.mainTable();
+                                replaceDelFile({id: this[0].dataset.id})                        
+                            });
                         }
-                        saveData(data).then(dt => {
-                            createFileTable(ctx);
-                            state.mainTable();
-                            replaceDelFile({id: this[0].dataset.id})                        
-                        });
-
+                        else alert('Отмена удаления');
                     }
                 },
                 sep1: '---------',

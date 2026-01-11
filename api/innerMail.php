@@ -47,6 +47,7 @@ if (json_last_error() !== JSON_ERROR_NONE) {
 $detid = $data['izdelieid'];
 $page = (int) $data['page'];
 $filter = findlist($data['filter']);
+$hide = 2;
 
 include("../dbdata.php");
 
@@ -60,7 +61,7 @@ try {
 }
 
 // Подсчитаем общее количество результатов
-$stmt = $pdo->prepare("SELECT COUNT(*) as total FROM mailbox WHERE hide = 0 {$filter} AND detid = :detid");
+$stmt = $pdo->prepare("SELECT COUNT(*) as total FROM mailbox WHERE hide = {$hide} {$filter} AND detid = :detid");
 $stmt->execute(['detid' => $detid]);
 $totalResults = $stmt->fetchColumn();
 
@@ -73,7 +74,7 @@ $startLine = $page >= 0 ? $page * $pageSize : ($totalPages - 1) * $pageSize;
 
 $sortfield = "if(datevh != '', datevh, dateish) as summ ";
 $sortirovka = "if(summ = '' or summ is null, 1, 0), SUBSTRING_INDEX(summ,'.',-1), SUBSTRING_INDEX(SUBSTRING_INDEX(summ,'.',2),'.',-1), SUBSTRING_INDEX(summ,'.',1), id";
-$query = "SELECT *, {$sortfield} FROM mailbox where hide = 0 {$filter} and detid = :detid ORDER BY {$sortirovka} LIMIT :pageSize OFFSET :startLine";
+$query = "SELECT *, {$sortfield} FROM mailbox where hide = {$hide} {$filter} and detid = :detid ORDER BY {$sortirovka} LIMIT :pageSize OFFSET :startLine";
 
 try {
     // Подготовка запроса

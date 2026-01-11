@@ -3,6 +3,7 @@ import { listNum } from "./listNum.js?v=1";
 import { loadData } from "./loadData.js";
 import { state } from "../common/state.js";
 import { editFunctions } from "./editFunctions.js";
+import { saveData } from "../common/saveData.js";
 
 export function createTable(ctx = {}) {
     const {layer, izdelieid, page, filter, callback = () => {}} = ctx;
@@ -13,7 +14,7 @@ export function createTable(ctx = {}) {
         if(data) data.forEach((item, i) => {
             let tr = /*html*/`
             <tr data-id="${item.id}">
-                <td class="linenumber mail-context" data-id="${item.id}" data-table="mailbox">${i+1}</td>
+                <td class="linenumber" data-id="${item.id}" data-table="mailbox">${i+1}</td>
                 <td class="datevh" data-column="datevh">
                     <input class="dateinput" type="text" readonly="readonly" value="${item.datevh}">
                 </td>
@@ -90,7 +91,8 @@ export function createTable(ctx = {}) {
         $(".dateinput").mask("99.99.9999", {placeholder: "дд.мм.гггг" });
 
         editFunctions({openStatus: window.openStatus, reload: () => createTable({...ctx, page: -1})});
-        
+
+        createContextMenu();
 
         /* анимация удаления строки из таблицы
         document.querySelectorAll("tr").forEach(item => {
@@ -107,5 +109,34 @@ export function createTable(ctx = {}) {
 
         callback();
 
+    });
+}
+
+function createContextMenu() {
+    $.contextMenu('destroy', '.innermail-context');
+    $.contextMenu({  //меню удаления
+        selector: '.innermail-context',
+        items: {
+            delete: {
+                name: 'Удалить',
+                callback: function() {
+                    const data = {
+                        table: this[0].dataset.table,
+                        column: 'hide',
+                        id: this[0].dataset.id,
+                        content: 1,
+                    }
+                    saveData(data).then(dt => {
+                        state.mainTable();
+                    });
+
+                }
+            },
+            sep1: '---------',
+            quit: {
+                name: 'Выйти',
+                callback: () => {}
+            }
+        }
     });
 }

@@ -3,6 +3,7 @@ import { loadFileList } from "../common/loadFileList.js";
 import { state } from "../common/state.js";
 import { iconLinkCreate } from "./iconLinkCreate.js";
 import { txtEditor } from "../common/txtEditor.js";
+import { saveData } from "../common/saveData.js";
 
 export function createFileTable(ctx = {}) {
     const {layer, detid, type, tableName} = ctx;
@@ -14,7 +15,7 @@ export function createFileTable(ctx = {}) {
         if(data) data.forEach((item, i) => {
             let tr = /*html*/`
             <tr data-id="${item.id}">
-                <td class="linenumber context-menu-megaclass-one" data-id="${item.id}" data-table="uplfiles">${i+1}</td>
+                <td class="linenumber filetable-context" data-id="${item.id}" data-table="uplfiles">${i+1}</td>
                 <td class="maskname editable" data-column="maskname"><div class="filenameBox"><div>${iconLinkCreate([item])}</div>&nbsp;<div class="fileName" contenteditable="true">${item.maskname}</div></div></td>
                 <td class="prim editable" data-column="prim" contenteditable="true">${item.prim}</td>
             </tr>`;
@@ -56,6 +57,35 @@ export function createFileTable(ctx = {}) {
 
         mainframe.append(maintable);
         txtEditor(mainframe);
+
+        $.contextMenu('destroy', '.filetable-context');
+        $.contextMenu({  //меню удаления
+            selector: '.filetable-context',
+            items: {
+                delete: {
+                    name: 'Удалить',
+                    callback: function() {
+                        const data = {
+                            table: this[0].dataset.table,
+                            column: 'hide',
+                            id: this[0].dataset.id,
+                            content: 1,
+                        }
+                        saveData(data).then(dt => {
+                            createFileTable(ctx);
+                            state.mainTable();
+                            replaceDelFile({id: this[0].dataset.id})                        
+                        });
+
+                    }
+                },
+                sep1: '---------',
+                quit: {
+                    name: 'Выйти',
+                    callback: function(key, options) {}
+                }
+            }
+        });
         
         document.querySelector(".addFileIconBox img").addEventListener("click", () => {
             document.getElementById("fileInput").click();  // Программно вызываем окно выбора файла
@@ -102,4 +132,21 @@ function sendFilesToServer(files, detid, type, tableName, reload) {
     .catch(error => {
         console.error("Ошибка при отправке файлов:", error);
     });
+}
+
+function replaceDelFile({id} = {}) {
+    const obj = {
+        id: id,
+    };
+      
+    return fetch('./api/transferFileToDeleteDir.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }, // Указываем JSON
+        body: JSON.stringify(obj) // Преобразуем объект в JSON-строку
+    })
+    .then(res => res.json())
+    .then(data => {
+        return data;
+    });
+        
 }

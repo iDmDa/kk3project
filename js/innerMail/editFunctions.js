@@ -6,6 +6,7 @@ export function editFunctions(ctx = {}) {
     const table = document.querySelector(".innerMail");
     const editable = table.querySelectorAll(".editable");
     const dateinput = table.querySelectorAll(".dateinput");
+    const linenumber = table.querySelectorAll(".linenumber")
 
     const tabInfo = {
         table: table.dataset.table,
@@ -18,12 +19,14 @@ export function editFunctions(ctx = {}) {
 
     if(openStatus === "1") {
         editable.forEach(item => item.setAttribute("contenteditable", "true"))
+        linenumber.forEach(item => item.classList.add("innermail-context"))
         dateinput.forEach(item => item.removeAttribute("readonly"))
         table.after(addButton(tabInfo));
         newWindowIcon({icon: "on"});
     }
     if(openStatus !== "1") {
         editable.forEach(item => item.removeAttribute("contenteditable", "true"))
+        linenumber.forEach(item => item.classList.remove("innermail-context"))
         dateinput.forEach(item => item.setAttribute("readonly", "readonly"))
         tableBox.querySelector(".addButton")?.remove(); // '?' проверяет существование объекта и если есть запускает функцию
         newWindowIcon({icon: "off"});

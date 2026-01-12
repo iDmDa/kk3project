@@ -111,7 +111,7 @@ if(isset($_POST['finditems'])) {
 
 	function finditems($items) {
 		$db = db_connect();
-		$r = $db->prepare("SELECT tabname, prefix, filename, maskname, type, detid FROM uplfiles WHERE hide = '0' and tabname = 'docwork' and ({$items})");
+		$r = $db->prepare("SELECT * FROM uplfiles WHERE hide = '0' and tabname = 'docwork' and ({$items})");
 		$r->execute();
 		return $r->fetchAll(PDO::FETCH_ASSOC);
 	}

@@ -15,19 +15,22 @@ export function txtEditor(el) { //el точка привязки событий
     })
 
     el.addEventListener('focusout', (e) => {
-        
-        const data = {
-            table: e.target.closest("table").dataset.table,
-            column: e.target.closest("td").dataset.column,
-            id: e.target.closest("tr").dataset.id,
-            content: e.target.innerHTML,
+        if(e.target.contentEditable === "true") {
+            //console.log("блок сохранения: ", e.target);
+            const data = {
+                table: e.target.closest("table").dataset.table,
+                column: e.target.closest("td").dataset.column,
+                id: e.target.closest("tr").dataset.id,
+                content: e.target.innerHTML,
+            }
+            if(defaultValue !== e.target.innerHTML) saveData(data);
+            if(e.target.classList.contains("dateinput") && window.openStatus == "1") {
+                data.content = e.target.value;
+                saveData(data);
+                console.log("sv: ", e.target.value, data, window.openStatus);
+            }            
         }
-        if(defaultValue !== e.target.innerHTML) saveData(data);
-        if(e.target.classList.contains("dateinput") && window.openStatus == "1") {
-            data.content = e.target.value;
-            saveData(data);
-            console.log("sv: ", e.target.value, data, window.openStatus);
-        }
+
     });
 
     el.addEventListener("keydown", e => {

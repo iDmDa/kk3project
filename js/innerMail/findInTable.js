@@ -27,12 +27,12 @@ export function findInTable({layer} = {}) {
 
     mainframe.addEventListener("change", (e) => {
         if(e.target.classList.contains("filter")) {
-            state.mainTable({filter: e.target.value, callback: () => findSelect(e.target.value)});
+            state.mainTable({filter: e.target.value, callback: () => findSelector(e.target.value)});
         }
     })
 }
 
-function findSelect(find) {
+function findSelector(find) {
     // Если текст имеет символ #, то очищаем его
     if ((find.match(/#/g) || []).length == 2) {
         find = find.split("#")[2].trim();

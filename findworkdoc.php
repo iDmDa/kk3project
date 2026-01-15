@@ -418,11 +418,11 @@ if($_POST['dogopen'] != "") $dtabledog->datatable();
 
 echo "</div>"; //finddogovor (Конец обновляемого блока 3)
 
-echo "<div id='findmail' style='overflow: auto;'>"; //Обновляемый блок 4
+echo "<div id='findmail' style='overflow: auto;max-height: 100%;'>"; //Обновляемый блок 4
 
 echo "</div>"; //findmail (Конец обновляемого блока 4)
 
-echo "<div id='findizveshenie'>"; //Обновляемый блок 5
+echo "<div id='findizveshenie' style='overflow: auto;max-height: 100%;'>"; //Обновляемый блок 5
 
 echo "</div>"; //findizveshenie (Конец обновляемого блока 5)
 

@@ -1,9 +1,7 @@
-import { editFunctions } from "./editFunctions.js";
-import { loadFileList } from "../common/loadFileList.js";
-import { state } from "../common/state.js";
+import { state } from "./state.js";
 import { iconLinkCreate } from "./iconLinkCreate.js";
-import { txtEditor } from "../common/txtEditor.js";
-import { saveData } from "../common/saveData.js";
+import { txtEditor } from "./txtEditor.js";
+import { dataTransfer } from "./dataTransfer.js";
 
 export function createFileTable(ctx = {}) {
     const {layer, detid, type, tableName} = ctx;
@@ -38,7 +36,7 @@ export function createFileTable(ctx = {}) {
         </thead>
     `;
     
-    loadFileList(ctx).then(data => {
+    dataTransfer({...ctx, fl: 'getFileList'}).then(data => {
 
         console.log("(loadFileList)Данные получены: ", data);
 
@@ -71,8 +69,9 @@ export function createFileTable(ctx = {}) {
                                 column: 'hide',
                                 id: this[0].dataset.id,
                                 content: 1,
+                                fl: 'txtSave',
                             }
-                            saveData(data).then(dt => {
+                            dataTransfer(data).then(dt => {
                                 createFileTable(ctx);
                                 state.mainTable();
                                 replaceDelFile({id: this[0].dataset.id})                        

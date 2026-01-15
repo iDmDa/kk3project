@@ -1,4 +1,4 @@
-import { saveData } from "./saveData.js";
+import { dataTransfer } from "./dataTransfer.js";
 
 export function txtEditor(el) { //el точка привязки событий
     //Сохранение изменений текста в полях contentEditable
@@ -24,11 +24,12 @@ export function txtEditor(el) { //el точка привязки событий
                 column: e.target.closest("td").dataset.column,
                 id: e.target.closest("tr").dataset.id,
                 content: e.target.innerHTML,
+                fl: "txtSave",
             }
-            if(defaultValue !== e.target.innerHTML) saveData(data);
+            if(defaultValue !== e.target.innerHTML) dataTransfer(data);
             if(e.target.classList.contains("dateinput") && window.openStatus == "1") {
                 data.content = e.target.value;
-                saveData(data);
+                dataTransfer(data);
                 console.log("sv: ", e.target.value, data, window.openStatus);
             }            
         }

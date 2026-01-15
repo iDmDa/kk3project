@@ -1,5 +1,5 @@
 import { createWindow } from "../common/createWindow.js";
-import { createFileTable } from "./createFileTable.js";
+import { createFileTable } from "../common/createFileTable.js";
 
 export function fileChoiceEvt({evtPoint} = {}) {
     evtPoint.addEventListener("click", (e) => {

@@ -495,7 +495,7 @@ const menuItem_movetodoc = {
 const menuItem_movetoInnermail = {
 	name: "Перенести в раздел 'Внутренняя переписка'",
 	callback: function() {
-		import("./js/common/saveData.js?v=<?=time();?>")
+		import("./js/common/dataTransfer.js?v=<?=time();?>")
 		.then(module => {
 			// Вызываем функцию из модуля
 			const data = {
@@ -503,8 +503,9 @@ const menuItem_movetoInnermail = {
 				column: 'hide',
 				id: this[0].dataset.id,
 				content: 2,
+				fl: 'txtSave',
 			}
-			module.saveData(data).then(dt => {
+			module.dataTransfer(data).then(dt => {
 				loadsection(izdelieid, sectionid);
 			});
 		})

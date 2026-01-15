@@ -1,4 +1,4 @@
-import { addNewLine } from "./addNewLine.js";
+import { dataTransfer } from "./dataTransfer.js";
 
 export function addButton({table, id, hide, reload} = {}) {
     const button = /*html*/`
@@ -14,9 +14,10 @@ export function addButton({table, id, hide, reload} = {}) {
             table: table, 
             id: id, 
             hide: hide,
+            fl: "addNewLine",
             reload: () => reload(),
         }
-        addNewLine(data);
+        dataTransfer(data);
     })
     return addButton;
 }

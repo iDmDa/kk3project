@@ -1,9 +1,8 @@
-import { iconLinkCreate } from "./iconLinkCreate.js";
+import { iconLinkCreate } from "../common/iconLinkCreate.js";
 import { listNum } from "./listNum.js?v=1";
-import { loadData } from "./loadData.js";
 import { state } from "../common/state.js";
 import { editFunctions } from "./editFunctions.js";
-import { saveData } from "../common/saveData.js";
+import { dataTransfer } from "../common/dataTransfer.js";
 
 export function createTable(ctx = {}) {
     const {layer, izdelieid, page, filter, callback = () => {}} = ctx;
@@ -72,7 +71,7 @@ export function createTable(ctx = {}) {
         </thead>
     `;
      
-    loadData(ctx).then(data => {
+    dataTransfer({...ctx, fl: 'innerMail'}).then(data => {
 
         const table = /*html*/`
             <table id="table_${izdelieid}" class="innerMail" data-table="mailbox" data-id="${izdelieid}">
@@ -126,8 +125,9 @@ function createContextMenu() {
                             column: 'hide',
                             id: this[0].dataset.id,
                             content: 1,
+                            fl: 'txtSave',
                         }
-                        saveData(data).then(dt => {
+                        dataTransfer(data).then(dt => {
                             state.mainTable();
                         });
                     }
@@ -142,8 +142,9 @@ function createContextMenu() {
                         column: 'hide',
                         id: this[0].dataset.id,
                         content: 0,
+                        fl: "txtSave",
                     }
-                    saveData(data).then(dt => {
+                    dataTransfer(data).then(dt => {
                         state.mainTable();
                     });
                 }

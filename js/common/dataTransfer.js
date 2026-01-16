@@ -1,5 +1,6 @@
 export function dataTransfer(obj) {
     const sendObj = {...obj};
+    //const sendObj = structuredClone(obj); // если надо копировать внутренние объекты, иначе сохранит связь с исходными
     
     delete sendObj.fl; //Удаление полей, которые не надо отправлять
     // if (sendObj.reload && typeof sendObj.reload === "function") {

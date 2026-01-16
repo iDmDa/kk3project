@@ -41,7 +41,7 @@ export function createTable(ctx = {}) {
     }
 
     const mainframe = document.querySelector(layer);
-    mainframe.innerHTML = "";
+    //mainframe.innerHTML = "";
     console.log("Очистка слоя:", mainframe);
     const tableHeader = /*html*/`
         <thead class="headerSection">
@@ -82,7 +82,7 @@ export function createTable(ctx = {}) {
         `;
 
         const maintable = document.createRange().createContextualFragment(table);
-
+        mainframe.innerHTML = "";
         mainframe.append(maintable);
         mainframe.append(listNum({allPages: data.pages, activePage: page, clkEvt: (data) => {
             createTable({...ctx, page: data - 1}) //Функция будет вызвана по клику номера страницы

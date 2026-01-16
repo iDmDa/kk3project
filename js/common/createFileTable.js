@@ -25,7 +25,7 @@ export function createFileTable(ctx = {}) {
     }
 
     const mainframe = document.querySelector(layer);
-    mainframe.innerHTML = "";
+    //mainframe.innerHTML = "";
     const tableHeader = /*html*/`
         <thead class="headerSection">
             <tr class="colHeader">
@@ -52,7 +52,7 @@ export function createFileTable(ctx = {}) {
         `;
 
         const maintable = document.createRange().createContextualFragment(table);
-
+        mainframe.innerHTML = "";
         mainframe.append(maintable);
         //console.log(mainframe);
         txtEditor(mainframe.querySelector(".fileListTable"));

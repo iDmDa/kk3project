@@ -8,7 +8,7 @@ import { editFunctions } from "./editFunctions.js";
 import { fileLoaderWindow } from "./fileLoaderWindow.js";
 
 export function loadInnerMail(izdelieid, page = -1) {
-
+    console.log("loadInnerMail");
     const content = /*html*/`
         <div class="findBoxInnerMail"></div>
         <div class="tableBox"></div>

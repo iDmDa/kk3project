@@ -15,9 +15,10 @@ export function addButton({table, id, hide, reload} = {}) {
             id: id, 
             hide: hide,
             fl: "addNewLine",
-            reload: () => reload(),
         }
-        dataTransfer(data);
+        dataTransfer(data).then(() => {
+            reload();
+        });
     })
     return addButton;
 }

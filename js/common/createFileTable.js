@@ -6,7 +6,7 @@ import { dataTransfer } from "./dataTransfer.js";
 export function createFileTable(ctx = {}) {
     const {layer, detid, type, tableName} = ctx;
 
-    console.log("ctx: ", ctx)
+    //console.log("ctx: ", ctx)
     function tbodyCreate(data) {
         let tbody = "";
         //console.log("data: ", data)
@@ -38,7 +38,7 @@ export function createFileTable(ctx = {}) {
     
     dataTransfer({...ctx, fl: 'getFileList'}).then(data => {
 
-        console.log("(loadFileList)Данные получены: ", data);
+        //console.log("(loadFileList)Данные получены: ", data);
 
         const table = /*html*/`
             <table class="fileListTable" data-table="uplfiles" data-id="${detid}">
@@ -54,7 +54,8 @@ export function createFileTable(ctx = {}) {
         const maintable = document.createRange().createContextualFragment(table);
 
         mainframe.append(maintable);
-        txtEditor(mainframe);
+        //console.log(mainframe);
+        txtEditor(mainframe.querySelector(".fileListTable"));
 
         $.contextMenu('destroy', '.filetable-context');
         $.contextMenu({  //меню удаления

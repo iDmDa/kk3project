@@ -2,9 +2,9 @@ export function dataTransfer(obj) {
     const sendObj = {...obj};
     
     delete sendObj.fl; //Удаление полей, которые не надо отправлять
-    if (sendObj.reload && typeof sendObj.reload === "function") {
-        delete sendObj.reload();
-    }
+    // if (sendObj.reload && typeof sendObj.reload === "function") {
+    //     delete sendObj.reload();
+    // }
       
     return fetch(`./api/${obj.fl}.php`, {
         method: 'POST',
@@ -13,9 +13,6 @@ export function dataTransfer(obj) {
     })
     .then(res => res.json())
     .then(data => {
-        if (obj.reload && typeof obj.reload === "function") {
-            obj.reload();  // Передаем данные в колбэк
-        }
         return data;
     });
 }

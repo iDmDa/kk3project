@@ -42,6 +42,7 @@ export function createTable(ctx = {}) {
 
     const mainframe = document.querySelector(layer);
     mainframe.innerHTML = "";
+    console.log("Очистка слоя:", mainframe);
     const tableHeader = /*html*/`
         <thead class="headerSection">
             <tr class="tableHeader">
@@ -89,7 +90,10 @@ export function createTable(ctx = {}) {
         
         $(".dateinput").mask("99.99.9999", {placeholder: "дд.мм.гггг" });
 
-        editFunctions({openStatus: window.openStatus, reload: () => createTable({...ctx, page: -1})});
+        editFunctions({openStatus: window.openStatus, reload: () => {
+            createTable({...ctx, page: -1});
+            //state.mainTable();
+        } });
 
         createContextMenu();
 

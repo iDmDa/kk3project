@@ -12,7 +12,7 @@ export function editFunctions(ctx = {}) {
         table: table.dataset.table,
         id: table.dataset.id,
         hide: 2,
-        reload: () => reload(),
+        reload: reload,
     }
 
     tableBox.querySelector(".addButton")?.remove();

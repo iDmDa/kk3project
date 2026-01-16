@@ -5,7 +5,7 @@ import { txtEditor } from "../common/txtEditor.js";
 import { varControlEvt } from "../common/varControl.js";
 import { state } from "../common/state.js";
 import { editFunctions } from "./editFunctions.js";
-import { fileChoiceEvt } from "./fileChoiceEvt.js";
+import { fileLoaderWindow } from "./fileLoaderWindow.js";
 
 export function loadInnerMail(izdelieid, page = -1) {
 
@@ -34,6 +34,6 @@ export function loadInnerMail(izdelieid, page = -1) {
 
     const tableBox = document.querySelector(".tableBox");
     txtEditor(tableBox);
-    fileChoiceEvt({evtPoint: tableBox})
+    fileLoaderWindow({evtPoint: tableBox})
 }
 

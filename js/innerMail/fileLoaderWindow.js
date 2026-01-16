@@ -1,7 +1,7 @@
 import { createWindow } from "../common/createWindow.js";
 import { createFileTable } from "../common/createFileTable.js";
 
-export function fileChoiceEvt({evtPoint} = {}) {
+export function fileLoaderWindow({evtPoint} = {}) {
     evtPoint.addEventListener("click", (e) => {
         if(e.target.classList.contains("addFileBtn")) {
             console.log("addFileBtn: ", e.target.closest("tr").dataset.id, e.target.closest("td").dataset.column);

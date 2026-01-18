@@ -74,7 +74,7 @@ export function createFileTable(ctx = {}) {
                             }
                             dataTransfer(data).then(dt => {
                                 createFileTable(ctx);
-                                state.mainTable();
+                                state.mainTable({scrollPos: 1});
                                 replaceDelFile({id: this[0].dataset.id})                        
                             });
                         }
@@ -98,7 +98,7 @@ export function createFileTable(ctx = {}) {
             if (files.length > 0) {
                 sendFilesToServer(files, detid, type, tableName, () => {
                     createFileTable(ctx);
-                    state.mainTable();
+                    state.mainTable({scrollPos: 1});
                 });
             }
         });

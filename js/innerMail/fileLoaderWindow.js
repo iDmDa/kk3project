@@ -1,5 +1,5 @@
-import { createWindow } from "../common/createWindow.js";
-import { createFileTable } from "../common/createFileTable.js";
+import { createWindow } from "../commonTableFnc/createWindow.js";
+import { createFileTable } from "../commonTableFnc/createFileTable.js";
 
 export function fileLoaderWindow({evtPoint} = {}) {
     evtPoint.addEventListener("click", (e) => {

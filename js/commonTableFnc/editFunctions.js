@@ -1,9 +1,10 @@
-import { addButton } from "../common/addButton.js";
+import { addButton } from "./addButton.js";
 
-export function editFunctions(ctx = {}) {
-    const {openStatus, reload} = ctx;
-    const tableBox = document.querySelector(".tableBox");
-    const table = document.querySelector(".innerMail");
+export function editFunctions({openStatus, reload, layer, tabName} = {}) {
+    //const {openStatus, reload, layer, tabName} = ctx;
+    console.log("editFunctions: ", openStatus, reload, layer, tabName);
+    const tableBox = document.querySelector('.tableBox');
+    const table = tableBox.querySelector('.innerMail');
     const editable = table.querySelectorAll(".editable");
     const dateinput = table.querySelectorAll(".dateinput");
     const linenumber = table.querySelectorAll(".linenumber")

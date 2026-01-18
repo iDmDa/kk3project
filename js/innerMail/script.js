@@ -1,14 +1,13 @@
-import { addButton } from "../common/addButton.js";
 import { createTable } from "./createTable.js";
 import { findInTable } from "./findInTable.js";
-import { txtEditor } from "../common/txtEditor.js";
-import { varControlEvt } from "../common/varControl.js";
-import { state } from "../common/state.js";
-import { editFunctions } from "./editFunctions.js";
+import { varControlEvt } from "../commonTableFnc/varControl.js";
+import { state } from "../commonTableFnc/state.js";
+import { editFunctions } from "../commonTableFnc/editFunctions.js";
+import { txtEditor } from "../commonTableFnc/txtEditor.js";
 import { fileLoaderWindow } from "./fileLoaderWindow.js";
 
-export function loadInnerMail(izdelieid, page = -1) {
-    console.log("loadInnerMail");
+export function loadInnerMail(ctx = {}) {
+    const {izdelieid, page, tabName, dataTable} = ctx;
     const content = /*html*/`
         <div class="findBoxInnerMail"></div>
         <div class="tableBox"></div>
@@ -18,22 +17,19 @@ export function loadInnerMail(izdelieid, page = -1) {
     const maintable = document.createRange().createContextualFragment(content);
     varframe.append(maintable);
 
-    state.openStatus = window.openStatus;
-    //console.log("(script)state.openStatus: ", state.openStatus);
 
-    createTable({layer: ".tableBox", izdelieid: izdelieid, page: page})
-    
+
+    state.openStatus = window.openStatus;
+
+    createTable({...ctx, layer: ".tableBox", tabName: "innerMail"});
     findInTable({layer: ".findBoxInnerMail"});
 
-    //action(window.openStatus);
     varControlEvt({varName: "openStatus", callback: (val) => {
-        console.log("Триггер varControlEvt")
-        editFunctions({openStatus: val, reload: () => createTable({layer: ".tableBox", izdelieid: izdelieid, page: page})});
+        console.log("Триггер varControlEvt: ", ctx)
+        editFunctions({openStatus: val, reload: () => createTable({...ctx, layer: ".tableBox"})});
         state.openStatus = val;
     }});
 
-    const tableBox = document.querySelector(".tableBox");
-    txtEditor(tableBox);
-    fileLoaderWindow({evtPoint: tableBox})
+
 }
 

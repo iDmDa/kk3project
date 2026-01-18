@@ -468,6 +468,9 @@ u {
 .innerMail tr, .fileListTable tr {
   transition: opacity 0.2s ease;
 }
+.innerMail tr1:hover, .fileListTable tr1:hover {
+  box-shadow: inset 1px 0 0 rgb(218, 220, 224), inset -1px 0 0 rgb(218, 220, 224), 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+}
 .innerMail tr.hide, .fileListTable tr.hide {
   opacity: 0;
 }
@@ -524,7 +527,7 @@ u {
      -moz-user-select: none;
           user-select: none;
 }
-.innerMail .colHeader .linenumber, .fileListTable .colHeader .linenumber {
+.innerMail .colHeader .headerlinenumber, .fileListTable .colHeader .headerlinenumber {
   width: 25px;
 }
 .innerMail .colHeader .datevh, .fileListTable .colHeader .datevh {

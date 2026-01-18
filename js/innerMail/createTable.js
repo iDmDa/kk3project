@@ -1,12 +1,50 @@
-import { iconLinkCreate } from "../common/iconLinkCreate.js";
-import { listNum } from "./listNum.js?v=1";
-import { state } from "../common/state.js";
-import { editFunctions } from "./editFunctions.js";
-import { dataTransfer } from "../common/dataTransfer.js";
+import { iconLinkCreate } from "../commonTableFnc/iconLinkCreate.js";
+import { listNum } from "../commonTableFnc/listNum.js";
+import { state } from "../commonTableFnc/state.js";
+import { editFunctions } from "../commonTableFnc/editFunctions.js";
+import { dataTransfer } from "../commonTableFnc/dataTransfer.js";
+import { txtEditor } from "../commonTableFnc/txtEditor.js";
+import { fileLoaderWindow } from "./fileLoaderWindow.js";
+import { varControlEvt } from "../commonTableFnc/varControl.js";
 
 export function createTable(ctx = {}) {
-    const {layer, izdelieid, page, filter, callback = () => {}} = ctx;
+    const {layer, izdelieid, page, filter, scrollPos = -1, callback = () => {}} = ctx;
     state.mainTable = (patch = {}) => createTable({...ctx, ...patch});
+
+    // varControlEvt({varName: "openStatus", callback: (val) => {
+    //     console.log("Триггер varControlEvt: ", ctx)
+    //     editFunctions({openStatus: val, reload: () => state.mainTable()});
+    //     state.openStatus = val;
+    // }});
+
+    const tableHeader = /*html*/`
+        <thead class="headerSection">
+            <tr class="tableHeader">
+                <td colspan="999">Внутренняя переписка и служебные записки</td>
+            </tr>
+            <tr class="groupHeader">
+                <td class="inbox" colspan="7">Входящие</td>
+                <td class="outbox" colspan="999">Исходящие</td>
+            </tr>
+            <tr class="colHeader">
+                <td class="headerlinenumber">№</td>
+                <td class="datevh" data-column="datevh">Дата</td>
+                <td class="nomervh" data-column="nomervh">Номер</td>
+                <td class="adresvh" data-column="adresvh">Адресат</td>
+                <td class="contentvh" data-column="contentvh">Краткое содержание</td>
+                <td class="scanvh" data-column="scanvh">Скан</td>
+                <td class="countlistvh" data-column="countlistvh">Кол. листов</td>
+
+                <td class="dateish" data-column="dateish">Дата</td>
+                <td class="nomerish" data-column="nomerish">Номер</td>
+                <td class="bottomTitle" data-column="adresish">Адресат</td>
+                <td class="contentish" data-column="contentish">Краткое содержание</td>
+                <td class="scanish" data-column="scanish">Скан</td>
+                <td class="countlistish" data-column="countlistish">Кол. листов</td>
+                <td class="fioispish" data-column="fioispish">ФИО исполнителя</td>
+            </tr>
+        </thead>
+    `;
 
     function tbodyCreate(data) {
         let tbody = "";
@@ -40,39 +78,9 @@ export function createTable(ctx = {}) {
         return `<tbody>${tbody}</tbody>`;
     }
 
-    const mainframe = document.querySelector(layer);
-    //mainframe.innerHTML = "";
-    console.log("Очистка слоя:", mainframe);
-    const tableHeader = /*html*/`
-        <thead class="headerSection">
-            <tr class="tableHeader">
-                <td colspan="999">Внутренняя переписка и служебные записки</td>
-            </tr>
-            <tr class="groupHeader">
-                <td class="inbox" colspan="7">Входящие</td>
-                <td class="outbox" colspan="999">Исходящие</td>
-            </tr>
-            <tr class="colHeader">
-                <td class="nomer">№</td>
-                <td class="datevh" data-column="datevh">Дата</td>
-                <td class="nomervh" data-column="nomervh">Номер</td>
-                <td class="adresvh" data-column="adresvh">Адресат</td>
-                <td class="contentvh" data-column="contentvh">Краткое содержание</td>
-                <td class="scanvh" data-column="scanvh">Скан</td>
-                <td class="countlistvh" data-column="countlistvh">Кол. листов</td>
 
-                <td class="dateish" data-column="dateish">Дата</td>
-                <td class="nomerish" data-column="nomerish">Номер</td>
-                <td class="bottomTitle" data-column="adresish">Адресат</td>
-                <td class="contentish" data-column="contentish">Краткое содержание</td>
-                <td class="scanish" data-column="scanish">Скан</td>
-                <td class="countlistish" data-column="countlistish">Кол. листов</td>
-                <td class="fioispish" data-column="fioispish">ФИО исполнителя</td>
-            </tr>
-        </thead>
-    `;
      
-    dataTransfer({...ctx, fl: 'innerMail'}).then(data => {
+    dataTransfer({...ctx, fl: "innerMail"}).then(data => {
 
         const table = /*html*/`
             <table id="table_${izdelieid}" class="innerMail" data-table="mailbox" data-id="${izdelieid}">
@@ -81,18 +89,23 @@ export function createTable(ctx = {}) {
             </table>
         `;
 
-        const maintable = document.createRange().createContextualFragment(table);
+        const fragment = document.createRange().createContextualFragment(table);
+        const mainframe = document.querySelector(layer);
+
+        let newPos;
+        if(scrollPos === 1) newPos = mainframe.scrollTop;
         mainframe.innerHTML = "";
-        mainframe.append(maintable);
+        mainframe.append(fragment);
         mainframe.append(listNum({allPages: data.pages, activePage: page, clkEvt: (data) => {
-            createTable({...ctx, page: data - 1}) //Функция будет вызвана по клику номера страницы
+            //createTable({...ctx, page: data - 1}) //Функция будет вызвана по клику номера страницы
+            state.mainTable({page: data - 1, scrollPos: -1});
         }})); //Поле со счетчиком страниц
         
         $(".dateinput").mask("99.99.9999", {placeholder: "дд.мм.гггг" });
 
         editFunctions({openStatus: window.openStatus, reload: () => {
-            createTable({...ctx, page: -1});
-            //state.mainTable();
+            //createTable({...ctx, page: -1});
+            state.mainTable({page: -1});
         } });
 
         createContextMenu();
@@ -107,9 +120,14 @@ export function createTable(ctx = {}) {
             })
         })*/
 
-        mainframe.scrollTop = mainframe.scrollHeight - mainframe.clientHeight; //Прокрутка страницы вниз
+        if(scrollPos === -1) mainframe.scrollTop = mainframe.scrollHeight - mainframe.clientHeight; //Прокрутка страницы вниз
+        else mainframe.scrollTop = newPos;
         //mainframe.scrollTo({ top: mainframe.scrollHeight, behavior: 'smooth' }); //Прокрутка вниз плавно
 
+        const maintable = document.querySelector(".innerMail");
+        txtEditor(maintable);
+        fileLoaderWindow({evtPoint: maintable})
+        
         callback();
 
     });

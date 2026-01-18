@@ -17,36 +17,35 @@ export function createTable(ctx = {}) {
     //     state.openStatus = val;
     // }});
 
-    const tableHeader = /*html*/`
-        <thead class="headerSection">
-            <tr class="tableHeader">
-                <td colspan="999">Внутренняя переписка и служебные записки</td>
-            </tr>
-            <tr class="groupHeader">
-                <td class="inbox" colspan="7">Входящие</td>
-                <td class="outbox" colspan="999">Исходящие</td>
-            </tr>
-            <tr class="colHeader">
-                <td class="headerlinenumber">№</td>
-                <td class="datevh" data-column="datevh">Дата</td>
-                <td class="nomervh" data-column="nomervh">Номер</td>
-                <td class="adresvh" data-column="adresvh">Адресат</td>
-                <td class="contentvh" data-column="contentvh">Краткое содержание</td>
-                <td class="scanvh" data-column="scanvh">Скан</td>
-                <td class="countlistvh" data-column="countlistvh">Кол. листов</td>
-
-                <td class="dateish" data-column="dateish">Дата</td>
-                <td class="nomerish" data-column="nomerish">Номер</td>
-                <td class="bottomTitle" data-column="adresish">Адресат</td>
-                <td class="contentish" data-column="contentish">Краткое содержание</td>
-                <td class="scanish" data-column="scanish">Скан</td>
-                <td class="countlistish" data-column="countlistish">Кол. листов</td>
-                <td class="fioispish" data-column="fioispish">ФИО исполнителя</td>
-            </tr>
-        </thead>
-    `;
-
     function tbodyCreate(data) {
+        const tableHeader = /*html*/`
+            <thead class="headerSection">
+                <tr class="tableHeader">
+                    <td colspan="999">Внутренняя переписка и служебные записки</td>
+                </tr>
+                <tr class="groupHeader">
+                    <td class="inbox" colspan="7">Входящие</td>
+                    <td class="outbox" colspan="999">Исходящие</td>
+                </tr>
+                <tr class="colHeader">
+                    <td class="headerlinenumber">№</td>
+                    <td class="datevh" data-column="datevh">Дата</td>
+                    <td class="nomervh" data-column="nomervh">Номер</td>
+                    <td class="adresvh" data-column="adresvh">Адресат</td>
+                    <td class="contentvh" data-column="contentvh">Краткое содержание</td>
+                    <td class="scanvh" data-column="scanvh">Скан</td>
+                    <td class="countlistvh" data-column="countlistvh">Кол. листов</td>
+
+                    <td class="dateish" data-column="dateish">Дата</td>
+                    <td class="nomerish" data-column="nomerish">Номер</td>
+                    <td class="bottomTitle" data-column="adresish">Адресат</td>
+                    <td class="contentish" data-column="contentish">Краткое содержание</td>
+                    <td class="scanish" data-column="scanish">Скан</td>
+                    <td class="countlistish" data-column="countlistish">Кол. листов</td>
+                    <td class="fioispish" data-column="fioispish">ФИО исполнителя</td>
+                </tr>
+            </thead>
+        `;
         let tbody = "";
         if(data) data.forEach((item, i) => {
             let tr = /*html*/`
@@ -75,16 +74,16 @@ export function createTable(ctx = {}) {
             tbody += tr;
         });
         
-        return `<tbody>${tbody}</tbody>`;
+        return `/*html*/
+            ${tableHeader}
+            <tbody>${tbody}</tbody>
+        `;
     }
-
-
      
     dataTransfer({...ctx, fl: "innerMail"}).then(data => {
-
+        console.log("crt: ", data);
         const table = /*html*/`
             <table id="table_${izdelieid}" class="innerMail" data-table="mailbox" data-id="${izdelieid}">
-                ${tableHeader}
                 ${tbodyCreate(data[0])}
             </table>
         `;

@@ -208,7 +208,7 @@ function loadsection(izdelieid, sectionid) {
 		import("./js/innerMail/script.js?v=<?=time();?>")
 			.then(module => {
 				// Вызываем функцию из модуля
-				module.loadInnerMail({izdelieid: izdelieid, tabName: "innerMail", dataTable: "mailbox", page: -1});
+				module.loadInnerMail(izdelieid);
 			})
 			.catch(err => console.error("Ошибка загрузки innermail script.js:", err));
 	break;

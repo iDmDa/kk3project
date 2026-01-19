@@ -28,7 +28,7 @@ export function findInTable({layer} = {}) {
 
     mainframe.addEventListener("change", (e) => {
         if(e.target.classList.contains("filter")) {
-            state.mainTable({filter: e.target.value, callback: () => findSelector(e.target.value)});
+            state.mainTable({page: -1, filter: e.target.value, callback: () => findSelector(e.target.value)});
         }
     })
 }

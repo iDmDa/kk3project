@@ -3,11 +3,15 @@ import { findInTable } from "./findInTable.js";
 import { varControlEvt } from "../commonTableFnc/varControl.js";
 import { state } from "../commonTableFnc/state.js";
 import { editFunctions } from "../commonTableFnc/editFunctions.js";
-import { txtEditor } from "../commonTableFnc/txtEditor.js";
-import { fileLoaderWindow } from "./fileLoaderWindow.js";
 
-export function loadInnerMail(ctx = {}) {
-    const {izdelieid, page, tabName, dataTable} = ctx;
+export function loadInnerMail(izdelieid) {
+    const tabInfo = {
+        izdelieid: izdelieid,
+        page: -1,
+        tabName: 'innerMail',
+        dataTable: 'mailbox',
+        layer: '.tableBox',
+    }
     const content = /*html*/`
         <div class="findBoxInnerMail"></div>
         <div class="tableBox"></div>
@@ -17,16 +21,13 @@ export function loadInnerMail(ctx = {}) {
     const maintable = document.createRange().createContextualFragment(content);
     varframe.append(maintable);
 
-
-
     state.openStatus = window.openStatus;
 
-    createTable({...ctx, layer: ".tableBox", tabName: "innerMail"});
+    createTable(tabInfo);
     findInTable({layer: ".findBoxInnerMail"});
 
     varControlEvt({varName: "openStatus", callback: (val) => {
-        console.log("Триггер varControlEvt: ", ctx)
-        editFunctions({openStatus: val, reload: () => createTable({...ctx, layer: ".tableBox"})});
+        editFunctions({openStatus: val, reload: () => createTable(tabInfo)});
         state.openStatus = val;
     }});
 

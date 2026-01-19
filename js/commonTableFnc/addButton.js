@@ -1,4 +1,5 @@
 import { dataTransfer } from "./dataTransfer.js";
+import { state } from "./state.js";
 
 export function addButton({table, id, hide, reload} = {}) {
     const button = /*html*/`
@@ -17,7 +18,8 @@ export function addButton({table, id, hide, reload} = {}) {
             fl: "addNewLine",
         }
         dataTransfer(data).then(() => {
-            reload();
+            state.mainTable({page: -1})
+            //reload();
         });
     })
     return addButton;

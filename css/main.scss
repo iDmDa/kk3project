@@ -12,9 +12,9 @@ html, body{
 }
 
 
-/* слои внутри базовой таблицы*/
+// слои внутри базовой таблицы
 #leftmenu_box {
-	/*position: fixed;*/
+	//position: fixed;
 	width: 150px;
 	display: flex;
 	flex-direction: column;
@@ -26,27 +26,27 @@ html, body{
 	flex-direction: column;
 	width: 100vw;
 	margin-left: 5px;
-	overflow: hidden; /*Важно*/
+	overflow: hidden; //Важно
 }
 
-#menuframe {  /*  div поле со списком изделий (внутри ячейки izdeliecell) */
+#menuframe {  //  div поле со списком изделий (внутри ячейки izdeliecell) 
 	height:100vh; 
 	overflow: auto;
 	overflow-y: scroll;
 }
 
-#varframe { /* поле для загрузки (внутри ячейки cellforload)*/
+#varframe { // поле для загрузки (внутри ячейки cellforload)
 	display: flex;
 	flex-direction: column;
 	height: 100%;
 	overflow: hidden;
 	font-family: "Trebuchet MS", Helvetica, sans-serif; 
 	font-size: 13px;
-	overflow-wrap: break-word; /*автоперенос свехдлинных слов*/
+	overflow-wrap: break-word; //автоперенос свехдлинных слов
 	scrollbar-width: thin;
 }
 
-#loader_layer { /* слой для анимации загрузки */
+#loader_layer { // слой для анимации загрузки 
 	position: fixed;
 	left:155px;
 	top:40px;
@@ -66,20 +66,20 @@ html, body{
 	justify-content: center;
 }
 
-/******************* слои внутри базовой таблицы*/
+//****************** слои внутри базовой таблицы
 
-/* таблица со списком изделий*/
-#leftmenu1 {  /*  таблица со списком изделий */
+// таблица со списком изделий
+#leftmenu1 {  //  таблица со списком изделий 
 width:100%;
 }
 
-.menufielditem {  /*  ячейки с индексами изделий */
+.menufielditem {  //  ячейки с индексами изделий 
 width:100%;
 }
 
 
 
-/******************* таблица со списком изделий*/
+//****************** таблица со списком изделий
 #topmenu_box {
 	display: flex;
 	flex-direction: row;
@@ -95,19 +95,19 @@ width:100%;
 	div {
 		display: flex;
 		flex-direction: row;
-		/*justify-content: flex-start;*/
+		//justify-content: flex-start;
 	}
 	#menu_box {
 		margin-right: 15px;
 	}
 }
 
-/* стили слоев ячеек меню */
+// стили слоев ячеек меню 
 .menuitem, .topmenuitem {
 	background: linear-gradient(to top, #BAC1E1, #D2D5E1);
 	border: solid 1px DarkBlue;
 	border-radius: 6px; 
-	padding: 5px;	/*поля внутри элемента; */
+	padding: 5px;	//поля внутри элемента; 
 	font-family: "Trebuchet MS", Helvetica, sans-serif; 
 	font-size:12px;
 	font-weight: 600;
@@ -120,11 +120,11 @@ width:100%;
 
 .close_catalog .menuitem {
 	background:none;
-	/*background:#C2CBE1; */
+	//background:#C2CBE1; 
 	border: solid 0px DarkBlue;
 	border-radius: 0px; 
 	max-width:0px;
-	padding: 0px;	/*поля внутри элемента; */
+	padding: 0px;	//поля внутри элемента; 
 	font-family: "Trebuchet MS", Helvetica, sans-serif; 
 	font-size:12px;
 	font-weight: 600;
@@ -133,14 +133,14 @@ width:100%;
 .menuitem_header {
 	background-color:#dddddd;
 	max-width:100%;
-	padding: 4px;	/*поля внутри элемента; */
+	padding: 4px;	//поля внутри элемента; 
 	text-align: center;
 	display: none;
 }
 
 .menuitem:hover, .topmenuitem:hover {
 	background: linear-gradient(to right, pink, pink);
-	/*background-color:pink;*/
+	//background-color:pink;
 }
 
 .menuitem:active, .topmenuitem:active {
@@ -149,37 +149,37 @@ width:100%;
 
 .menuactive {
 	background: linear-gradient(to right, lime, lime);
-	/*background-color:lime;*/
+	//background-color:lime;
 }
 
 .treemenuactive {
-	/*background: linear-gradient(to right, lime, lime);*/
-	/*background-color:lime;*/
+	//background: linear-gradient(to right, lime, lime);
+	//background-color:lime;
 	font-family: "Trebuchet MS", Helvetica, sans-serif; 
 	font-size:12px;
 	font-weight: 600;
 	background: lime;
 }
 
-li span:hover {
-	/*background: linear-gradient(to right, pink, pink);*/
-	/*background-color:pink;*/
-}
+// li span:hover {
+// 	//background: linear-gradient(to right, pink, pink);
+// 	//background-color:pink;
+// }
 
 ul {
 	padding: 0;
 	margin: 0;
 	list-style-position: outside;
-	/*list-style-image: url(../include/treeimg/open.gif);*/
+	//list-style-image: url(../include/treeimg/open.gif);
 }
 
 .li_style {
 	list-style-type: none;
-	/*background-image : url(../include/treeimg/i.gif);
+	//background-image : url(../include/treeimg/i.gif);
 	background-position : top left;
-	background-repeat : repeat-y;*/
+	background-repeat : repeat-y;
 	padding-left: 18px;
-	text-indent: -18px; /* смещение первой строки текста*/
+	text-indent: -18px; // смещение первой строки текста
 	zoom: 1;
 }
 
@@ -189,7 +189,7 @@ ul {
 	background-position : top left;
 	background-repeat : repeat-y;
 	padding-left: 18px;
-	text-indent: -18px; /* смещение первой строки текста*/
+	text-indent: -18px; // смещение первой строки текста
 	zoom: 1;
 }
 
@@ -199,13 +199,13 @@ ul {
 	background-position : top left;
 	background-repeat : repeat-y;
 	padding-left: 18px;
-	text-indent: -18px; /* смещение первой строки текста*/
+	text-indent: -18px; // смещение первой строки текста
 	zoom: 1;
 }
 
-/*li div {
-    background-image: url(../include/treeimg/expand_leaf.gif);
-}*/
+//li div {
+//     background-image: url(../include/treeimg/expand_leaf.gif);
+// }
 
 li span {
 	font-family: "Trebuchet MS", Helvetica, sans-serif; 
@@ -218,8 +218,8 @@ li span {
 	width: 18px;
 	height: 18px;
 	position: relative;
-	left: -18px; /* смещение блока относительно первоначального положения*/
-/*background: lime;*/
+	left: -18px; // смещение блока относительно первоначального положения
+//background: lime;
 	background-image: url(../include/treeimg/t.gif);
 	float: left;
 }
@@ -228,8 +228,8 @@ li span {
 	width: 18px;
 	height: 18px;
 	position: relative;
-	left: -18px; /* смещение блока относительно первоначального положения*/
-/*background: lime;*/
+	left: -18px; // смещение блока относительно первоначального положения
+//background: lime;
 	background-image: url(../include/treeimg/t.gif);
 	float: left;
 }
@@ -238,8 +238,8 @@ li span {
 	width: 18px;
 	height: 18px;
 	position: relative;
-	left: -18px; /* смещение блока относительно первоначального положения*/
-	/*background: lime;*/
+	left: -18px; // смещение блока относительно первоначального положения
+	//background: lime;
 	background-image: url(../include/treeimg/l.gif);
 	float: left;
 }
@@ -277,11 +277,11 @@ li span {
 	display: none;
 }
 
-/************** стили ячеек меню */
+//************* стили ячеек меню 
 
 
-#open_close {  /* поле с замком */
-	/*right: 30px; */
+#open_close {  // поле с замком 
+	//right: 30px; 
 	height: 30px;
 	width: 30px;
 	margin-right: 0px;
@@ -353,7 +353,7 @@ u {
 #tablediv {
 	overflow: auto;
 	scrollbar-width: thin;
-	/*height: calc(100% - 35px);*/
+	//height: calc(100% - 35px);
 }
 
 #findlayer {
@@ -370,35 +370,35 @@ u {
 
   
 .mailQuestion {
-    /*display: inline-block; /* Строчно-блочный элемент */
-    position: relative; /* Относительное позиционирование */
+    //display: inline-block; // Строчно-блочный элемент 
+    position: relative; // Относительное позиционирование 
 }
 
 .mailQuestion:hover::after {
-    /*content: attr(data-title); /* Выводим текст */
-	content: attr(data-title) "\a" attr(data-second-line); /* Используем \A для перевода на новую строку */
-    position: absolute; /* Абсолютное позиционирование */
-    left: 20%; top: 30%; /* Положение подсказки */
-    z-index: 1; /* Отображаем подсказку поверх других элементов */
-    background: rgba(255,255,230,0.9); /* Полупрозрачный цвет фона */
-    font-family: Arial, sans-serif; /* Гарнитура шрифта */
-    font-size: 13px; /* Размер текста подсказки */
-    padding: 5px 10px; /* Поля */
-    border: 1px solid #333; /* Параметры рамки */
-	/*white-space: nowrap;/* Текст не переносится на новую строку */
-	white-space: pre; /* Разрешить использование символа переноса строки */
+    //content: attr(data-title); // Выводим текст 
+	content: attr(data-title) "\a" attr(data-second-line); // Используем \A для перевода на новую строку 
+    position: absolute; // Абсолютное позиционирование 
+    left: 20%; top: 30%; // Положение подсказки 
+    z-index: 1; // Отображаем подсказку поверх других элементов 
+    background: rgba(255,255,230,0.9); // Полупрозрачный цвет фона 
+    font-family: Arial, sans-serif; // Гарнитура шрифта 
+    font-size: 13px; // Размер текста подсказки 
+    padding: 5px 10px; // Поля 
+    border: 1px solid #333; // Параметры рамки 
+	//white-space: nowrap;// Текст не переносится на новую строку 
+	white-space: pre; // Разрешить использование символа переноса строки 
 }
 
 .sortColumn::after {
-    content: "\25BC"; /* Unicode символ для треугольника вниз */
-    display: inline-block; /* Позволяет элементу быть встроенным в текст */
-    margin-left: 5px; /* Пространство между символом и текстом */
+    content: "\25BC"; // Unicode символ для треугольника вниз 
+    display: inline-block; // Позволяет элементу быть встроенным в текст 
+    margin-left: 5px; // Пространство между символом и текстом 
 }
 
 .unSortColumn::after {
-    content: "\25B6"; /* Unicode символ для треугольника вниз */
-    display: inline-block; /* Позволяет элементу быть встроенным в текст */
-    margin-left: 5px; /* Пространство между символом и текстом */
+    content: "\25B6"; // Unicode символ для треугольника вниз 
+    display: inline-block; // Позволяет элементу быть встроенным в текст 
+    margin-left: 5px; // Пространство между символом и текстом 
 }
 
 #test_version {
@@ -413,9 +413,9 @@ u {
 	position: relative;
 }
 
-#test_version div {
+// #test_version div {
 	
-}
+// }
 
 #test_ver_div1 {
 	position: absolute;
@@ -441,10 +441,10 @@ u {
 	text-decoration: underline;
 }
 
-.table_body_block tr:nth-child(2n) {
-	/*background-color: rgb(222, 237, 237);*/
-	/*background-color: rgb(215, 230, 230);*/
-}
+// .table_body_block tr:nth-child(2n) {
+// 	//background-color: rgb(222, 237, 237);
+// 	//background-color: rgb(215, 230, 230);
+// }
 
 @import 'innerMail';
 @import 'movableWindow';

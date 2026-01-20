@@ -12,9 +12,7 @@ html, body {
   height: 100%;
 }
 
-/* слои внутри базовой таблицы*/
 #leftmenu_box {
-  /*position: fixed;*/
   width: 150px;
   display: flex;
   flex-direction: column;
@@ -26,27 +24,27 @@ html, body {
   flex-direction: column;
   width: 100vw;
   margin-left: 5px;
-  overflow: hidden; /*Важно*/
+  overflow: hidden;
 }
 
-#menuframe { /*  div поле со списком изделий (внутри ячейки izdeliecell) */
+#menuframe {
   height: 100vh;
   overflow: auto;
   overflow-y: scroll;
 }
 
-#varframe { /* поле для загрузки (внутри ячейки cellforload)*/
+#varframe {
   display: flex;
   flex-direction: column;
   height: 100%;
   overflow: hidden;
   font-family: "Trebuchet MS", Helvetica, sans-serif;
   font-size: 13px;
-  overflow-wrap: break-word; /*автоперенос свехдлинных слов*/
+  overflow-wrap: break-word;
   scrollbar-width: thin;
 }
 
-#loader_layer { /* слой для анимации загрузки */
+#loader_layer {
   position: fixed;
   left: 155px;
   top: 40px;
@@ -66,17 +64,14 @@ html, body {
   justify-content: center;
 }
 
-/******************* слои внутри базовой таблицы*/
-/* таблица со списком изделий*/
-#leftmenu1 { /*  таблица со списком изделий */
+#leftmenu1 {
   width: 100%;
 }
 
-.menufielditem { /*  ячейки с индексами изделий */
+.menufielditem {
   width: 100%;
 }
 
-/******************* таблица со списком изделий*/
 #topmenu_box {
   display: flex;
   flex-direction: row;
@@ -93,18 +88,16 @@ html, body {
 #topmenu_box div {
   display: flex;
   flex-direction: row;
-  /*justify-content: flex-start;*/
 }
 #topmenu_box #menu_box {
   margin-right: 15px;
 }
 
-/* стили слоев ячеек меню */
 .menuitem, .topmenuitem {
   background: linear-gradient(to top, #BAC1E1, #D2D5E1);
   border: solid 1px DarkBlue;
   border-radius: 6px;
-  padding: 5px; /*поля внутри элемента; */
+  padding: 5px;
   font-family: "Trebuchet MS", Helvetica, sans-serif;
   font-size: 12px;
   font-weight: 600;
@@ -119,11 +112,10 @@ html, body {
 
 .close_catalog .menuitem {
   background: none;
-  /*background:#C2CBE1; */
   border: solid 0px DarkBlue;
   border-radius: 0px;
   max-width: 0px;
-  padding: 0px; /*поля внутри элемента; */
+  padding: 0px;
   font-family: "Trebuchet MS", Helvetica, sans-serif;
   font-size: 12px;
   font-weight: 600;
@@ -132,14 +124,13 @@ html, body {
 .menuitem_header {
   background-color: #dddddd;
   max-width: 100%;
-  padding: 4px; /*поля внутри элемента; */
+  padding: 4px;
   text-align: center;
   display: none;
 }
 
 .menuitem:hover, .topmenuitem:hover {
   background: linear-gradient(to right, pink, pink);
-  /*background-color:pink;*/
 }
 
 .menuitem:active, .topmenuitem:active {
@@ -148,37 +139,27 @@ html, body {
 
 .menuactive {
   background: linear-gradient(to right, lime, lime);
-  /*background-color:lime;*/
 }
 
 .treemenuactive {
-  /*background: linear-gradient(to right, lime, lime);*/
-  /*background-color:lime;*/
   font-family: "Trebuchet MS", Helvetica, sans-serif;
   font-size: 12px;
   font-weight: 600;
   background: lime;
 }
 
-li span:hover {
-  /*background: linear-gradient(to right, pink, pink);*/
-  /*background-color:pink;*/
-}
-
 ul {
   padding: 0;
   margin: 0;
   list-style-position: outside;
-  /*list-style-image: url(../include/treeimg/open.gif);*/
 }
 
 .li_style {
   list-style-type: none;
-  /*background-image : url(../include/treeimg/i.gif);
-  background-position : top left;
-  background-repeat : repeat-y;*/
+  background-position: top left;
+  background-repeat: repeat-y;
   padding-left: 18px;
-  text-indent: -18px; /* смещение первой строки текста*/
+  text-indent: -18px;
   zoom: 1;
 }
 
@@ -188,7 +169,7 @@ ul {
   background-position: top left;
   background-repeat: repeat-y;
   padding-left: 18px;
-  text-indent: -18px; /* смещение первой строки текста*/
+  text-indent: -18px;
   zoom: 1;
 }
 
@@ -198,13 +179,10 @@ ul {
   background-position: top left;
   background-repeat: repeat-y;
   padding-left: 18px;
-  text-indent: -18px; /* смещение первой строки текста*/
+  text-indent: -18px;
   zoom: 1;
 }
 
-/*li div {
-    background-image: url(../include/treeimg/expand_leaf.gif);
-}*/
 li span {
   font-family: "Trebuchet MS", Helvetica, sans-serif;
   font-weight: 600;
@@ -215,8 +193,7 @@ li span {
   width: 18px;
   height: 18px;
   position: relative;
-  left: -18px; /* смещение блока относительно первоначального положения*/
-  /*background: lime;*/
+  left: -18px;
   background-image: url(../include/treeimg/t.gif);
   float: left;
 }
@@ -225,8 +202,7 @@ li span {
   width: 18px;
   height: 18px;
   position: relative;
-  left: -18px; /* смещение блока относительно первоначального положения*/
-  /*background: lime;*/
+  left: -18px;
   background-image: url(../include/treeimg/t.gif);
   float: left;
 }
@@ -235,8 +211,7 @@ li span {
   width: 18px;
   height: 18px;
   position: relative;
-  left: -18px; /* смещение блока относительно первоначального положения*/
-  /*background: lime;*/
+  left: -18px;
   background-image: url(../include/treeimg/l.gif);
   float: left;
 }
@@ -274,9 +249,7 @@ li span {
   display: none;
 }
 
-/************** стили ячеек меню */
-#open_close { /* поле с замком */
-  /*right: 30px; */
+#open_close {
   height: 30px;
   width: 30px;
   margin-right: 0px;
@@ -349,7 +322,6 @@ u {
 #tablediv {
   overflow: auto;
   scrollbar-width: thin;
-  /*height: calc(100% - 35px);*/
 }
 
 #findlayer {
@@ -365,36 +337,33 @@ u {
 }
 
 .mailQuestion {
-  /*display: inline-block; /* Строчно-блочный элемент */
-  position: relative; /* Относительное позиционирование */
+  position: relative;
 }
 
 .mailQuestion:hover::after {
-  /*content: attr(data-title); /* Выводим текст */
-  content: attr(data-title) "\a" attr(data-second-line); /* Используем \A для перевода на новую строку */
-  position: absolute; /* Абсолютное позиционирование */
+  content: attr(data-title) "\a" attr(data-second-line);
+  position: absolute;
   left: 20%;
-  top: 30%; /* Положение подсказки */
-  z-index: 1; /* Отображаем подсказку поверх других элементов */
-  background: rgba(255, 255, 230, 0.9); /* Полупрозрачный цвет фона */
-  font-family: Arial, sans-serif; /* Гарнитура шрифта */
-  font-size: 13px; /* Размер текста подсказки */
-  padding: 5px 10px; /* Поля */
-  border: 1px solid #333; /* Параметры рамки */
-  /*white-space: nowrap;/* Текст не переносится на новую строку */
-  white-space: pre; /* Разрешить использование символа переноса строки */
+  top: 30%;
+  z-index: 1;
+  background: rgba(255, 255, 230, 0.9);
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  padding: 5px 10px;
+  border: 1px solid #333;
+  white-space: pre;
 }
 
 .sortColumn::after {
-  content: "▼"; /* Unicode символ для треугольника вниз */
-  display: inline-block; /* Позволяет элементу быть встроенным в текст */
-  margin-left: 5px; /* Пространство между символом и текстом */
+  content: "▼";
+  display: inline-block;
+  margin-left: 5px;
 }
 
 .unSortColumn::after {
-  content: "▶"; /* Unicode символ для треугольника вниз */
-  display: inline-block; /* Позволяет элементу быть встроенным в текст */
-  margin-left: 5px; /* Пространство между символом и текстом */
+  content: "▶";
+  display: inline-block;
+  margin-left: 5px;
 }
 
 #test_version {
@@ -433,17 +402,11 @@ u {
   text-decoration: underline;
 }
 
-.table_body_block tr:nth-child(2n) {
-  /*background-color: rgb(222, 237, 237);*/
-  /*background-color: rgb(215, 230, 230);*/
-}
-
 .btnInnerMail {
   color: #666666;
-  /*font-weight: lighter;*/
-  color: white; /* Основной цвет текста */
+  color: white;
   font-weight: lighter;
-  text-shadow: 1px 1px 0px blue, -1px -1px 0px blue, 1px -1px 0px blue, -1px 1px 0px blue; /* Обводка слева и снизу */
+  text-shadow: 1px 1px 0px blue, -1px -1px 0px blue, 1px -1px 0px blue, -1px 1px 0px blue;
 }
 
 .findBoxInnerMail {
@@ -455,15 +418,14 @@ u {
 }
 
 .tableBox {
-  flex: 1 1 auto; /* занимает всё остальное */
-  overflow: auto; /* ПРОКРУТКА ТУТ */
+  flex: 1 1 auto;
+  overflow: auto;
   scrollbar-width: thin;
 }
 
 .innerMail, .fileListTable {
-  border-collapse: collapse;
-  /*margin-bottom: 20px;*/
-  /* анимируем содержимое */
+  border-collapse: separate;
+  border-spacing: 0;
 }
 .innerMail tr, .fileListTable tr {
   transition: opacity 0.2s ease;
@@ -483,10 +445,25 @@ u {
   transition: all 0.2s ease;
 }
 .innerMail [contentEditable], .fileListTable [contentEditable] {
-  outline: none; /*Убирает синюю рамку полей contenteditable*/
+  outline: none;
 }
-.innerMail td, .fileListTable td {
-  border: solid 1px black;
+.innerMail thead td, .fileListTable thead td {
+  box-shadow: inset 1px 0 0 black, inset 0 1px 0 black;
+}
+.innerMail thead td:last-child, .fileListTable thead td:last-child {
+  box-shadow: inset 1px 0 0 black, inset 0 1px 0 black, inset -1px 0 0 black;
+}
+.innerMail thead tr:last-child td, .fileListTable thead tr:last-child td {
+  box-shadow: inset 0 -1px 0 black, inset 1px 0 0 black, inset 0 1px 0 black;
+}
+.innerMail thead tr:last-child td:last-child, .fileListTable thead tr:last-child td:last-child {
+  box-shadow: inset 0 -1px 0 black, inset 1px 0 0 black, inset 0 1px 0 black, inset -1px 0 0 black;
+}
+.innerMail tbody td, .fileListTable tbody td {
+  box-shadow: inset 0 -1px 0 black, inset 1px 0 0 black;
+}
+.innerMail tbody td:last-child, .fileListTable tbody td:last-child {
+  box-shadow: inset 0 -1px 0 black, inset 1px 0 0 black, inset -1px 0 0 black;
 }
 .innerMail a, .fileListTable a {
   text-decoration: none;
@@ -494,7 +471,6 @@ u {
 .innerMail .headerSection, .fileListTable .headerSection {
   position: sticky;
   top: 0px;
-  background: black; /*Иначе при прокрутке окантовка исчезает*/
   border-top: 2px solid #AAD8EB;
 }
 .innerMail .tableHeader td, .fileListTable .tableHeader td {
@@ -543,6 +519,10 @@ u {
 .innerMail .colHeader .sumnormchasish, .fileListTable .colHeader .sumnormchasish {
   width: 50px;
 }
+.innerMail tbody td, .fileListTable tbody td {
+  padding-left: 3px;
+  padding-right: 3px;
+}
 .innerMail tbody .linenumber, .fileListTable tbody .linenumber {
   width: 25px;
   padding: 5px;
@@ -565,7 +545,7 @@ u {
   margin-bottom: -4px;
 }
 .innerMail tbody .scanvh, .innerMail tbody .scanish, .fileListTable tbody .scanvh, .fileListTable tbody .scanish {
-  width: 85px;
+  width: 90px;
 }
 
 .pagesBlock {
@@ -592,7 +572,7 @@ u {
   border: 1px black solid;
   -webkit-user-select: none;
      -moz-user-select: none;
-          user-select: none; /* базовая защита от выделения */
+          user-select: none;
 }
 .modalWindowBox .tmp_hide {
   display: none;

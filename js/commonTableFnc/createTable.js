@@ -19,7 +19,7 @@ export function createTable(ctx = {}) {
     dataTransfer({...ctx, fl: tabName}).then(data => {
         console.log("crt: ", data);
         const table = /*html*/`
-            <table id="table_${izdelieid}" class="${tabName}" data-table="${dataTable}" data-id="${izdelieid}">
+            <table id="table_${izdelieid}" class="moduleTable ${tabName}" data-table="${dataTable}" data-id="${izdelieid}">
                 ${tbody(data[0])}
             </table>
         `;

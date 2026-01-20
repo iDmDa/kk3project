@@ -11,7 +11,7 @@
     background: #DDEEEE;
     overflow: hidden;
     border: 1px black solid;
-    user-select: none; /* базовая защита от выделения */
+    user-select: none; //базовая защита от выделения 
 
     .tmp_hide {
         display: none;
@@ -20,6 +20,7 @@
 
     .fileListTable {
         width: 100%;
+        //border-bottom: 1px solid black;
 
         .filenameBox {
             display: flex;
@@ -40,8 +41,6 @@
             }
         }
     }
-
-
 
     .tmp_box {
         display: flex;

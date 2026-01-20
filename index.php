@@ -205,7 +205,7 @@ function loadsection(izdelieid, sectionid) {
 		document.getElementById("varframe").innerHTML = "";
 		//refresh('api/innermail.php', 'varframe', "&id=0");
 		console.log(`innermail: ${izdelieid}, ${sectionid}`);
-		import("./js/innerMail/script.js?v=<?=time();?>")
+		import("./js/innerMail/innerMail.js?v=<?=time();?>")
 			.then(module => {
 				// Вызываем функцию из модуля
 				module.loadInnerMail(izdelieid);

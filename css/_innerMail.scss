@@ -153,14 +153,17 @@ $btnColor: blue;
             vertical-align: top;
             background: linear-gradient(to top, #8ac5ff, #8ac5ff);
         }
-        .outbox {
-            border-left-width: 2px;
+        .inbox {
+            border-right: 1px solid black;
         }
     }
     
     .colHeader {
         td {
-            @include colHeaderStyle;      
+            @include colHeaderStyle;
+            &:nth-child(7) {
+                border-right: 1px solid black;
+            }   
         }
         .headerlinenumber {
             width: 33px;
@@ -181,6 +184,11 @@ $btnColor: blue;
     }
 
     tbody {
+        tr {
+            td:nth-child(7) {
+                border-right: 1px solid black;
+            }
+        }
         td {
             padding-left: 3px;
             padding-right: 3px;

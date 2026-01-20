@@ -488,8 +488,8 @@ u {
   vertical-align: top;
   background: linear-gradient(to top, #8ac5ff, #8ac5ff);
 }
-.innerMail .groupHeader .outbox, .fileListTable .groupHeader .outbox {
-  border-left-width: 2px;
+.innerMail .groupHeader .inbox, .fileListTable .groupHeader .inbox {
+  border-right: 1px solid black;
 }
 .innerMail .colHeader td, .fileListTable .colHeader td {
   padding: 5px;
@@ -502,6 +502,9 @@ u {
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
+}
+.innerMail .colHeader td:nth-child(7), .fileListTable .colHeader td:nth-child(7) {
+  border-right: 1px solid black;
 }
 .innerMail .colHeader .headerlinenumber, .fileListTable .colHeader .headerlinenumber {
   width: 33px;
@@ -518,6 +521,9 @@ u {
 }
 .innerMail .colHeader .sumnormchasish, .fileListTable .colHeader .sumnormchasish {
   width: 50px;
+}
+.innerMail tbody tr td:nth-child(7), .fileListTable tbody tr td:nth-child(7) {
+  border-right: 1px solid black;
 }
 .innerMail tbody td, .fileListTable tbody td {
   padding-left: 3px;

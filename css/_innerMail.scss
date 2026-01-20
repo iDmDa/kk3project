@@ -110,13 +110,10 @@ $btnColor: blue;
             @include colHeaderStyle;      
         }
         .headerlinenumber {
-            width: 25px;
+            width: 33px;
         }
         .datevh {
             width: 70px;
-        }
-        .scanvh, .scanish {
-            min-width: 45px;
         }
         .sumnormchasvh {
             width: 50px;
@@ -137,6 +134,14 @@ $btnColor: blue;
         }
         .dateish {
             border-left-width: 2px; 
+        }
+        .addFileBtn {
+            float: right;
+            margin-top: -4px;
+            margin-bottom: -4px;
+        }
+        .scanvh, .scanish {
+            width: 85px;
         }
     }
 }

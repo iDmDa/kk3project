@@ -14,6 +14,13 @@
 // }
 
 export function varControlEvt({ varName, callback } = {}) {
+    if (window.__varControlInstalled?.[varName]) return;
+
+    window.__varControlInstalled ??= {};
+    window.__varControlInstalled[varName] = true;
+
+    let value = window[varName];
+    
     window.__varStore ??= {};
     window.__varListeners ??= {};
 

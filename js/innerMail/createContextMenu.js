@@ -1,10 +1,10 @@
 import { dataTransfer } from "../commonTableFnc/dataTransfer.js";
 import { state } from "../commonTableFnc/state.js";
 
-export function createContextMenu() {
-    $.contextMenu('destroy', '.innermail-context');
+export function createContextMenu(contextName) {
+    $.contextMenu('destroy', `.${contextName}`);
     $.contextMenu({  //меню удаления
-        selector: '.innermail-context',
+        selector: `.${contextName}`,
         items: {
             delete: {
                 name: 'Удалить',

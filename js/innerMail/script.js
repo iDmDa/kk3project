@@ -1,8 +1,10 @@
-import { createTable } from "./createTable.js";
+import { createTable } from "../commonTableFnc/createTable.js";
 import { findInTable } from "./findInTable.js";
 import { varControlEvt } from "../commonTableFnc/varControl.js";
 import { state } from "../commonTableFnc/state.js";
 import { editFunctions } from "../commonTableFnc/editFunctions.js";
+import { createContextMenu } from "./createContextMenu.js";
+import { tbodyCreate } from "./tbodyCreate.js";
 
 export function loadInnerMail(izdelieid) {
     const tabInfo = {
@@ -11,6 +13,9 @@ export function loadInnerMail(izdelieid) {
         tabName: 'innerMail',
         dataTable: 'mailbox',
         layer: '.tableBox',
+        contextName: 'innermail-context',
+        tbody: tbodyCreate,
+        contextMenu: createContextMenu,
     }
     const content = /*html*/`
         <div class="findBoxInnerMail"></div>
@@ -22,12 +27,13 @@ export function loadInnerMail(izdelieid) {
     varframe.append(maintable);
 
     state.openStatus = window.openStatus;
+    state.tabInfo = tabInfo;
 
     createTable(tabInfo);
     findInTable({layer: ".findBoxInnerMail"});
 
     varControlEvt({varName: "openStatus", callback: (val) => {
-        editFunctions({openStatus: val, reload: () => createTable(tabInfo)});
+        editFunctions({openStatus: val, ...tabInfo});
         state.openStatus = val;
     }});
 

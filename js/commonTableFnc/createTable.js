@@ -1,28 +1,26 @@
-import { iconLinkCreate } from "../commonTableFnc/iconLinkCreate.js";
-import { listNum } from "../commonTableFnc/listNum.js";
-import { state } from "../commonTableFnc/state.js";
-import { editFunctions } from "../commonTableFnc/editFunctions.js";
-import { dataTransfer } from "../commonTableFnc/dataTransfer.js";
-import { txtEditor } from "../commonTableFnc/txtEditor.js";
-import { fileLoaderWindow } from "../commonTableFnc/fileLoaderWindow.js";
-import { createContextMenu } from "./createContextMenu.js";
-import { tbodyCreate } from "./tbodyCreate.js";
+import { listNum } from "./listNum.js";
+import { state } from "./state.js";
+import { editFunctions } from "./editFunctions.js";
+import { dataTransfer } from "./dataTransfer.js";
+import { txtEditor } from "./txtEditor.js";
+import { fileLoaderWindow } from "./fileLoaderWindow.js";
 
 export function createTable(ctx = {}) {
-    const {layer, tabName, dataTable, izdelieid, page, filter, scrollPos = -1, callback = () => {}} = ctx;
-    state.mainTable = (patch = {}) => createTable({...ctx, ...patch});
+    const {
+        layer, tabName, contextName, dataTable, izdelieid, page, filter, 
+        scrollPos = -1, 
+        tbody = () => {}, 
+        contextMenu = () => {}, 
+        callback = () => {}
+    } = ctx;
 
-    // varControlEvt({varName: "openStatus", callback: (val) => {
-    //     console.log("Триггер varControlEvt: ", ctx)
-    //     editFunctions({openStatus: val, reload: () => state.mainTable()});
-    //     state.openStatus = val;
-    // }});
+    state.mainTable = (patch = {}) => createTable({...ctx, ...patch});
 
     dataTransfer({...ctx, fl: tabName}).then(data => {
         console.log("crt: ", data);
         const table = /*html*/`
             <table id="table_${izdelieid}" class="${tabName}" data-table="${dataTable}" data-id="${izdelieid}">
-                ${tbodyCreate(data[0])}
+                ${tbody(data[0])}
             </table>
         `;
 
@@ -40,12 +38,9 @@ export function createTable(ctx = {}) {
         
         $(".dateinput").mask("99.99.9999", {placeholder: "дд.мм.гггг" });
 
-        editFunctions({openStatus: window.openStatus, reload: () => {
-            //createTable({...ctx, page: -1});
-            state.mainTable({page: -1});
-        } });
+        editFunctions({openStatus: window.openStatus, ...ctx });
 
-        createContextMenu();
+        contextMenu(contextName);
 
         /* анимация удаления строки из таблицы
         document.querySelectorAll("tr").forEach(item => {
@@ -61,9 +56,9 @@ export function createTable(ctx = {}) {
         else mainframe.scrollTop = newPos;
         //mainframe.scrollTo({ top: mainframe.scrollHeight, behavior: 'smooth' }); //Прокрутка вниз плавно
 
-        const maintable = document.querySelector(".innerMail");
+        const maintable = document.querySelector(`.${tabName}`);
         txtEditor(maintable);
-        fileLoaderWindow({evtPoint: maintable})
+        fileLoaderWindow(maintable)
         
         callback();
 

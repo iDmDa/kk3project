@@ -528,13 +528,10 @@ u {
           user-select: none;
 }
 .innerMail .colHeader .headerlinenumber, .fileListTable .colHeader .headerlinenumber {
-  width: 25px;
+  width: 33px;
 }
 .innerMail .colHeader .datevh, .fileListTable .colHeader .datevh {
   width: 70px;
-}
-.innerMail .colHeader .scanvh, .innerMail .colHeader .scanish, .fileListTable .colHeader .scanvh, .fileListTable .colHeader .scanish {
-  min-width: 45px;
 }
 .innerMail .colHeader .sumnormchasvh, .fileListTable .colHeader .sumnormchasvh {
   width: 50px;
@@ -561,6 +558,14 @@ u {
 }
 .innerMail tbody .dateish, .fileListTable tbody .dateish {
   border-left-width: 2px;
+}
+.innerMail tbody .addFileBtn, .fileListTable tbody .addFileBtn {
+  float: right;
+  margin-top: -4px;
+  margin-bottom: -4px;
+}
+.innerMail tbody .scanvh, .innerMail tbody .scanish, .fileListTable tbody .scanvh, .fileListTable tbody .scanish {
+  width: 85px;
 }
 
 .pagesBlock {

@@ -495,7 +495,7 @@ const menuItem_movetodoc = {
 const menuItem_movetoInnermail = {
 	name: "Перенести в раздел 'Внутренняя переписка'",
 	callback: function() {
-		import("./js/common/dataTransfer.js?v=<?=time();?>")
+		import("./js/commonTableFnc/dataTransfer.js?v=<?=time();?>")
 		.then(module => {
 			// Вызываем функцию из модуля
 			const data = {

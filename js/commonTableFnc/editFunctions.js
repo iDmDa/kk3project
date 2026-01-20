@@ -1,10 +1,11 @@
 import { addButton } from "./addButton.js";
 
-export function editFunctions({openStatus, reload, layer, tabName} = {}) {
-    //const {openStatus, reload, layer, tabName} = ctx;
-    console.log("editFunctions: ", openStatus, reload, layer, tabName);
-    const tableBox = document.querySelector('.tableBox');
-    const table = tableBox.querySelector('.innerMail');
+export function editFunctions(ctx = {}) {
+    const {openStatus, layer, tabName, contextName} = ctx;
+    if(!document.querySelector(layer)) {console.log("editFunctions"); return}; //Заглушка, ошибка при смене таблиц
+    console.log("editFunctions: ", ctx);
+    const tableBox = document.querySelector(layer);
+    const table = tableBox.querySelector(`.${tabName}`);
     const editable = table.querySelectorAll(".editable");
     const dateinput = table.querySelectorAll(".dateinput");
     const linenumber = table.querySelectorAll(".linenumber")
@@ -13,21 +14,20 @@ export function editFunctions({openStatus, reload, layer, tabName} = {}) {
         table: table.dataset.table,
         id: table.dataset.id,
         hide: 2,
-        reload: reload,
     }
 
     tableBox.querySelector(".addButton")?.remove();
 
     if(openStatus === "1") {
         editable.forEach(item => item.setAttribute("contenteditable", "true"))
-        linenumber.forEach(item => item.classList.add("innermail-context"))
+        linenumber.forEach(item => item.classList.add(contextName))
         dateinput.forEach(item => item.removeAttribute("readonly"))
         table.after(addButton(tabInfo));
         newWindowIcon({icon: "on"});
     }
     if(openStatus !== "1") {
         editable.forEach(item => item.removeAttribute("contenteditable", "true"))
-        linenumber.forEach(item => item.classList.remove("innermail-context"))
+        linenumber.forEach(item => item.classList.remove(contextName))
         dateinput.forEach(item => item.setAttribute("readonly", "readonly"))
         tableBox.querySelector(".addButton")?.remove(); // '?' проверяет существование объекта и если есть запускает функцию
         newWindowIcon({icon: "off"});
@@ -36,7 +36,7 @@ export function editFunctions({openStatus, reload, layer, tabName} = {}) {
     function newWindowIcon({icon} = {}) {
         const scanCell = table.querySelectorAll("tbody .scanvh, tbody .scanish");
         const addFileBtn = /*html*/`
-            <img class="addFileBtn" src="./include/new window.png" style="float: right;">
+            <img class="addFileBtn" src="./include/new window.png">
         `;
 
         document.querySelectorAll(".addFileBtn")?.forEach(item => item.remove());

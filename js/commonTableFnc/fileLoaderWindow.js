@@ -1,7 +1,7 @@
 import { createWindow } from "./createWindow.js";
 import { createFileTable } from "./createFileTable.js";
 
-export function fileLoaderWindow({evtPoint} = {}) {
+export function fileLoaderWindow(evtPoint) {
     evtPoint.addEventListener("click", (e) => {
         if(e.target.classList.contains("addFileBtn")) {
             const data = {

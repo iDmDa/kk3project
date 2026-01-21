@@ -22,12 +22,16 @@ $btnColor: blue;
         -1px 1px 0px $btnColor;  // Обводка слева и снизу 
 }
 
-.findBoxInnerMail {
+.findBoxInnerMail, .findBox{
     flex: 0 0 auto;
     display: flex;
     flex-direction: row;
     align-items: center;
     margin-bottom: 10px;
+
+    input {
+        outline: none;
+    }
 }
 
 .tableBox {
@@ -36,7 +40,7 @@ $btnColor: blue;
     scrollbar-width: thin;
 }
 
-.innerMail, .fileListTable {
+.innerMail, .fileListTable, .moduleTable {
     //border-collapse: collapse;
     border-collapse: separate;
     border-spacing: 0;
@@ -123,7 +127,6 @@ $btnColor: blue;
         }
     }
 
-
     a {
         text-decoration: none;
     }
@@ -161,9 +164,6 @@ $btnColor: blue;
     .colHeader {
         td {
             @include colHeaderStyle;
-            &:nth-child(7) {
-                border-right: 1px solid black;
-            }   
         }
         .headerlinenumber {
             width: 33px;
@@ -184,11 +184,6 @@ $btnColor: blue;
     }
 
     tbody {
-        tr {
-            td:nth-child(7) {
-                border-right: 1px solid black;
-            }
-        }
         td {
             padding-left: 3px;
             padding-right: 3px;
@@ -205,9 +200,27 @@ $btnColor: blue;
             margin-top: -4px;
             margin-bottom: -4px;
         }
+
+    }
+}
+
+.innerMail {
+    .colHeader {
+        td {
+            &:nth-child(7) {
+                border-right: 1px solid black;
+            }   
+        }
+    }
+    tbody { 
+        tr {
+            td:nth-child(7) {
+                border-right: 1px solid black;
+            }
+        }      
         .scanvh, .scanish {
             width: 90px;
-        }
+        }  
     }
 }
 

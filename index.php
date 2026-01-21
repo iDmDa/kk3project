@@ -180,6 +180,12 @@ function menuchoice(izdelie, section) {
 	if (sectionid == 25) {loadsection(izdelieid, sectionid);}
 };
 
+import("./js/commonTableFnc/varIndexCtrl.js?v=<?=time();?>")
+	.then(module => {
+		// Вызываем функцию из модуля
+		module.varIndexCtrl();
+	})
+	.catch(err => console.error("Ошибка загрузки varIndexCtrl.js:", err));
 let varframe;
 function loadsection(izdelieid, sectionid) {
 	switch (sectionid)
@@ -193,7 +199,14 @@ function loadsection(izdelieid, sectionid) {
 	case "2":
 		varframe = document.querySelector("#varframe");
 		varframe.style.overflow = "";
-		refresh('docwork.php', 'varframe', "&id=" + izdelieid);
+		//refresh('docwork.php', 'varframe', "&id=" + izdelieid);
+		document.getElementById("varframe").innerHTML = "";
+		import("./js/docwork/docwork.js?v=<?=time();?>")
+			.then(module => {
+				// Вызываем функцию из модуля
+				module.docwork(izdelieid);
+			})
+			.catch(err => console.error("Ошибка загрузки docwork.js:", err));
 	break;
 
 	case "3":
@@ -214,7 +227,6 @@ function loadsection(izdelieid, sectionid) {
 		varframe = document.querySelector("#varframe");
 		varframe.style.overflow = "";
 		document.getElementById("varframe").innerHTML = "";
-		//refresh('api/innermail.php', 'varframe', "&id=0");
 		console.log(`innermail: ${izdelieid}, ${sectionid}`);
 		import("./js/innerMail/innerMail.js?v=<?=time();?>")
 			.then(module => {

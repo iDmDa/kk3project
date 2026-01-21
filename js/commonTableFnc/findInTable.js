@@ -1,5 +1,5 @@
-import { findSelector } from "../commonTableFnc/findSelector.js";
-import { state } from "../commonTableFnc/state.js";
+import { findSelector } from "./findSelector.js";
+import { state } from "./state.js";
 
 export function findInTable({layer} = {}) {
     const info = 

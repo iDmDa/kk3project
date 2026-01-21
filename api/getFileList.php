@@ -19,6 +19,7 @@ if (json_last_error() !== JSON_ERROR_NONE) {
 
 $detid = (int) $data['detid'];
 $type = (int) $data['type'];
+$tabname = $data['tableName'];
 
 include("../dbdata.php");
 
@@ -29,7 +30,7 @@ try {
     echo json_encode(['error' => 'Ошибка подключения:'. $e->getMessage()]);
 }
 
-$query = "SELECT * FROM uplfiles where hide = 0 and detid = :detid and type = :type";
+$query = "SELECT * FROM uplfiles where hide = 0 and detid = :detid and type = :type and tabname = :tabname";
 
 try {
     // Подготовка запроса
@@ -38,6 +39,8 @@ try {
     // Привязка параметра
     $stmt->bindParam(':detid', $detid, PDO::PARAM_INT);
     $stmt->bindValue(':type', $type, PDO::PARAM_INT);
+    $stmt->bindParam(':tabname', $tabname, PDO::PARAM_STR);
+
 
     // Выполнение запроса
     $stmt->execute();

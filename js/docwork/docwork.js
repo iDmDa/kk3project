@@ -6,20 +6,19 @@ import { editFunctions } from "../commonTableFnc/editFunctions.js";
 import { createContextMenu } from "./createContextMenu.js";
 import { tbodyCreate } from "./tbodyCreate.js";
 
-export function loadInnerMail(izdelieid) {
+export function docwork(izdelieid) {
     const tabInfo = {
         izdelieid: izdelieid,
         page: -1,
-        tabName: 'innerMail',
-        dataTable: 'mailbox',
+        tabName: 'docwork',
+        dataTable: 'docwork',
         layer: '.tableBox',
-        contextName: 'innermail-context',
-        hide: 2,
+        contextName: 'docwork-context',
         tbody: tbodyCreate,
         contextMenu: createContextMenu,
     }
     const content = /*html*/`
-        <div class="findBox findBoxInnerMail"></div>
+        <div class="findBox"></div>
         <div class="tableBox"></div>
     `;
 
@@ -30,6 +29,5 @@ export function loadInnerMail(izdelieid) {
     state.tabInfo = tabInfo;
 
     createTable(tabInfo);
-    findInTable({layer: ".findBoxInnerMail"});
+    findInTable({layer: ".findBox"});
 }
-

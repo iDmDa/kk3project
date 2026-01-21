@@ -1,8 +1,8 @@
 import { addButton } from "./addButton.js";
 
 export function editFunctions(ctx = {}) {
-    const {openStatus, layer, tabName, contextName} = ctx;
-    if(!document.querySelector(layer)) {console.log("editFunctions"); return}; //Заглушка, ошибка при смене таблиц
+    const {openStatus, layer, tabName, contextName, hide = 0} = ctx;
+    if(!document.querySelector(layer)) {console.log("editFunctions return"); return}; //Заглушка, ошибка при смене таблиц
     console.log("editFunctions: ", ctx);
     const tableBox = document.querySelector(layer);
     const table = tableBox.querySelector(`.${tabName}`);
@@ -13,7 +13,7 @@ export function editFunctions(ctx = {}) {
     const tabInfo = {
         table: table.dataset.table,
         id: table.dataset.id,
-        hide: 2,
+        hide: hide,
     }
 
     tableBox.querySelector(".addButton")?.remove();
@@ -34,7 +34,7 @@ export function editFunctions(ctx = {}) {
     }
 
     function newWindowIcon({icon} = {}) {
-        const scanCell = table.querySelectorAll("tbody .scanvh, tbody .scanish");
+        const scanCell = table.querySelectorAll("tbody .scanvh, tbody .scanish, tbody .fileLoader");
         const addFileBtn = /*html*/`
             <img class="addFileBtn" src="./include/new window.png">
         `;

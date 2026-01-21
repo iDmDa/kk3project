@@ -180,28 +180,39 @@ function menuchoice(izdelie, section) {
 	if (sectionid == 25) {loadsection(izdelieid, sectionid);}
 };
 
+let varframe;
 function loadsection(izdelieid, sectionid) {
 	switch (sectionid)
 	{
 	case "1":
+		varframe = document.querySelector("#varframe");
+		varframe.style.overflow = "auto";
 		refresh('dogovor.php', 'varframe', "&id=" + izdelieid);
 	break;
 
 	case "2":
+		varframe = document.querySelector("#varframe");
+		varframe.style.overflow = "";
 		refresh('docwork.php', 'varframe', "&id=" + izdelieid);
 	break;
 
 	case "3":
+		varframe = document.querySelector("#varframe");
+		varframe.style.overflow = "";
 		document.getElementById("varframe").innerHTML = "";
 		refresh('mailbox.php', 'varframe', "&id=" + izdelieid);
 	break;
 
 	case "ctrl":
+		varframe = document.querySelector("#varframe");
+		varframe.style.overflow = "";
 		document.getElementById("varframe").innerHTML = "";
 		refresh('mailbox.php', 'varframe', "&id=0");
 	break;
 
 	case "innermail":
+		varframe = document.querySelector("#varframe");
+		varframe.style.overflow = "";
 		document.getElementById("varframe").innerHTML = "";
 		//refresh('api/innermail.php', 'varframe', "&id=0");
 		console.log(`innermail: ${izdelieid}, ${sectionid}`);
@@ -214,27 +225,39 @@ function loadsection(izdelieid, sectionid) {
 	break;
 
 	case "izv":
+		varframe = document.querySelector("#varframe");
+		varframe.style.overflow = "";
 		document.getElementById("varframe").innerHTML = "";
 		refresh('izveshenie.php', 'varframe', "&id=" + izdelieid);
 	break;
 
 	case "4":
+		varframe = document.querySelector("#varframe");
+		varframe.style.overflow = "";
 		refresh('contragent.php', 'varframe', "&id=" + izdelieid);
 	break;
 
 	case "5":
+		varframe = document.querySelector("#varframe");
+		varframe.style.overflow = "";
 		refresh('statis.php', 'varframe', "");
 	break;
 
 	case "6":
+		varframe = document.querySelector("#varframe");
+		varframe.style.overflow = "";
 		refresh('history.php', 'varframe', "&id=" + izdelieid);
 	break;
 
 	case "7":
+		varframe = document.querySelector("#varframe");
+		varframe.style.overflow = "";
 		refresh('findworkdoc.php', 'varframe', "");
 	break;
 
 	case "25":
+		varframe = document.querySelector("#varframe");
+		varframe.style.overflow = "";
 		refresh('../gb/', 'varframe', "");
 	break;
 

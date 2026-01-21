@@ -1,5 +1,4 @@
-﻿
-<?
+﻿<?
 require ("dbconnect.php");
 
 require ("megatable.php");

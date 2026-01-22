@@ -1,4 +1,5 @@
 import { addButton } from "./addButton.js";
+import { state } from "./state.js";
 
 export function editFunctions(ctx = {}) {
     const {openStatus, layer, tabName, contextName, hide = 0} = ctx;
@@ -14,7 +15,10 @@ export function editFunctions(ctx = {}) {
         table: table.dataset.table,
         id: table.dataset.id,
         hide: hide,
+        ...state.additionalFields,
     }
+
+    //console.log("edf tabinfo: ", tabInfo);
 
     tableBox.querySelector(".addButton")?.remove();
 

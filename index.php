@@ -240,7 +240,13 @@ function loadsection(izdelieid, sectionid) {
 		varframe = document.querySelector("#varframe");
 		varframe.style.overflow = "";
 		document.getElementById("varframe").innerHTML = "";
-		refresh('izveshenie.php', 'varframe', "&id=" + izdelieid);
+		//refresh('izveshenie.php', 'varframe', "&id=" + izdelieid);
+		import("./js/izv/izv.js?v=<?=time();?>")
+			.then(module => {
+				// Вызываем функцию из модуля
+				module.izv(izdelieid);
+			})
+			.catch(err => console.error("Ошибка загрузки izv.js:", err));
 	break;
 
 	case "4":

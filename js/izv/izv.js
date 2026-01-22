@@ -4,19 +4,24 @@ import { state } from "../commonTableFnc/state.js";
 import { createContextMenu } from "./createContextMenu.js";
 import { tbodyCreate } from "./tbodyCreate.js";
 
-export function docwork(izdelieid) {
+export function izv(izdelieid) {
     const tabInfo = {
         izdelieid: izdelieid,
         page: -1,
-        tabName: 'docwork',
+        tabName: 'izv',
         dataTable: 'docwork',
         layer: '.tableBox',
-        contextName: 'docwork-context',
+        contextName: 'izv-context',
+        hide: 0,
         tbody: tbodyCreate,
         contextMenu: createContextMenu,
     }
-    state.additionalFields = {};
-    
+
+    state.additionalFields = {
+        doctype: 1,
+        hrenota: "test",
+    }
+
     const content = /*html*/`
         <div class="findBox"></div>
         <div class="tableBox"></div>
@@ -31,3 +36,4 @@ export function docwork(izdelieid) {
     createTable(tabInfo);
     findInTable({layer: ".findBox"});
 }
+

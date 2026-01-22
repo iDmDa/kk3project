@@ -20,7 +20,8 @@ if (json_last_error() !== JSON_ERROR_NONE) {
 $table = $data['table'];
 $detid = $data['id'];
 $hide = $data['hide'];
-
+$doctype = $data['doctype'];
+//echo "doctype - ".$doctype;
 include("../dbdata.php");
 
 try {
@@ -41,13 +42,15 @@ $allowed_tables = ['mailbox', 'docwork']; // Список таблиц, с ко�
 if (in_array($table, $allowed_tables)) {
     // Создаем SQL-запрос для вставки данных
     $query = "INSERT INTO $table (detid, hide) VALUES (:detid, :hide)";
-    
+    if(isset($doctype)) $query = "INSERT INTO $table (detid, hide, doctype) VALUES (:detid, :hide, :doctype)";
+
     // Подготовка запроса
     $stmt = $pdo->prepare($query);
 
     // Привязываем параметры
     $stmt->bindParam(':detid', $detid, PDO::PARAM_INT);
     $stmt->bindParam(':hide', $hide, PDO::PARAM_INT);
+    if(isset($doctype)) $stmt->bindParam(':doctype', $doctype, PDO::PARAM_INT);
 
     // Выполнение запроса
     if ($stmt->execute()) {

@@ -11,13 +11,13 @@ export function createTable(ctx = {}) {
         scrollPos = -1, 
         tbody = () => {}, 
         contextMenu = () => {}, 
-        callback = () => {}
+        callback = () => {},
     } = ctx;
 
     state.mainTable = (patch = {}) => createTable({...ctx, ...patch});
 
     dataTransfer({...ctx, fl: tabName}).then(data => {
-        console.log("crt: ", data);
+        console.log("crt: ", data, ctx);
         const table = /*html*/`
             <table id="table_${izdelieid}" class="moduleTable ${tabName}" data-table="${dataTable}" data-id="${izdelieid}">
                 ${tbody(data[0])}

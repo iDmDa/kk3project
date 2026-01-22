@@ -40,7 +40,9 @@ export function tbodyCreate(data) {
             <td class="nomervh editable" data-column="nomervh">${item.nomervh}</td>
             <td class="adresvh editable" data-column="adresvh">${item.adresvh}</td>
             <td class="contentvh editable" data-column="contentvh">${item.contentvh}</td>
+
             <td class="scanvh" data-column="scanvh" data-type = "1">${iconLinkCreate(item.scanvh)}</td>
+            
             <td class="countlistvh editable" data-column="countlistvh">${item.countlistvh}</td>
 
             <td class="dateish" data-column="dateish">
@@ -49,7 +51,9 @@ export function tbodyCreate(data) {
             <td class="nomerish editable" data-column="nomerish">${item.nomerish}</td>
             <td class="adresish editable" data-column="adresish">${item.adresish}</td>
             <td class="contentish editable" data-column="contentish">${item.contentish}</td>
+
             <td class="scanish" data-column="scanish" data-type = "2">${iconLinkCreate(item.scanish)}</td>
+
             <td class="countlistish editable" data-column="countlistish">${item.countlistish}</td>
             <td class="fioispish editable" data-column="fioispish">${item.fioispish}</td>
         </tr>`;

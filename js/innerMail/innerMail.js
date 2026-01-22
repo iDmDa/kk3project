@@ -18,6 +18,8 @@ export function loadInnerMail(izdelieid) {
         tbody: tbodyCreate,
         contextMenu: createContextMenu,
     }
+    state.additionalFields = {};
+    
     const content = /*html*/`
         <div class="findBox findBoxInnerMail"></div>
         <div class="tableBox"></div>

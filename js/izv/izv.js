@@ -13,13 +13,14 @@ export function izv(izdelieid) {
         layer: '.tableBox',
         contextName: 'izv-context',
         hide: 0,
+        sortRule: 'byNumber',
         tbody: tbodyCreate,
         contextMenu: createContextMenu,
+        callback: sortRules,
     }
 
     state.additionalFields = {
         doctype: 1,
-        hrenota: "test",
     }
 
     const content = /*html*/`
@@ -37,3 +38,16 @@ export function izv(izdelieid) {
     findInTable({layer: ".findBox"});
 }
 
+function sortRules() {
+    const table = document.querySelector(".tableBox .izv");
+    table.addEventListener("click", (e) => {
+        if(e.target.classList.contains("numii") && e.target.closest(".colHeader")) {
+            state.tabInfo.sortRule = 'byNumber';
+            alert(state.tabInfo.sortRule);
+        }
+        if(e.target.classList.contains("date") && e.target.closest(".colHeader")) {
+            state.tabInfo.sortRule = 'byDate';
+            alert(state.tabInfo.sortRule)
+        };
+    })
+}

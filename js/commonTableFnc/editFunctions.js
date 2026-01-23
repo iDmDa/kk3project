@@ -4,7 +4,7 @@ import { state } from "./state.js";
 export function editFunctions(ctx = {}) {
     const {openStatus, layer, tabName, contextName, hide = 0} = ctx;
     if(!document.querySelector(layer)) {console.log("editFunctions return"); return}; //Заглушка, ошибка при смене таблиц
-    console.log("editFunctions: ", ctx);
+    //console.log("editFunctions: ", ctx);
     const tableBox = document.querySelector(layer);
     const table = tableBox.querySelector(`.${tabName}`);
     const editable = table.querySelectorAll(".editable");

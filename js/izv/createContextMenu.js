@@ -18,7 +18,7 @@ export function createContextMenu(contextName) {
                             fl: 'txtSave',
                         }
                         dataTransfer(data).then(dt => {
-                            state.mainTable();
+                            state.mainTable({scrollPos: 1});
                         });
                     }
                     else alert('Отмена удаления');
@@ -35,7 +35,7 @@ export function createContextMenu(contextName) {
                         fl: "txtSave",
                     }
                     dataTransfer(data).then(dt => {
-                        state.mainTable();
+                        state.mainTable({scrollPos: 1});
                     });
                 }
             },

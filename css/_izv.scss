@@ -1,0 +1,17 @@
+.tableBox {
+    .izv {
+        .extraColumn {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            .arrow {
+                font-size: 20px;
+                span {
+                    color: white;
+                    font-weight: lighter;
+                    text-shadow: 1px 1px 0px blue, -1px -1px 0px blue, 1px -1px 0px blue, -1px 1px 0px blue;
+                }
+            }
+        }
+    }
+}

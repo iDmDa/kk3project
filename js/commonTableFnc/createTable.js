@@ -15,6 +15,7 @@ export function createTable(ctx = {}) {
     } = ctx;
 
     state.mainTable = (patch = {}) => createTable({...ctx, ...patch});
+    state.tabInfo = ctx;
 
     dataTransfer({...ctx, fl: tabName}).then(data => {
         console.log("crt: ", data, ctx);
@@ -29,8 +30,8 @@ export function createTable(ctx = {}) {
 
         let newPos;
         if(scrollPos === 1) newPos = mainframe.scrollTop;
-        mainframe.innerHTML = "";
-        mainframe.append(fragment);
+        
+        mainframe.replaceChildren(fragment);
         mainframe.append(listNum({allPages: data.pages, activePage: page, clkEvt: (data) => {
             //createTable({...ctx, page: data - 1}) //Функция будет вызвана по клику номера страницы
             state.mainTable({page: data - 1, scrollPos: -1});
@@ -51,7 +52,7 @@ export function createTable(ctx = {}) {
                 }, 200);
             })
         })*/
-
+    console.log("scrollPos: ", scrollPos);
         if(scrollPos === -1) mainframe.scrollTop = mainframe.scrollHeight - mainframe.clientHeight; //Прокрутка страницы вниз
         else mainframe.scrollTop = newPos;
         //mainframe.scrollTo({ top: mainframe.scrollHeight, behavior: 'smooth' }); //Прокрутка вниз плавно

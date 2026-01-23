@@ -74,9 +74,22 @@ $startLine = $page >= 0 ? $page * $pageSize : ($totalPages - 1) * $pageSize;
 
 //$sortfield = "date as summ ";
 //$sortirovka = "if(summ = '' or summ is null, 1, 0), SUBSTRING_INDEX(summ,'.',-1), SUBSTRING_INDEX(SUBSTRING_INDEX(summ,'.',2),'.',-1), SUBSTRING_INDEX(summ,'.',1), id";
+$sortRuleByNumber = <<<SQL
+        (numii IS NULL OR numii = ''),
+        CASE
+            WHEN numii REGEXP '^[0-9]+$'
+                THEN CAST(numii AS UNSIGNED)
+            WHEN numii LIKE '%.%'
+                THEN CAST(SUBSTRING_INDEX(numii, '.', -1) AS UNSIGNED)
+            ELSE NULL
+        END,
+        (date IS NULL OR date = ''),
+        STR_TO_DATE(date, '%d.%m.%Y')
+    SQL;
 
-if($sortrule = "byNumber") $sortirovka = "numii IS NULL OR numii = '' OR numii NOT LIKE '%.%', CAST(SUBSTRING_INDEX(numii, '.', -1) AS UNSIGNED), (date IS NULL OR date = ''), STR_TO_DATE(date, '%d.%m.%Y')";
-if($sortrule = "byDate") $sortirovka = "(date IS NULL OR date = ''), STR_TO_DATE(date, '%d.%m.%Y'), numii IS NULL OR numii = '' OR numii NOT LIKE '%.%', CAST(SUBSTRING_INDEX(numii, '.', -1) AS UNSIGNED)";
+//if($sortrule == "byNumber") $sortirovka = "numii IS NULL OR numii = '' OR numii NOT LIKE '%.%', CAST(SUBSTRING_INDEX(numii, '.', -1) AS UNSIGNED), (date IS NULL OR date = ''), STR_TO_DATE(date, '%d.%m.%Y')";
+if($sortrule == "byNumber") $sortirovka = $sortRuleByNumber;
+if($sortrule == "byDate") $sortirovka = "(date IS NULL OR date = ''), STR_TO_DATE(date, '%d.%m.%Y'), numii IS NULL OR numii = '' OR numii NOT LIKE '%.%', CAST(SUBSTRING_INDEX(numii, '.', -1) AS UNSIGNED)";
 
 //$query = "SELECT *, {$sortfield} FROM docwork where doctype = 1 and hide = 0 {$filter} and detid = :detid ORDER BY {$sortirovka} LIMIT :pageSize OFFSET :startLine";
 $query = "SELECT * FROM docwork where doctype = 1 and hide = 0 {$filter} and detid = :detid ORDER BY {$sortirovka} LIMIT :pageSize OFFSET :startLine";

@@ -39,15 +39,35 @@ export function izv(izdelieid) {
 }
 
 function sortRules() {
-    const table = document.querySelector(".tableBox .izv");
-    table.addEventListener("click", (e) => {
-        if(e.target.classList.contains("numii") && e.target.closest(".colHeader")) {
-            state.tabInfo.sortRule = 'byNumber';
-            alert(state.tabInfo.sortRule);
+    const eventPoint = document.querySelector(".tableBox .izv .colHeader");
+    const NumiiCol = eventPoint.querySelector(".colHeader .numii");
+    const DateCol = eventPoint.querySelector(".colHeader .date");
+    const newNumii = /*html*/`
+        <div class="extraColumn">
+            <div>${NumiiCol.innerText}</div>
+            <div class="arrow">${state.tabInfo.sortRule === 'byNumber' ? '<span>↓</span>' : '↕'}</div>
+        </div>
+    `;
+
+    const newDate = /*html*/`
+        <div class="extraColumn">
+            <div>${DateCol.innerText}</div>
+            <div class="arrow">${state.tabInfo.sortRule === 'byDate' ? '<span>↓</span>' : '↕'}</div>
+        </div>
+    `;
+
+    const fragmentNumii = document.createRange().createContextualFragment(newNumii);
+    const fragmentDate = document.createRange().createContextualFragment(newDate);
+
+    NumiiCol.replaceChildren(fragmentNumii);
+    DateCol.replaceChildren(fragmentDate);
+
+    eventPoint.addEventListener("click", (e) => {
+        if(e.target.closest(".numii")) {
+            state.mainTable({scrollPos: 1, sortRule: 'byNumber'});
         }
-        if(e.target.classList.contains("date") && e.target.closest(".colHeader")) {
-            state.tabInfo.sortRule = 'byDate';
-            alert(state.tabInfo.sortRule)
+        if(e.target.closest(".date")) {
+            state.mainTable({scrollPos: 1, sortRule: 'byDate'});
         };
     })
 }

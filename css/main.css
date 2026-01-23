@@ -433,9 +433,6 @@ u {
 .innerMail tr, .fileListTable tr, .moduleTable tr {
   transition: opacity 0.2s ease;
 }
-.innerMail tr1:hover, .fileListTable tr1:hover, .moduleTable tr1:hover {
-  box-shadow: inset 1px 0 0 rgb(218, 220, 224), inset -1px 0 0 rgb(218, 220, 224), 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
-}
 .innerMail tr.hide, .fileListTable tr.hide, .moduleTable tr.hide {
   opacity: 0;
 }
@@ -569,6 +566,20 @@ u {
 
 .docwork .groupHeader .scan {
   width: 70px;
+}
+
+.tableBox .izv .extraColumn {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.tableBox .izv .extraColumn .arrow {
+  font-size: 20px;
+}
+.tableBox .izv .extraColumn .arrow span {
+  color: white;
+  font-weight: lighter;
+  text-shadow: 1px 1px 0px blue, -1px -1px 0px blue, 1px -1px 0px blue, -1px 1px 0px blue;
 }
 
 .modalWindowBox {

@@ -1,4 +1,5 @@
 import { dataTransfer } from "../commonTableFnc/dataTransfer.js";
+import { getCotextProjectList } from "../commonTableFnc/getCotextProjectList.js";
 import { state } from "../commonTableFnc/state.js";
 
 export function createContextMenu(contextName) {
@@ -39,6 +40,7 @@ export function createContextMenu(contextName) {
                     });
                 }
             },
+            moveToOtherTask: getCotextProjectList(),
             sep1: '---------',
             quit: {
                 name: 'Выйти',

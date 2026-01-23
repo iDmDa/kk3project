@@ -504,7 +504,7 @@ u {
           user-select: none;
 }
 .innerMail .colHeader .headerlinenumber, .fileListTable .colHeader .headerlinenumber, .moduleTable .colHeader .headerlinenumber {
-  width: 33px;
+  min-width: 31px;
 }
 .innerMail .colHeader .datevh, .fileListTable .colHeader .datevh, .moduleTable .colHeader .datevh {
   width: 70px;
@@ -564,8 +564,8 @@ u {
   margin-top: 20px;
 }
 
-.docwork .groupHeader .scan {
-  width: 70px;
+.docwork .colHeader .scan, .docwork .colHeader .chernovik {
+  min-width: 49px;
 }
 
 .tableBox .izv .extraColumn {
@@ -580,6 +580,18 @@ u {
   color: white;
   font-weight: lighter;
   text-shadow: 1px 1px 0px blue, -1px -1px 0px blue, 1px -1px 0px blue, -1px 1px 0px blue;
+}
+.tableBox .izv .extraColumn .hName {
+  flex: 1 1 auto;
+}
+.tableBox .colHeader .scan, .tableBox .colHeader .trudoemc {
+  min-width: 57px;
+}
+.tableBox .colHeader .fio {
+  min-width: 100px;
+}
+.tableBox .colHeader .numii {
+  min-width: 70px;
 }
 
 .modalWindowBox {

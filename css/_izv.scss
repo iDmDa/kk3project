@@ -12,6 +12,20 @@
                     text-shadow: 1px 1px 0px blue, -1px -1px 0px blue, 1px -1px 0px blue, -1px 1px 0px blue;
                 }
             }
+            .hName {
+                flex: 1 1 auto;
+            }
+        }
+    }
+    .colHeader {
+        .scan, .trudoemc {
+            min-width: 57px;
+        }
+        .fio {
+            min-width: 100px;
+        }
+        .numii {
+            min-width: 70px;
         }
     }
 }

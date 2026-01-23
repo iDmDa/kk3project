@@ -167,7 +167,7 @@ $btnColor: blue;
             @include colHeaderStyle;
         }
         .headerlinenumber {
-            width: 33px;
+            min-width: 31px;
         }
         .datevh {
             width: 70px;

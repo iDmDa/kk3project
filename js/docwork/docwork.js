@@ -24,7 +24,7 @@ export function docwork(izdelieid) {
 
     const varframe = document.getElementById("varframe");
     const maintable = document.createRange().createContextualFragment(content);
-    varframe.append(maintable);
+    varframe.replaceChildren(maintable);
 
     state.tabInfo = tabInfo;
 

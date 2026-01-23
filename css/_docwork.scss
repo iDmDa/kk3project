@@ -1,8 +1,8 @@
 .docwork {
     //width: 100%;
-    .groupHeader {
-        .scan {
-            width: 70px;
+    .colHeader {
+        .scan, .chernovik {
+            min-width: 49px;
         }
     }
 }

@@ -200,7 +200,7 @@ function loadsection(izdelieid, sectionid) {
 		varframe = document.querySelector("#varframe");
 		varframe.style.overflow = "";
 		//refresh('docwork.php', 'varframe', "&id=" + izdelieid);
-		document.getElementById("varframe").innerHTML = "";
+		//document.getElementById("varframe").innerHTML = "";
 		import("./js/docwork/docwork.js?v=<?=time();?>")
 			.then(module => {
 				// Вызываем функцию из модуля
@@ -226,7 +226,7 @@ function loadsection(izdelieid, sectionid) {
 	case "innermail":
 		varframe = document.querySelector("#varframe");
 		varframe.style.overflow = "";
-		document.getElementById("varframe").innerHTML = "";
+		//document.getElementById("varframe").innerHTML = "";
 		console.log(`innermail: ${izdelieid}, ${sectionid}`);
 		import("./js/innerMail/innerMail.js?v=<?=time();?>")
 			.then(module => {
@@ -239,7 +239,7 @@ function loadsection(izdelieid, sectionid) {
 	case "izv":
 		varframe = document.querySelector("#varframe");
 		varframe.style.overflow = "";
-		document.getElementById("varframe").innerHTML = "";
+		//document.getElementById("varframe").innerHTML = "";
 		//refresh('izveshenie.php', 'varframe', "&id=" + izdelieid);
 		import("./js/izv/izv.js?v=<?=time();?>")
 			.then(module => {

@@ -16,7 +16,7 @@ export function izv(izdelieid) {
         sortRule: 'byNumber',
         tbody: tbodyCreate,
         contextMenu: createContextMenu,
-        callback: sortRules,
+        addonFnc: sortRules,
     }
 
     state.additionalFields = {
@@ -30,7 +30,7 @@ export function izv(izdelieid) {
 
     const varframe = document.getElementById("varframe");
     const maintable = document.createRange().createContextualFragment(content);
-    varframe.append(maintable);
+    varframe.replaceChildren(maintable);
 
     state.tabInfo = tabInfo;
 
@@ -44,14 +44,14 @@ function sortRules() {
     const DateCol = eventPoint.querySelector(".colHeader .date");
     const newNumii = /*html*/`
         <div class="extraColumn">
-            <div>${NumiiCol.innerText}</div>
+            <div class="hName">${NumiiCol.innerText}</div>
             <div class="arrow">${state.tabInfo.sortRule === 'byNumber' ? '<span>↓</span>' : '↕'}</div>
         </div>
     `;
 
     const newDate = /*html*/`
         <div class="extraColumn">
-            <div>${DateCol.innerText}</div>
+            <div class="hName">${DateCol.innerText}</div>
             <div class="arrow">${state.tabInfo.sortRule === 'byDate' ? '<span>↓</span>' : '↕'}</div>
         </div>
     `;

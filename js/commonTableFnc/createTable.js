@@ -11,6 +11,7 @@ export function createTable(ctx = {}) {
         scrollPos = -1, 
         tbody = () => {}, 
         contextMenu = () => {}, 
+        addonFnc = () => {},
         callback = () => {},
     } = ctx;
 
@@ -41,8 +42,6 @@ export function createTable(ctx = {}) {
 
         editFunctions({openStatus: window.openStatus, ...ctx });
 
-        contextMenu(contextName);
-
         /* анимация удаления строки из таблицы
         document.querySelectorAll("tr").forEach(item => {
             item.addEventListener("click", () => {
@@ -52,7 +51,8 @@ export function createTable(ctx = {}) {
                 }, 200);
             })
         })*/
-    console.log("scrollPos: ", scrollPos);
+
+        //console.log("scrollPos: ", scrollPos);
         if(scrollPos === -1) mainframe.scrollTop = mainframe.scrollHeight - mainframe.clientHeight; //Прокрутка страницы вниз
         else mainframe.scrollTop = newPos;
         //mainframe.scrollTo({ top: mainframe.scrollHeight, behavior: 'smooth' }); //Прокрутка вниз плавно
@@ -60,7 +60,9 @@ export function createTable(ctx = {}) {
         const maintable = document.querySelector(`.${tabName}`);
         txtEditor(maintable);
         fileLoaderWindow(maintable)
-        
+
+        contextMenu(contextName);
+        addonFnc();
         callback();
 
     });

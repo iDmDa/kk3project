@@ -87,9 +87,22 @@ $sortRuleByNumber = <<<SQL
         STR_TO_DATE(date, '%d.%m.%Y')
     SQL;
 
+$sortRuleByDate = <<<SQL
+        (date IS NULL OR date = ''),
+        (numii IS NULL OR numii = ''),
+        STR_TO_DATE(date, '%d.%m.%Y'),
+                CASE
+            WHEN numii REGEXP '^[0-9]+$'
+                THEN CAST(numii AS UNSIGNED)
+            WHEN numii LIKE '%.%'
+                THEN CAST(SUBSTRING_INDEX(numii, '.', -1) AS UNSIGNED)
+            ELSE NULL
+        END
+    SQL;
+
 //if($sortrule == "byNumber") $sortirovka = "numii IS NULL OR numii = '' OR numii NOT LIKE '%.%', CAST(SUBSTRING_INDEX(numii, '.', -1) AS UNSIGNED), (date IS NULL OR date = ''), STR_TO_DATE(date, '%d.%m.%Y')";
 if($sortrule == "byNumber") $sortirovka = $sortRuleByNumber;
-if($sortrule == "byDate") $sortirovka = "(date IS NULL OR date = ''), STR_TO_DATE(date, '%d.%m.%Y'), numii IS NULL OR numii = '' OR numii NOT LIKE '%.%', CAST(SUBSTRING_INDEX(numii, '.', -1) AS UNSIGNED)";
+if($sortrule == "byDate") $sortirovka = $sortRuleByDate;
 
 //$query = "SELECT *, {$sortfield} FROM docwork where doctype = 1 and hide = 0 {$filter} and detid = :detid ORDER BY {$sortirovka} LIMIT :pageSize OFFSET :startLine";
 $query = "SELECT * FROM docwork where doctype = 1 and hide = 0 {$filter} and detid = :detid ORDER BY {$sortirovka} LIMIT :pageSize OFFSET :startLine";

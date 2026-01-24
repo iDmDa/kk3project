@@ -554,48 +554,48 @@ const menuItem_movetoInnermail = {
 	}
 }
 
-$.contextMenu({  //меню удаления с подменю
-    selector: '.context-document',
-    items: {
-        delete: menuItem_Delete,
-		movetoizv: menuItem_movetoizv,
-		movetodoc: menuItem_movetodoc,
-		move: getIzdList(),
-        sep1: '---------',
-        quit: {
-			name: 'Выйти',
-			callback: function(key, options) {}
-		}
-    }
-});
+// $.contextMenu({  //меню удаления с подменю
+//     selector: '.context-document',
+//     items: {
+//         delete: menuItem_Delete,
+// 		movetoizv: menuItem_movetoizv,
+// 		movetodoc: menuItem_movetodoc,
+// 		move: getIzdList(),
+//         sep1: '---------',
+//         quit: {
+// 			name: 'Выйти',
+// 			callback: function(key, options) {}
+// 		}
+//     }
+// });
 
-$.contextMenu({  //меню удаления с подменю
-    selector: '.docwork-context-menu',
-    items: {
-        delete: menuItem_Delete,
-		movetoizv: menuItem_movetoizv,
-		move: getIzdList(),
-        sep1: '---------',
-        quit: {
-			name: 'Выйти',
-			callback: function(key, options) {}
-		}
-    }
-});
+// $.contextMenu({  //меню удаления с подменю
+//     selector: '.docwork-context-menu',
+//     items: {
+//         delete: menuItem_Delete,
+// 		movetoizv: menuItem_movetoizv,
+// 		move: getIzdList(),
+//         sep1: '---------',
+//         quit: {
+// 			name: 'Выйти',
+// 			callback: function(key, options) {}
+// 		}
+//     }
+// });
 
-$.contextMenu({  //меню удаления с подменю
-    selector: '.izv-context-menu',
-    items: {
-        delete: menuItem_Delete,
-		movetodoc: menuItem_movetodoc,
-		move: getIzdList(),
-        sep1: '---------',
-        quit: {
-			name: 'Выйти',
-			callback: function(key, options) {}
-		}
-    }
-});
+// $.contextMenu({  //меню удаления с подменю
+//     selector: '.izv-context-menu',
+//     items: {
+//         delete: menuItem_Delete,
+// 		movetodoc: menuItem_movetodoc,
+// 		move: getIzdList(),
+//         sep1: '---------',
+//         quit: {
+// 			name: 'Выйти',
+// 			callback: function(key, options) {}
+// 		}
+//     }
+// });
 
 $.contextMenu({  //меню удаления с подменю
     selector: '.mail-context-menu',

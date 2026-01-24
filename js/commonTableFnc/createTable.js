@@ -4,18 +4,21 @@ import { editFunctions } from "./editFunctions.js";
 import { dataTransfer } from "./dataTransfer.js";
 import { txtEditor } from "./txtEditor.js";
 import { fileLoaderWindow } from "./fileLoaderWindow.js";
+import { mergeHooks } from "./mergeHooks.js";
+import { runHooks } from "./runHooks.js";
 
 export function createTable(ctx = {}) {
     const {
         layer, tabName, contextName, dataTable, izdelieid, page, filter, 
         scrollPos = -1, 
+        hooks = {},
         tbody = () => {}, 
-        contextMenu = () => {}, 
-        addonFnc = () => {},
         callback = () => {},
     } = ctx;
 
-    state.mainTable = (patch = {}) => createTable({...ctx, ...patch});
+    //state.mainTable = (patch = {}) => createTable({...ctx, ...patch});
+    state.mainTable = (patch = {}) => {return createTable({...ctx, ...patch, hooks: mergeHooks(ctx.hooks, patch.hooks)});
+  };
     state.tabInfo = ctx;
 
     dataTransfer({...ctx, fl: tabName}).then(data => {
@@ -60,10 +63,8 @@ export function createTable(ctx = {}) {
         const maintable = document.querySelector(`.${tabName}`);
         txtEditor(maintable);
         fileLoaderWindow(maintable)
-
-        contextMenu(contextName);
-        addonFnc();
+        
+        runHooks(hooks, 'afterLoadTable', ctx);
         callback();
-
     });
 }

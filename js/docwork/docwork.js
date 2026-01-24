@@ -13,7 +13,11 @@ export function docwork(izdelieid) {
         layer: '.tableBox',
         contextName: 'docwork-context',
         tbody: tbodyCreate,
-        contextMenu: createContextMenu,
+        hooks: {
+            afterLoadTable: [
+                () => createContextMenu(tabInfo.contextName),
+            ],
+        }
     }
     state.additionalFields = {};
     

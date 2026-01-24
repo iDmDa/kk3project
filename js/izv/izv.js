@@ -15,8 +15,12 @@ export function izv(izdelieid) {
         hide: 0,
         sortRule: 'byNumber',
         tbody: tbodyCreate,
-        contextMenu: createContextMenu,
-        addonFnc: sortRules,
+        hooks: {
+            afterLoadTable: [
+                sortRules, 
+                () => createContextMenu(tabInfo.contextName),
+            ],
+        }
     }
 
     state.additionalFields = {

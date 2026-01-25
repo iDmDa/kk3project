@@ -84,14 +84,26 @@ $sortRuleByNumber = <<<SQL
             ELSE NULL
         END,
         (date IS NULL OR date = ''),
-        STR_TO_DATE(date, '%d.%m.%Y')
+        CAST(
+            CONCAT(
+                LPAD(SUBSTRING_INDEX(date, '.', -1), 4, '0'),
+                LPAD(SUBSTRING_INDEX(SUBSTRING_INDEX(date, '.', 2), '.', -1), 2, '0'),
+                LPAD(SUBSTRING_INDEX(date, '.', 1), 2, '0')
+            ) AS UNSIGNED
+        ) ASC
     SQL;
 
 $sortRuleByDate = <<<SQL
         (date IS NULL OR date = ''),
+        CAST(
+            CONCAT(
+                LPAD(SUBSTRING_INDEX(date, '.', -1), 4, '0'),
+                LPAD(SUBSTRING_INDEX(SUBSTRING_INDEX(date, '.', 2), '.', -1), 2, '0'),
+                LPAD(SUBSTRING_INDEX(date, '.', 1), 2, '0')
+            ) AS UNSIGNED
+        ) ASC,
         (numii IS NULL OR numii = ''),
-        STR_TO_DATE(date, '%d.%m.%Y'),
-                CASE
+        CASE
             WHEN numii REGEXP '^[0-9]+$'
                 THEN CAST(numii AS UNSIGNED)
             WHEN numii LIKE '%.%'
@@ -99,8 +111,17 @@ $sortRuleByDate = <<<SQL
             ELSE NULL
         END
     SQL;
+//ASC - по возрастанию, DESC - по убыванию, UNSIGNED - положительные числа, SIGNED - любые числа
+//(numii IS NULL OR numii = '') - это аналог if(numii IS NULL OR numii = '', 1, 0), в котором (1, 0) это не цифры, а (true, false)
+//STR_TO_DATE(date, '%d.%m.%Y') - преобразование строки в дату
+//SUBSTRING_INDEX(date, '.', 1) - взять одну секцию слева-направо до точки
+//SUBSTRING_INDEX(date, '.', -1) - взять одну секцию справа-налево до точки
+//SUBSTRING_INDEX(date, '.', 2) - взять две секции слева-направо с точкой между ними
+//Логика многоусловной сортировки: 
+//  - разделить все на группы по условиям и уже группы отсортировать по ASC/DESC, 
+//  - следующими условиями делить на группы внутри групп и их сортировать, 
+//  - найденные группы не смешиваются
 
-//if($sortrule == "byNumber") $sortirovka = "numii IS NULL OR numii = '' OR numii NOT LIKE '%.%', CAST(SUBSTRING_INDEX(numii, '.', -1) AS UNSIGNED), (date IS NULL OR date = ''), STR_TO_DATE(date, '%d.%m.%Y')";
 if($sortrule == "byNumber") $sortirovka = $sortRuleByNumber;
 if($sortrule == "byDate") $sortirovka = $sortRuleByDate;
 

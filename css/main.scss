@@ -84,7 +84,7 @@ width:100%;
 	display: flex;
 	flex-direction: row;
 	background:#DDEEEE;
-	height: 30px;
+	//min-height: 30px;
 	margin-top: 1px;
 	margin-bottom: 9px;
 	margin-left: 1px;
@@ -96,6 +96,8 @@ width:100%;
 		display: flex;
 		flex-direction: row;
 		//justify-content: flex-start;
+		flex-wrap: wrap;
+  		align-items: flex-start;
 	}
 	#menu_box {
 		margin-right: 15px;
@@ -116,6 +118,7 @@ width:100%;
 
 .topmenuitem {
 	margin: 2px;
+	white-space: nowrap;
 }
 
 .close_catalog .menuitem {
@@ -285,7 +288,8 @@ li span {
 	height: 30px;
 	width: 30px;
 	margin-right: 0px;
-	margin-top: 7px;
+	margin-top: 2px;
+	margin-bottom: -3px;
 	float: right; 
 	align-self: center;
 }

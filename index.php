@@ -212,8 +212,14 @@ function loadsection(izdelieid, sectionid) {
 	case "3":
 		varframe = document.querySelector("#varframe");
 		varframe.style.overflow = "";
-		document.getElementById("varframe").innerHTML = "";
-		refresh('mailbox.php', 'varframe', "&id=" + izdelieid);
+		// document.getElementById("varframe").innerHTML = "";
+		// refresh('mailbox.php', 'varframe', "&id=" + izdelieid);
+		import("./js/outerMail/outerMail.js?v=<?=time();?>")
+			.then(module => {
+				// Вызываем функцию из модуля
+				module.loadOuterMail(izdelieid);
+			})
+			.catch(err => console.error("Ошибка загрузки innermail script.js:", err));
 	break;
 
 	case "ctrl":

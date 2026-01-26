@@ -491,8 +491,8 @@ u {
   vertical-align: top;
   background: linear-gradient(to top, #8ac5ff, #8ac5ff);
 }
-.innerMail .groupHeader .inbox, .fileListTable .groupHeader .inbox, .moduleTable .groupHeader .inbox {
-  border-right: 1px solid black;
+.innerMail .groupHeader .outbox, .fileListTable .groupHeader .outbox, .moduleTable .groupHeader .outbox {
+  border-left: 1px solid black;
 }
 .innerMail .colHeader td, .fileListTable .colHeader td, .moduleTable .colHeader td {
   padding: 5px;
@@ -516,7 +516,6 @@ u {
   width: 50px;
 }
 .innerMail .colHeader .dateish, .fileListTable .colHeader .dateish, .moduleTable .colHeader .dateish {
-  border-left-width: 2px;
   width: 70px;
 }
 .innerMail .colHeader .sumnormchasish, .fileListTable .colHeader .sumnormchasish, .moduleTable .colHeader .sumnormchasish {
@@ -539,9 +538,6 @@ u {
      -moz-user-select: none;
           user-select: none;
 }
-.innerMail tbody .dateish, .fileListTable tbody .dateish, .moduleTable tbody .dateish {
-  border-left-width: 2px;
-}
 .innerMail tbody .addFileBtn, .fileListTable tbody .addFileBtn, .moduleTable tbody .addFileBtn {
   float: right;
   margin-top: -4px;
@@ -551,11 +547,11 @@ u {
   background-image: repeating-linear-gradient(45deg, rgba(41, 121, 255, 0.1), rgba(41, 121, 255, 0.1) 5px, transparent 5px, transparent 10px);
 }
 
-.innerMail .colHeader td:nth-child(7) {
-  border-right: 1px solid black;
+.innerMail .colHeader td:nth-child(8) {
+  border-left: 1px solid black;
 }
-.innerMail tbody tr td:nth-child(7) {
-  border-right: 1px solid black;
+.innerMail tbody tr td:nth-child(8) {
+  border-left: 1px solid black;
 }
 .innerMail tbody .scanvh, .innerMail tbody .scanish {
   width: 90px;
@@ -568,6 +564,13 @@ u {
   margin-bottom: 50px;
   gap: 4px;
   margin-top: 20px;
+}
+
+.outerMail .hideColumn {
+  display: none;
+}
+.outerMail .dateish {
+  border-left: 1px solid black;
 }
 
 .docwork .colHeader .scan, .docwork .colHeader .chernovik {

@@ -157,8 +157,8 @@ $btnColor: blue;
             vertical-align: top;
             background: linear-gradient(to top, #8ac5ff, #8ac5ff);
         }
-        .inbox {
-            border-right: 1px solid black;
+        .outbox {
+            border-left: 1px solid black;
         }
     }
     
@@ -176,7 +176,7 @@ $btnColor: blue;
             width: 50px;
         }
         .dateish {
-            border-left-width: 2px; 
+            //border-left-width: 2px; 
             width: 70px;
         }
         .sumnormchasish {
@@ -194,7 +194,7 @@ $btnColor: blue;
             @include colHeaderStyle;
         }
         .dateish {
-            border-left-width: 2px; 
+            //border-left-width: 2px; 
         }
         .addFileBtn {
             float: right;
@@ -217,15 +217,15 @@ $btnColor: blue;
 .innerMail {
     .colHeader {
         td {
-            &:nth-child(7) {
-                border-right: 1px solid black;
+            &:nth-child(8) {
+                border-left: 1px solid black;
             }   
         }
     }
     tbody { 
         tr {
-            td:nth-child(7) {
-                border-right: 1px solid black;
+            td:nth-child(8) {
+                border-left: 1px solid black;
             }
         }      
         .scanvh, .scanish {

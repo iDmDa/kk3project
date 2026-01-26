@@ -17,9 +17,9 @@ export function loadOuterMail(izdelieid) {
         hooks: {
             afterLoadTable: [
                 () => createContextMenu(tabInfo.contextName),
-                () => hideColumn(".nomerreg"),
-                () => hideColumn(".datereg"),
-                () => hideColumn(".prim"),
+                () => hideColumn("nomerreg", ".inbox", "Номер"),
+                () => hideColumn("datereg", ".inbox", "Дата"),
+                () => hideColumn("prim", ".inbox", "Прим"),
                 () => state.verticalSeparator(),
             ],
         }
@@ -42,16 +42,34 @@ export function loadOuterMail(izdelieid) {
     findInTable({layer: ".findBox"});
 }
 
-function hideColumn(columnClassName) {
+function hideColumn(columnClassName, groupHeader, buttonName) {
     const table = document.querySelector(`.${state.tabInfo.tabName}`)
-    const colHeader = table.querySelector(`.colHeader ${columnClassName}`);
-    const column = table.querySelectorAll(`.colHeader ${columnClassName}, tbody tr ${columnClassName}`);
+    const colHeader = table.querySelector(`.colHeader .${columnClassName}`);
+    const column = table.querySelectorAll(`.colHeader .${columnClassName}, tbody tr .${columnClassName}`);
+    const header = table.querySelector(groupHeader);
     
     colHeader.addEventListener("click", () => {
         column.forEach(item => {
             item.classList.add("hideColumn")
         })
         state.verticalSeparator();
+
+        if(!header.querySelector(".linkPanel")) {
+            const linkPanel = /*html*/`
+                <div class="linkPanel"></div>
+            `;
+            const fragment = document.createRange().createContextualFragment(linkPanel);
+            header.append(fragment);
+        }
+
+        const minilink = /*html*/`
+            <div class="${columnClassName}">${buttonName}</div>
+        `;
+        const fragment = document.createRange().createContextualFragment(minilink);
+        //minilink.addEventListener("click", () => {alert("123")});
+        header.querySelector(".linkPanel").append(fragment);
+        header.querySelector(`.${columnClassName}`).addEventListener("click", () => {alert("123")});
+
     })
 }
 

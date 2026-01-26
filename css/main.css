@@ -572,6 +572,24 @@ u {
 .outerMail .dateish {
   border-left: 1px solid black;
 }
+.outerMail .groupHeader .inbox {
+  position: relative;
+}
+.outerMail .groupHeader .inbox .linkPanel {
+  position: absolute;
+  display: flex;
+  inset: 4px 5px 2px 2px;
+  flex-direction: row;
+  gap: 4px;
+  justify-content: flex-end;
+  align-items: center;
+  font-family: "arial", Helvetica, sans-serif;
+  font-size: 10px;
+  color: white;
+  font-weight: lighter;
+  text-shadow: 1px 1px 0px blue, -1px -1px 0px blue, 1px -1px 0px blue, -1px 1px 0px blue;
+  letter-spacing: 0.8px;
+}
 
 .docwork .colHeader .scan, .docwork .colHeader .chernovik {
   min-width: 49px;

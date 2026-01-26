@@ -201,6 +201,15 @@ $btnColor: blue;
             margin-top: -4px;
             margin-bottom: -4px;
         }
+        .lineSelected {
+            background-image: repeating-linear-gradient(
+            45deg,
+            rgba(41,121,255,0.1),
+            rgba(41,121,255,0.1) 5px,
+            transparent 5px,
+            transparent 10px
+        );
+        }
 
     }
 }

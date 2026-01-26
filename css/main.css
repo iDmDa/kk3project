@@ -547,6 +547,9 @@ u {
   margin-top: -4px;
   margin-bottom: -4px;
 }
+.innerMail tbody .lineSelected, .fileListTable tbody .lineSelected, .moduleTable tbody .lineSelected {
+  background-image: repeating-linear-gradient(45deg, rgba(41, 121, 255, 0.1), rgba(41, 121, 255, 0.1) 5px, transparent 5px, transparent 10px);
+}
 
 .innerMail .colHeader td:nth-child(7) {
   border-right: 1px solid black;

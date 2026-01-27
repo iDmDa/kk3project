@@ -1,5 +1,5 @@
 import { state } from "../commonTableFnc/state.js";
-import { createStorage } from "./createStorage.js";
+import { createStorage } from "../commonTableFnc/createStorage.js";
 
 export function hideColumn(columnClassName, groupHeader, buttonName, sort) {
     const table = document.querySelector(`.${state.tabInfo.tabName}`)

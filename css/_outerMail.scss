@@ -26,5 +26,15 @@
                 letter-spacing: 0.8px;
             }            
         }
+        .iconbutton {
+            cursor: pointer;
+        }
+    }
+    tbody {
+        .datereg, .nomerreg, .prim {
+            background-color: #d2e3e3;
+        }
     }
 }
+
+

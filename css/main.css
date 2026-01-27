@@ -590,6 +590,12 @@ u {
   text-shadow: 1px 1px 0px blue, -1px -1px 0px blue, 1px -1px 0px blue, -1px 1px 0px blue;
   letter-spacing: 0.8px;
 }
+.outerMail .groupHeader .iconbutton {
+  cursor: pointer;
+}
+.outerMail tbody .datereg, .outerMail tbody .nomerreg, .outerMail tbody .prim {
+  background-color: #d2e3e3;
+}
 
 .docwork .colHeader .scan, .docwork .colHeader .chernovik {
   min-width: 49px;

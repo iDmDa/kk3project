@@ -30,7 +30,7 @@ function hideCol(column, header, columnClassName, buttonName, sort) {
     column.forEach(item => {
         item.classList.add("hideColumn")
     })
-    state.verticalSeparator();
+    state.headerColSpan();
 
     if(!header.querySelector(".linkPanel")) {
         const linkPanel = /*html*/`
@@ -55,6 +55,6 @@ function hideCol(column, header, columnClassName, buttonName, sort) {
         column.forEach(item => {
             item.classList.remove("hideColumn")
         })
-        state.verticalSeparator();
+        state.headerColSpan();
     });
 }

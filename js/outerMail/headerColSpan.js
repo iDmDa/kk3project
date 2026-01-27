@@ -1,6 +1,6 @@
 import { state } from "../commonTableFnc/state.js";
 
-export function verticalSeparator(rightColName, groupHeader) {
+export function headerColSpan(rightColName, groupHeader) {
     const table = document.querySelector(`.${state.tabInfo.tabName}`);
     const column = table.querySelector(rightColName); //td:nth-child(2)
     const header = table.querySelector(groupHeader);

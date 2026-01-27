@@ -4,7 +4,7 @@ import { state } from "../commonTableFnc/state.js";
 import { createContextMenu } from "./createContextMenu.js";
 import { hideColumn } from "./hideColumn.js";
 import { tbodyCreate } from "./tbodyCreate.js";
-import { verticalSeparator } from "./verticalSeparator.js";
+import { headerColSpan } from "./headerColSpan.js";
 
 export function loadOuterMail(izdelieid) {
     const tabInfo = {
@@ -22,12 +22,12 @@ export function loadOuterMail(izdelieid) {
                 () => hideColumn("nomerreg", ".inbox", "Номер", 2),
                 () => hideColumn("datereg", ".inbox", "Дата", 1),
                 () => hideColumn("prim", ".inbox", "Прим", 3),
-                () => state.verticalSeparator(),
+                () => state.headerColSpan(),
             ],
         }
     }
     state.additionalFields = {};
-    state.verticalSeparator = () => {return verticalSeparator(".dateish", ".inbox");}
+    state.headerColSpan = () => {return headerColSpan(".dateish", ".inbox");}
     
     const content = /*html*/`
         <div class="findBox"></div>

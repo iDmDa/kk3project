@@ -1,6 +1,6 @@
 import { dataTransfer } from "./dataTransfer.js";
 
-export function txtEditor(el) { //el точка привязки событий
+export function txtEditor(el, callback = () => {}) { //el точка привязки событий
     //Сохранение изменений текста в полях contentEditable
     let defaultValue = "";
     let editElement;
@@ -26,14 +26,12 @@ export function txtEditor(el) { //el точка привязки событий
                 content: e.target.innerHTML,
                 fl: "txtSave",
             }
-            if(defaultValue !== e.target.innerHTML) dataTransfer(data);
+            if(defaultValue !== e.target.innerHTML) dataTransfer(data).then(dt => {callback(dt)});
             if(e.target.classList.contains("dateinput") && window.openStatus == "1") {
                 data.content = e.target.value;
-                dataTransfer(data);
-                console.log("sv: ", e.target.value, data, window.openStatus);
+                dataTransfer(data).then(dt => {callback(dt)});
             }            
         }
-
     });
 
     el.addEventListener("keydown", e => {

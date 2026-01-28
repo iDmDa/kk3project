@@ -566,16 +566,16 @@ u {
   margin-top: 20px;
 }
 
-.outerMail .hideColumn {
+.outerMail .hideColumn, .controlMail .hideColumn {
   display: none;
 }
-.outerMail .dateish {
+.outerMail .dateish, .controlMail .dateish {
   border-left: 1px solid black;
 }
-.outerMail .groupHeader .inbox {
+.outerMail .groupHeader .inbox, .controlMail .groupHeader .inbox {
   position: relative;
 }
-.outerMail .groupHeader .inbox .linkPanel {
+.outerMail .groupHeader .inbox .linkPanel, .controlMail .groupHeader .inbox .linkPanel {
   position: absolute;
   display: flex;
   inset: 4px 5px 2px 2px;
@@ -590,11 +590,18 @@ u {
   text-shadow: 1px 1px 0px blue, -1px -1px 0px blue, 1px -1px 0px blue, -1px 1px 0px blue;
   letter-spacing: 0.8px;
 }
-.outerMail .groupHeader .iconbutton {
+.outerMail .groupHeader .iconbutton, .controlMail .groupHeader .iconbutton {
   cursor: pointer;
 }
-.outerMail tbody .datereg, .outerMail tbody .nomerreg, .outerMail tbody .prim {
+.outerMail tbody .datereg, .outerMail tbody .nomerreg, .outerMail tbody .prim, .controlMail tbody .datereg, .controlMail tbody .nomerreg, .controlMail tbody .prim {
   background-color: #d2e3e3;
+}
+
+.controlMail .expired {
+  background-color: rgb(237, 221, 221);
+}
+.controlMail .during {
+  background-color: rgb(206, 237, 206);
 }
 
 .docwork .colHeader .scan, .docwork .colHeader .chernovik {

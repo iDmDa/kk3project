@@ -225,8 +225,14 @@ function loadsection(izdelieid, sectionid) {
 	case "ctrl":
 		varframe = document.querySelector("#varframe");
 		varframe.style.overflow = "";
-		document.getElementById("varframe").innerHTML = "";
-		refresh('mailbox.php', 'varframe', "&id=0");
+		// document.getElementById("varframe").innerHTML = "";
+		// refresh('mailbox.php', 'varframe', "&id=0");
+		import("./js/controlMail/controlMail.js?v=<?=time();?>")
+			.then(module => {
+				// Вызываем функцию из модуля
+				module.loadControlMail();
+			})
+			.catch(err => console.error("Ошибка загрузки innermail script.js:", err));
 	break;
 
 	case "innermail":

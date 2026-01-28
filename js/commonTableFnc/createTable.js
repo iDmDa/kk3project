@@ -45,7 +45,21 @@ export function createTable(ctx = {}) {
 
         editFunctions({openStatus: window.openStatus, ...ctx });
 
-        /* анимация удаления строки из таблицы
+        //console.log("scrollPos: ", scrollPos);
+        if(scrollPos === -1) mainframe.scrollTop = mainframe.scrollHeight - mainframe.clientHeight; //Прокрутка страницы вниз
+        else mainframe.scrollTop = newPos;
+        //mainframe.scrollTo({ top: mainframe.scrollHeight, behavior: 'smooth' }); //Прокрутка вниз плавно
+
+        const maintable = document.querySelector(`.${tabName}`);
+        txtEditor(maintable, () => runHooks(hooks, 'txtEditorCallback', ctx));
+        fileLoaderWindow(maintable)
+        
+        runHooks(hooks, 'afterLoadTable', ctx);
+        callback();
+    });
+}
+
+/* анимация удаления строки из таблицы
         document.querySelectorAll("tr").forEach(item => {
             item.addEventListener("click", () => {
                 item.classList.add("hide");
@@ -54,17 +68,3 @@ export function createTable(ctx = {}) {
                 }, 200);
             })
         })*/
-
-        //console.log("scrollPos: ", scrollPos);
-        if(scrollPos === -1) mainframe.scrollTop = mainframe.scrollHeight - mainframe.clientHeight; //Прокрутка страницы вниз
-        else mainframe.scrollTop = newPos;
-        //mainframe.scrollTo({ top: mainframe.scrollHeight, behavior: 'smooth' }); //Прокрутка вниз плавно
-
-        const maintable = document.querySelector(`.${tabName}`);
-        txtEditor(maintable);
-        fileLoaderWindow(maintable)
-        
-        runHooks(hooks, 'afterLoadTable', ctx);
-        callback();
-    });
-}

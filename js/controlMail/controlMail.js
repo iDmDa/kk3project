@@ -15,6 +15,7 @@ export function loadControlMail() {
         dataTable: 'mailbox',
         layer: '.tableBox',
         contextName: 'controlmail-context',
+        hideAddBtn: 1,
         hide: 0,
         tbody: tbodyCreate,
         hooks: {

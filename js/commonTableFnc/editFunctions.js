@@ -2,7 +2,7 @@ import { addButton } from "./addButton.js";
 import { state } from "./state.js";
 
 export function editFunctions(ctx = {}) {
-    const {openStatus, layer, tabName, contextName, hide = 0} = ctx;
+    const {openStatus, layer, tabName, contextName, hideAddBtn, hide = 0} = ctx;
     if(!document.querySelector(layer)) {console.log("editFunctions return"); return}; //Заглушка, ошибка при смене таблиц
     //console.log("editFunctions: ", ctx);
     const tableBox = document.querySelector(layer);
@@ -26,7 +26,7 @@ export function editFunctions(ctx = {}) {
         editable.forEach(item => item.setAttribute("contenteditable", "true"))
         linenumber.forEach(item => item.classList.add(contextName))
         dateinput.forEach(item => item.removeAttribute("readonly"))
-        table.after(addButton(tabInfo));
+        if(!hideAddBtn) table.after(addButton(tabInfo));
         newWindowIcon({icon: "on"});
     }
     if(openStatus !== "1") {

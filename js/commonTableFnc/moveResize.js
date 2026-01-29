@@ -1,3 +1,5 @@
+import { state } from "./state.js";
+
 export function moveResize({slideLayer, windowClass, headerHeight = 29} = {}) {
     const win = slideLayer.querySelector(windowClass);
     const field = slideLayer;
@@ -50,6 +52,7 @@ export function moveResize({slideLayer, windowClass, headerHeight = 29} = {}) {
 
     header.querySelector(".tmp_close").addEventListener("click", () => {
         win.remove();
+        state.closeFileWindow();
     })
 
     header.querySelector(".tmp_window_hide").addEventListener("click", () => {

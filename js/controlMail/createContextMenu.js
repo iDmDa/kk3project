@@ -1,3 +1,4 @@
+import { contextMenuLineSelected } from "../commonTableFnc/contextMenuLineSelected.js";
 import { dataTransfer } from "../commonTableFnc/dataTransfer.js";
 import { getCotextProjectList } from "../commonTableFnc/getCotextProjectList.js";
 import { state } from "../commonTableFnc/state.js";
@@ -6,6 +7,7 @@ export function createContextMenu(contextName) {
     $.contextMenu('destroy', `.${contextName}`);
     $.contextMenu({  //меню удаления
         selector: `.${contextName}`,
+        events: contextMenuLineSelected(),
         items: {
             delete: {
                 name: 'Удалить',

@@ -1,3 +1,5 @@
+import { state } from "./state.js";
+
 export function listNum({allPages, activePage, clkEvt} = {}) {
     if(activePage == -1) activePage = allPages - 1;
     let pages = "";
@@ -8,7 +10,7 @@ export function listNum({allPages, activePage, clkEvt} = {}) {
         pages += page;
     }
 
-    const fragment = document.createRange().createContextualFragment(/*html*/`
+    const fragment = state.createHTML(/*html*/`
         <div class="pagesBlock">${pages}</div>
     `);
 

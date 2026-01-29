@@ -18,8 +18,8 @@ export function sortRules() {
         </div>
     `;
 
-    const fragmentNumii = document.createRange().createContextualFragment(newNumii);
-    const fragmentDate = document.createRange().createContextualFragment(newDate);
+    const fragmentNumii = state.createHTML(newNumii);
+    const fragmentDate = state.createHTML(newDate);
 
     NumiiCol.replaceChildren(fragmentNumii);
     DateCol.replaceChildren(fragmentDate);

@@ -29,7 +29,7 @@ export function createTable(ctx = {}) {
             </table>
         `;
 
-        const fragment = document.createRange().createContextualFragment(table);
+        const fragment = state.createHTML(table);
         const mainframe = document.querySelector(layer);
 
         let newPos;

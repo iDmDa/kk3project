@@ -22,7 +22,7 @@ export function findInTable({layer} = {}) {
             </div>
     `
     const mainframe = document.querySelector(layer);
-    const resultBlock = document.createRange().createContextualFragment(content);
+    const resultBlock = state.createHTML(content);
 
     mainframe.append(resultBlock);
 

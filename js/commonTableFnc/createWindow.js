@@ -1,4 +1,5 @@
 import { moveResize } from "./moveResize.js";
+import { state } from "./state.js";
 
 export function createWindow ({windowClass = "tmpWin", headerName = "Список файлов", content = "", contentLoader} = {}) {
     document.querySelector(`.${windowClass}`)?.remove();
@@ -22,7 +23,7 @@ export function createWindow ({windowClass = "tmpWin", headerName = "Списо�
             <div class="tmp_resizer"></div>
         </div>
     `;
-    const fragment = document.createRange().createContextualFragment(window);
+    const fragment = state.createHTML(window);
     const body = document.querySelector("body");
     body.append(fragment);
     moveResize({slideLayer: body, windowClass: `.${windowClass}`});

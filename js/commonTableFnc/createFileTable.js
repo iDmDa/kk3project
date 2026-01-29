@@ -51,7 +51,7 @@ export function createFileTable(ctx = {}) {
             </div>
         `;
 
-        const maintable = document.createRange().createContextualFragment(table);
+        const maintable = state.createHTML(table);
         mainframe.innerHTML = "";
         mainframe.append(maintable);
         //console.log(mainframe);

@@ -9,7 +9,7 @@ export function addButton(ctx = {}) {
         </div>
     `;
 
-    const addButton = document.createRange().createContextualFragment(button);
+    const addButton = state.createHTML(button);
 
     addButton.querySelector(".addButton img").addEventListener("click", () => {
         const data = {

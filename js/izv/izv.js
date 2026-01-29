@@ -33,7 +33,7 @@ export function izv(izdelieid) {
     `;
 
     const varframe = document.getElementById("varframe");
-    const maintable = document.createRange().createContextualFragment(content);
+    const maintable = state.createHTML(content);
     varframe.replaceChildren(maintable);
 
     state.tabInfo = tabInfo;
@@ -60,8 +60,8 @@ function sortRules() {
         </div>
     `;
 
-    const fragmentNumii = document.createRange().createContextualFragment(newNumii);
-    const fragmentDate = document.createRange().createContextualFragment(newDate);
+    const fragmentNumii = state.createHTML(newNumii);
+    const fragmentDate = state.createHTML(newDate);
 
     NumiiCol.replaceChildren(fragmentNumii);
     DateCol.replaceChildren(fragmentDate);

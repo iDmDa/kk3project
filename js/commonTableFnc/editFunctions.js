@@ -47,7 +47,7 @@ export function editFunctions(ctx = {}) {
 
         if(icon === "on") {
             scanCell.forEach(item => {
-                const fragment = document.createRange().createContextualFragment(addFileBtn);
+                const fragment = state.createHTML(addFileBtn);
                 item.append(fragment);
             })
         }

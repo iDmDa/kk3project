@@ -44,7 +44,7 @@ export function loadControlMail() {
     `;
 
     const varframe = document.getElementById("varframe");
-    const maintable = document.createRange().createContextualFragment(content);
+    const maintable = state.createHTML(content);
     varframe.replaceChildren(maintable);
 
     state.tabInfo = tabInfo;

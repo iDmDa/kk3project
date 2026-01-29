@@ -36,14 +36,14 @@ function hideCol(column, header, columnClassName, buttonName, sort) {
         const linkPanel = /*html*/`
             <div class="linkPanel"></div>
         `;
-        const fragment = document.createRange().createContextualFragment(linkPanel);
+        const fragment = state.createHTML(linkPanel);
         header.append(fragment);
     }
 
     const minilink = /*html*/`
         <div class="iconbutton ${columnClassName}" data-sort="${sort}">${buttonName}</div>
     `;
-    const fragment = document.createRange().createContextualFragment(minilink);
+    const fragment = state.createHTML(minilink);
     const linkPanel = header.querySelector(".linkPanel");
     linkPanel.append(fragment);
 

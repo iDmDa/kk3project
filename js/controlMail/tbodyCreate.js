@@ -4,7 +4,7 @@ export function tbodyCreate(data) {
     const tableHeader = /*html*/`
         <thead class="headerSection">
             <tr class="tableHeader">
-                <td colspan="999">Переписка</td>
+                <td colspan="999">Переписка на контроле</td>
             </tr>
             <tr class="groupHeader">
                 <td class="inbox" colspan="1">Входящие</td>

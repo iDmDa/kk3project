@@ -6,6 +6,7 @@ import { hideColumn } from "./hideColumn.js";
 import { tbodyCreate } from "./tbodyCreate.js";
 import { headerColSpan } from "./headerColSpan.js";
 import { dateColor } from "./dateColor.js";
+import { leftHeader } from "./leftHeader.js";
 
 export function loadControlMail() {
     const tabInfo = {
@@ -19,9 +20,12 @@ export function loadControlMail() {
         hooks: {
             afterLoadTable: [
                 () => createContextMenu(tabInfo.contextName),
-                () => hideColumn("nomerreg", ".inbox", "Номер", 2),
-                () => hideColumn("datereg", ".inbox", "Дата", 1),
-                () => hideColumn("prim", ".inbox", "Прим", 3),
+                () => hideColumn("nomerreg", ".inbox", "Номер", 3),
+                () => hideColumn("datereg", ".inbox", "Дата", 2),
+                () => hideColumn("prim", ".inbox", "Прим", 4),
+                () => hideColumn("sumnormchasvh", ".inbox", "Трудоемк.", 1),
+                () => hideColumn("sumnormchasish", ".outbox", "Трудоемк.", 1),
+                () => leftHeader(),
                 () => state.headerColSpan(),
                 () => dateColor(),
             ],
@@ -47,4 +51,3 @@ export function loadControlMail() {
     createTable(tabInfo);
     findInTable({layer: ".findBox"});
 }
-

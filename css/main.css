@@ -572,10 +572,10 @@ u {
 .outerMail .dateish, .controlMail .dateish {
   border-left: 1px solid black;
 }
-.outerMail .groupHeader .inbox, .controlMail .groupHeader .inbox {
+.outerMail .groupHeader .inbox, .outerMail .groupHeader .outbox, .controlMail .groupHeader .inbox, .controlMail .groupHeader .outbox {
   position: relative;
 }
-.outerMail .groupHeader .inbox .linkPanel, .controlMail .groupHeader .inbox .linkPanel {
+.outerMail .groupHeader .inbox .linkPanel, .outerMail .groupHeader .outbox .linkPanel, .controlMail .groupHeader .inbox .linkPanel, .controlMail .groupHeader .outbox .linkPanel {
   position: absolute;
   display: flex;
   inset: 4px 5px 2px 2px;
@@ -602,6 +602,15 @@ u {
 }
 .controlMail .during {
   background-color: rgb(206, 237, 206);
+}
+.controlMail .leftHeader {
+  min-width: 140px;
+  padding: 5px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+  vertical-align: top;
+  background: linear-gradient(to top, #cbe2eb, #cbe2eb);
 }
 
 .docwork .colHeader .scan, .docwork .colHeader .chernovik {

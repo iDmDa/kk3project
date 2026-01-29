@@ -1,8 +1,17 @@
 .controlMail {
-   .expired {
+    .expired {
         background-color: rgb(237, 221, 221);
     }
     .during {
         background-color: rgb(206, 237, 206);
+    }
+    .leftHeader {
+        min-width: 140px;
+        padding: 5px;
+        text-align: center;
+        font-size: 12px;
+        font-weight: bold;
+        vertical-align: top;
+        background: linear-gradient(to top, #cbe2eb, #cbe2eb);
     }
 }

@@ -1,7 +1,8 @@
 import { dataTransfer } from "./dataTransfer.js";
 import { state } from "./state.js";
 
-export function getCotextProjectList(lineCount = 20) {
+export function getCotextProjectList(ctx = {}) {
+	const {lineCount = 20, fl = 'txtSave', title = 'Переместить'} = ctx
 	let blocks = {}, line = {}, j = 0;
 	const izdList = document.querySelectorAll('.tree_item.menuitem');
 	izdList.forEach((item, i) => {
@@ -13,7 +14,7 @@ export function getCotextProjectList(lineCount = 20) {
                     id: this[0].dataset.id,
                     column: 'detid',
                     content: item.dataset.izdnomer,
-                    fl: 'txtSave',
+                    fl: fl,
                 }
                 if(confirm(`Перенести запись в раздел '${item.innerText}' ? `)) {
                     dataTransfer(data).then(dt => {
@@ -29,5 +30,5 @@ export function getCotextProjectList(lineCount = 20) {
 	})
 	blocks[`block_${j++}`] = {name: `${(j-1)*lineCount+1} - ${izdList.length}`, items: line}
 
-	return {name: "Переместить", items: blocks};
+	return {name: title, items: blocks};
 }

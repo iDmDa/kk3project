@@ -43,7 +43,7 @@ export function createContextMenu(contextName) {
                 }
             },
             moveToOtherTask: getCotextProjectList(),
-            copyToOtherTask: getCotextProjectList({title: 'Копировать в другой раздел', fl: 'copyLine', lineCount: 20}),
+            copyToOtherTask: getCotextProjectList({title: 'Копировать в другой раздел', fl: 'copyLine'}),
             sep1: '---------',
             quit: {
                 name: 'Выйти',

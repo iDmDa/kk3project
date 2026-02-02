@@ -73,19 +73,14 @@ $startLine = $page >= 0 ? $page * $pageSize : ($totalPages - 1) * $pageSize;
 
 $sortfield = "date as summ ";
 $sortirovka = "if(summ = '' or summ is null, 1, 0), SUBSTRING_INDEX(summ,'.',-1), SUBSTRING_INDEX(SUBSTRING_INDEX(summ,'.',2),'.',-1), SUBSTRING_INDEX(summ,'.',1), id";
-$query = "SELECT *, {$sortfield} FROM docwork where doctype = 0 and hide = 0 {$filter} and detid = :detid ORDER BY {$sortirovka} LIMIT :pageSize OFFSET :startLine";
+$query = "SELECT *, {$sortfield} FROM docwork where doctype = 0 and hide = 0 {$filter} and detid = :detid ORDER BY {$sortirovka} LIMIT {$pageSize} OFFSET {$startLine}";
 
 try {
     // Подготовка запроса
     $stmt = $pdo->prepare($query);
 
-    // Привязка параметра
-    $stmt->bindParam(':detid', $detid, PDO::PARAM_INT);
-    $stmt->bindValue(':pageSize', $pageSize, PDO::PARAM_INT);  // Всегда 100
-    $stmt->bindValue(':startLine', $startLine, PDO::PARAM_INT);  // Индекс первой записи на последней странице
-
     // Выполнение запроса
-    $stmt->execute();
+    $stmt->execute([':detid' => (int)$detid]);
     
     // Получение данных
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);

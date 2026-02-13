@@ -283,6 +283,12 @@ function loadsection(izdelieid, sectionid) {
 		varframe = document.querySelector("#varframe");
 		varframe.style.overflow = "";
 		refresh('history.php', 'varframe', "&id=" + izdelieid);
+		/*import("./js/history/history.js?v=<?=time();?>")
+			.then(module => {
+				// Вызываем функцию из модуля
+				module.LoadHistory(izdelieid);
+			})
+			.catch(err => console.error("Ошибка загрузки history.js:", err));*/
 	break;
 
 	case "7":

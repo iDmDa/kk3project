@@ -264,7 +264,13 @@ function loadsection(izdelieid, sectionid) {
 	case "4":
 		varframe = document.querySelector("#varframe");
 		varframe.style.overflow = "";
-		refresh('contragent.php', 'varframe', "&id=" + izdelieid);
+		//refresh('contragent.php', 'varframe', "&id=" + izdelieid);
+		import("./js/contrAgent/contrAgent.js?v=<?=time();?>")
+			.then(module => {
+				// Вызываем функцию из модуля
+				module.loadContrAgent(izdelieid);
+			})
+			.catch(err => console.error("Ошибка загрузки izv.js:", err));
 	break;
 
 	case "5":

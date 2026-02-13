@@ -36,7 +36,7 @@ try {
 }
 
 // Список разрешенных таблиц
-$allowed_tables = ['mailbox', 'docwork']; // Список таблиц, с которыми можно работать
+$allowed_tables = ['mailbox', 'docwork', 'contragent']; // Список таблиц, с которыми можно работать
 
 // Проверяем, что таблица из POST входит в список разрешенных
 if (in_array($table, $allowed_tables)) {

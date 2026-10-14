@@ -465,10 +465,10 @@ function newlocate(func, table, newdetid, id, newpos){
 
 $(document).ready(function() {
 
-	$('.menuitem').click(function () {
-		$('.menuitem').removeClass('menuactive');
-		$(this).addClass('menuactive');
-	});
+	// $('.menuitem').click(function () {
+	// 	$('.menuitem').removeClass('menuactive');
+	// 	$(this).addClass('menuactive');
+	// });
 
 	$('.topmenuitem').click(function () {
 		$('.topmenuitem').removeClass('menuactive');

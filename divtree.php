@@ -1,276 +1,3 @@
-<!DOCTYPE html>
-<HTML lang="ru">
-<head>
-<meta charset="utf-8">
-<style>
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-    }
-
-    html, body {
-        padding: 0;
-        margin: 0;
-        scrollbar-width: thin;
-    }
-
-    #base_layer {
-        display: flex;
-        flex-direction: column;
-        justify-content:left;
-        align-items: left;
-        background-color: azure;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-    }
-
-    #tree_choice_layer {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-evenly;
-        padding-left: 6px;
-        padding-right: 6px;
-        margin-top: 5px;
-    }
-
-    #tree_choice_layer>div {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 0;
-        width: 100%;
-        margin-left: 2px;
-        margin-right: 2px;
-    }
-
-    #tree_choice_layer>div img {
-        height: 20px;
-    }
-
-    #tree_layer {
-        /*background-color: beige;*/
-        width: 150px;
-        font-family: "Trebuchet MS", Helvetica, sans-serif;
-        font-size: 12px;
-        font-weight: 600;
-        overflow:scroll;
-        scrollbar-width: thin;
-        padding-bottom: 70px;
-    }
-
-    #tree_input_box {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        margin-top: 5px;
-    }
-
-    .tree_layer, .tree_catalog, .tree_item {
-        user-select: none;
-        margin-top: 5px;
-        margin-bottom: 5px;
-    }
-
-    .tree_catalog span {
-        font-weight: 600;
-        font-size: 13px;
-        text-shadow: 0 0 1px blue;
-        text-decoration: underline;
-        /*color: rgb(131, 10, 46);*/
-    }
-
-    .tree_item {
-        padding-left: 5px;
-        /*transition: all .2s;*/
-        margin-top: 5px;
-        margin-bottom: 5px;
-        margin-left: 5px;
-    }
-
-    .tree_wait {
-        background-image: url('include/tree_wait.png');
-        background-size: 16px;
-        display: inline-block;
-        width: 16px;
-        height: 16px;
-        content:"";
-    }
-
-    #create_new_cat {
-        background-image: url('include/new-document.png');
-        background-size: 16px;
-        display: inline-block;
-        width: 16px;
-        height: 16px;
-        content:"";
-    }
-
-    .tree_start_edit {
-        background-image: url('include/tree_start_edit.png');
-        background-size: 16px;
-        display: inline-block;
-        width: 16px;
-        height: 16px;
-        content:"";
-    }
-
-    .tree_item_ico:before {
-        background-image: url('include/list.png');
-        background-size: 12px;
-        display: inline-block;
-        width: 12px;
-        height: 12px;
-        content:"";
-    }
-
-    .tree_delete_cat span{
-        color: orangered;
-    }
-    .tree_delete_cat span:after {
-        background-image: url('include/delete.png');
-        background-size: 12px;
-        margin-left: 5px;
-        display: inline-block;
-        width: 12px;
-        height: 12px;
-        content:"";
-    }
-
-    .open_catalog:before {
-        background-image: url('include/minus.png');
-        background-size: 12px;
-        display: inline-block;
-        width: 12px;
-        height: 12px;
-        content:"";
-    }
-
-    .close_catalog>.tree_item {
-        max-height: 0;
-        transition: max-height 0.3s cubic-bezier(0, 1, 0, 1); 
-        margin: 0;
-        overflow: hidden;
-    }
-
-    .open_catalog>.tree_item {
-        overflow: hidden;
-        max-height: 2000px;
-        transition: max-height 0.3s cubic-bezier(1, 0, 1, 0);
-    }
-
-    .close_catalog:before {
-        background-image: url('include/plus.png');
-        background-size: 12px;
-        display: inline-block;
-        width: 12px;
-        height: 12px;
-        content:"";
-    }
-
-    #tree_edit_layer {
-        width: 150px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-    }
-
-    .tree_select, .button_style {
-        background: linear-gradient(to top, #BAC1E1, #D2D5E1);
-        border: solid 1px DarkBlue;
-        border-radius: 6px; 
-        max-width:100%;
-        padding: 5px;	/*поля внутри элемента; */
-        font-family: "Trebuchet MS", Helvetica, sans-serif; 
-        font-size:12px;
-        font-weight: 600;
-    }
-
-    .tree_select div {
-        filter: grayscale(100%);
-    }
-
-    .button_style {
-        text-align: center;
-        padding: 2px;
-    }
-    .button_style:hover {
-        background: linear-gradient(to top, #D2D5E1, #BAC1E1);
-    }
-
-    .tree_select:hover {
-        background: linear-gradient(to top, #D2D5E1, #BAC1E1);
-    }
-
-    .tree_select:hover div {
-        filter: grayscale(0%);
-    }
-
-    #tree_button_list div {
-        background-image: url('tree_list.png');
-        background-size: 20px;
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        content:"";
-
-    }    
-    
-    #tree_button_catalog div {
-        background-image: url('tree_catalog.png');
-        background-size: 20px;
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        content:"";
-    }
-
-    #tree_button_favorites div {
-        background-image: url('tree_star.png');
-        background-image: url('svg_star.svg');
-        background-size: 20px;
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        content:"";
-    }
-
-    .tree_menu_active {
-	background: linear-gradient(to right, lime, lime);
-    }
-
-    .tree_menu_active div {
-        filter: grayscale(0%);
-    }
-
-    .hide_item, .hide_catalog {
-        display: none;
-    }
-
-    .tree_favorites {
-        position: relative;
-        border-color: #B8860B!important;
-        /*border-style: solid!important;/*
-        /*border: 2px;*/
-    }
-
-    .tree_favorites::before {
-        content: "";
-        background-image: url('svg_star.svg');
-        display: inline-block;
-        width: 13px; 
-        height: 13px;
-        background-size: contain;
-        position: relative;
-        margin: -2px auto;
-    }
-
-
-</style>
-</head>
-<body>
-
 <?
     include("dbdata.php");
     $mysqli = new mysqli($db_host, $db_login, $db_pass, $db_name);
@@ -288,8 +15,6 @@
     $cat_name = $r->fetch_all(MYSQLI_ASSOC);
 
     $mysqli->close();
-
-
 
 ?>
 
@@ -312,7 +37,6 @@
             };
 
             foreach($row as $key => $value) {
-                //echo "<div id = '" .$value['id'] ."_name_izdelie' class = 'tree_item menuitem' onClick=menuchoice('" .$value['id'] ."','0'); data-catalog='" .$value['catalog'] ."' data-dogovor='" .$value['nomer'] ."' data-izdnomer='" .$value['id'] ."'>" .$value['name'] ."</div>";
                 echo "<div id = '" .$value['id'] ."_name_izdelie' class = 'tree_item menuitem' data-catalog='" .$value['catalog'] ."' data-dogovor='" .$value['nomer'] ."' data-izdnomer='" .$value['id'] ."'>" .$value['name'] ."</div>";
             };
         ?>
@@ -325,6 +49,73 @@
 </div>
 
 <script>
+    const range = document.createRange();
+
+    const localstate = {
+        openStatus: 0,
+        range,
+        createHTML: (content) => range.createContextualFragment(content),
+        loadHtml: (layer, hTxt) => {
+            const div = document.querySelector(layer);
+            const html = localstate.createHTML(hTxt);
+            div.replaceChildren(html);
+        },
+        appendHtml: (layer, hTxt, Evt = () => {}) => {
+            const div = document.querySelector(layer);
+            const html = localstate.createHTML(hTxt);
+            div.append(html);
+            Evt();
+        },
+    }
+
+    function sendData(obj) {
+        const sendObj = {...obj};
+        
+        delete sendObj.fl; //Удаление полей, которые не надо отправлять
+        
+        return fetch(`./api/divtree.php`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }, // Указываем JSON
+            body: JSON.stringify(sendObj) // Преобразуем объект в JSON-строку
+        })
+        .then(res => res.json())
+        .then(data => {
+            return data;
+        });
+    }
+
+    sendData({action: "divtree"}).then(data => {
+        const catalog = data[1].map(item => {
+            return /*html*/`
+                <div id = '${item.id}_name_catalog' class = 'tree_item tree_catalog' data-catalog='${item.catalog}'>
+                    <span>${item.name}</span>
+                </div>
+            `;          
+        })
+        const allItems = data[0].map(item => {
+            return /*html*/`
+                <div id = '${item.id}_name_izdelie' class = 'tree_item menuitem' data-catalog='${item.catalog}' data-dogovor='${item.nomer}' data-izdnomer='${item.id}'>
+                    ${item.name}
+                </div>
+            `;          
+        })
+
+        //localstate.appendHtml("#tree_layer", catalog.join(""));
+        //localstate.appendHtml("#tree_layer", allItems.join(""));
+        console.log("items: ", catalog.join(""), allItems.join(""))
+
+        localStorage.getItem('tree_switch') == null ? localStorage.setItem('tree_switch', 'tree_button_list') : null;
+        tree_switch(localStorage.getItem('tree_switch'));
+        tree_switch(localStorage.getItem('tree_switch'));
+        document.getElementById(localStorage.getItem('tree_switch')).classList.add('tree_menu_active');
+
+        $('.menuitem').click(function () {
+            $('.menuitem').removeClass('menuactive');
+            $(this).addClass('menuactive');
+        });
+        
+    })
+    
 
     let edit_button = document.querySelector('#tree_edit');
     let create_new_cat = document.querySelector('#create_new_cat');
@@ -931,10 +722,15 @@
     tree_input_find.addEventListener('keyup', auto_find); //Автопоиск изделий при вводе в строку поиска
     
     //Загрузка
-    localStorage.getItem('tree_switch') == null ? localStorage.setItem('tree_switch', 'tree_button_list') : null;
+    /*localStorage.getItem('tree_switch') == null ? localStorage.setItem('tree_switch', 'tree_button_list') : null;
     tree_switch(localStorage.getItem('tree_switch'));
     tree_switch(localStorage.getItem('tree_switch'));
     document.getElementById(localStorage.getItem('tree_switch')).classList.add('tree_menu_active');
+
+    $('.menuitem').click(function () {
+		$('.menuitem').removeClass('menuactive');
+		$(this).addClass('menuactive');
+	});*/
 
     console.log(document.getElementById('fgewrte'));
 </script>

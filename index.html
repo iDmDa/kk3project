@@ -1,6 +1,3 @@
-<?
-	session_start();
-?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -20,10 +17,7 @@
 
     </head>
     <body>
-<?
-//require ("localstyle.php");
-require ("dbconnect.php");
-?>
+
 <script src = "js/mailbox.js?v=<?=time();?>"></script>
 <script src = "js/izv.js?v=<?=time();?>"></script>
 <script src = "js/docwork.js?v=<?=time();?>"></script>
@@ -427,29 +421,51 @@ function newlocate(func, table, newdetid, id, newpos){
 </script>
 
 <div id = "leftmenu_box">
-	<div class = 'menuitem_header'></div>
-	<?include('divtree.php');?>
-	<div id = "menu_edit_field" class = 'button_field button_layer' style = 'display:none;float:left;'>
-		<a onClick = "okno_settings('dialog','&htag=dialog&dbtable=izdelie');"><img src = 'include/new window.png' title = ''></a>
+	<div class = "menuitem_header"></div>
+	<div id = "base_layer">
+    
+		<div id = "tree_choice_layer">
+			<div id = "tree_button_list" class = "tree_select"><div></div></div>
+			<div id = "tree_button_catalog" class = "tree_select"><div></div></div>
+			<div id = "tree_button_favorites" class = "tree_select"><div></div></div>
+		</div>
+
+		<div id = "tree_input_box">
+			<input type="text" style="width:90%;" id="filter_izdelie_dogovor" placeholder="Индекс или договор:" title = "Введите индекс изделия или номер договора">
+		</div>
+
+		<div id = "tree_layer" class = "tree_layer">
+			<span></span>
+		</div>
+
+	</div>
+
+	<div id = "tree_edit_layer">
+			<div id = "tree_edit" class = "tree_wait"></div>
+			<div id = "h_button" class = "notshow_any"><div id = "create_new_cat"></div></div>
+	</div>
+
+	<div id = "menu_edit_field" class = "button_field button_layer" style = "display:none;float:left;">
+		<a onClick = "okno_settings('dialog','&htag=dialog&dbtable=izdelie');"><img src = "include/new window.png" title = ""></a>
 	</div>
 </div>
 
 <div id = "right_box">
 	<div id = "topmenu_box">
 		<div>
-			<div class = 'topmenuitem' onClick="menuchoice('0','1');">Договорные документы</div>
-			<div class = 'topmenuitem' onClick="menuchoice('0','2');">Документы и работа</div>
-			<div class = 'topmenuitem' onClick="menuchoice('0','izv');">Извещения</div>
-			<div class = 'topmenuitem' onClick="menuchoice('0','3');">Переписка</div>
-			<div class = 'topmenuitem btnInnerMail' onClick="menuchoice('0','innermail');">Внутренняя переписка</div>
-			<div class = 'topmenuitem' style = "color:red;" onClick="menuchoice('0','ctrl');">На контроле</div>
-			<div class = 'topmenuitem' onClick="menuchoice('0','4');">Контрагенты</div>
+			<div class = "topmenuitem" onClick="menuchoice('0','1');">Договорные документы</div>
+			<div class = "topmenuitem" onClick="menuchoice('0','2');">Документы и работа</div>
+			<div class = "topmenuitem" onClick="menuchoice('0','izv');">Извещения</div>
+			<div class = "topmenuitem" onClick="menuchoice('0','3');">Переписка</div>
+			<div class = "topmenuitem btnInnerMail" onClick="menuchoice('0','innermail');">Внутренняя переписка</div>
+			<div class = "topmenuitem" style = "color:red;" onClick="menuchoice('0','ctrl');">На контроле</div>
+			<div class = "topmenuitem" onClick="menuchoice('0','4');">Контрагенты</div>
 			<!--<div class = 'topmenuitem' onClick="menuchoice('0','5');">Статистика</div>-->
-			<div class = 'topmenuitem' onClick="menuchoice('0','6');">Описание</div>
-			<div class = 'topmenuitem' onClick="menuchoice('0','7');">Выборка документов</div>
+			<div class = "topmenuitem" onClick="menuchoice('0','6');">Описание</div>
+			<div class = "topmenuitem" onClick="menuchoice('0','7');">Выборка документов</div>
 		</div>
 		<div class="space_filer"></div>
-		<div id = "open_close"><a onclick = 'open_edit();'><img src='include/lock.png' alt='закрыто'></a></div>
+		<div id = "open_close"><a onclick = "open_edit();"><img src="include/lock.png" alt="закрыто"></a></div>
 		<div id="menu_box"></div>
 	</div>
 	<div id = "varframe"></div>
@@ -465,15 +481,26 @@ function newlocate(func, table, newdetid, id, newpos){
 
 $(document).ready(function() {
 
-	// $('.menuitem').click(function () {
-	// 	$('.menuitem').removeClass('menuactive');
-	// 	$(this).addClass('menuactive');
-	// });
+	import("./js/divtree/divtree.js?v=<?=time();?>")
+			.then(module => {
+				// Вызываем функцию из модуля
+				module.divtree();
+			})
+			.catch(err => console.error("Ошибка загрузки innermail script.js:", err));
 
-	$('.topmenuitem').click(function () {
-		$('.topmenuitem').removeClass('menuactive');
-		$(this).addClass('menuactive');
-	});
+	const body = document.querySelector("body");
+    body.addEventListener("click", (e) => {
+        if(e.target.closest("#tree_layer .menuitem")) {
+            body.querySelector(".menuitem.menuactive")?.classList.remove("menuactive");
+            e.target.classList.add("menuactive")
+            console.log("e.target", e.target);
+        }
+		if(e.target.closest("#topmenu_box .topmenuitem")) {
+            body.querySelector(".topmenuitem.menuactive")?.classList.remove("menuactive");
+            e.target.classList.add("menuactive")
+            console.log("e.target", e.target);
+        }
+    })
 
 $.contextMenu({  //меню удаления
     selector: '.context-menu-megaclass-one',
@@ -512,23 +539,6 @@ function getIzdList(lineCount = 20) {
 
 	return {name: "Переместить", items: blocks};
 }
-
-/* структура меню плагина $.contextMenu
-	let obj = {
-		name: "catalog",
-		items: {
-
-			"блок1": {
-				name: "список 1",
-				items: {
-					"имя": {name: "имя3", callback: () => {}},
-					"имя1": {name: "имя4", callback: () => {}},
-				}
-			},
-
-		}
-	}
-*/
 
 
 const menuItem_Delete = {
@@ -578,48 +588,6 @@ const menuItem_movetoInnermail = {
 	}
 }
 
-// $.contextMenu({  //меню удаления с подменю
-//     selector: '.context-document',
-//     items: {
-//         delete: menuItem_Delete,
-// 		movetoizv: menuItem_movetoizv,
-// 		movetodoc: menuItem_movetodoc,
-// 		move: getIzdList(),
-//         sep1: '---------',
-//         quit: {
-// 			name: 'Выйти',
-// 			callback: function(key, options) {}
-// 		}
-//     }
-// });
-
-// $.contextMenu({  //меню удаления с подменю
-//     selector: '.docwork-context-menu',
-//     items: {
-//         delete: menuItem_Delete,
-// 		movetoizv: menuItem_movetoizv,
-// 		move: getIzdList(),
-//         sep1: '---------',
-//         quit: {
-// 			name: 'Выйти',
-// 			callback: function(key, options) {}
-// 		}
-//     }
-// });
-
-// $.contextMenu({  //меню удаления с подменю
-//     selector: '.izv-context-menu',
-//     items: {
-//         delete: menuItem_Delete,
-// 		movetodoc: menuItem_movetodoc,
-// 		move: getIzdList(),
-//         sep1: '---------',
-//         quit: {
-// 			name: 'Выйти',
-// 			callback: function(key, options) {}
-// 		}
-//     }
-// });
 
 $.contextMenu({  //меню удаления с подменю
     selector: '.mail-context-menu',

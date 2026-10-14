@@ -1,74 +1,8 @@
-<?
-    include("dbdata.php");
-    $mysqli = new mysqli($db_host, $db_login, $db_pass, $db_name);
-    if ($mysqli->connect_errno) {
-    echo "Нет связи с базой данных!";
-    exit;
-    }
+import { state } from "../commonTableFnc/state.js";
 
-    $sql = "SELECT izdelie.id, izdelie.name, izdelie.catalog, dogovor.nomer from izdelie LEFT JOIN dogovor ON izdelie.id=dogovor.detid where izdelie.hide <> 1";
-    $r = $mysqli->query($sql);
-    $row = $r->fetch_all(MYSQLI_ASSOC);
+export function divtree() {
 
-    $sql = "select * from catalog";
-    $r = $mysqli->query($sql);
-    $cat_name = $r->fetch_all(MYSQLI_ASSOC);
-
-    $mysqli->close();
-
-?>
-
-<div id = "base_layer">
-    
-    <div id = "tree_choice_layer">
-        <div id = "tree_button_list" class = "tree_select"><div></div></div>
-        <div id = "tree_button_catalog" class = "tree_select"><div></div></div>
-        <div id = "tree_button_favorites" class = "tree_select"><div></div></div>
-    </div>
-
-    <div id = "tree_input_box">
-        <input type='text' style='width:90%;' id='filter_izdelie_dogovor' placeholder='Индекс или договор:' title = 'Введите индекс изделия или номер договора'>
-    </div>
-
-    <div id = "tree_layer" class = "tree_layer"><span></span>
-        <?  //Считывание всех каталогов и элементов
-            foreach($cat_name as $key => $value) {
-                echo "<div id = '" .$value['id'] ."_name_catalog' class = 'tree_item tree_catalog' data-catalog='" .$value['catalog'] ."'><span>" .$value['name'] ."</span></div>";
-            };
-
-            foreach($row as $key => $value) {
-                echo "<div id = '" .$value['id'] ."_name_izdelie' class = 'tree_item menuitem' data-catalog='" .$value['catalog'] ."' data-dogovor='" .$value['nomer'] ."' data-izdnomer='" .$value['id'] ."'>" .$value['name'] ."</div>";
-            };
-        ?>
-    </div>
-
-</div>
-<div id = "tree_edit_layer">
-        <div id = "tree_edit" class = "tree_wait"></div>
-        <div id = 'h_button' class = 'notshow_any'><div id = "create_new_cat"></div></div>
-</div>
-
-<script>
-    const range = document.createRange();
-
-    const localstate = {
-        openStatus: 0,
-        range,
-        createHTML: (content) => range.createContextualFragment(content),
-        loadHtml: (layer, hTxt) => {
-            const div = document.querySelector(layer);
-            const html = localstate.createHTML(hTxt);
-            div.replaceChildren(html);
-        },
-        appendHtml: (layer, hTxt, Evt = () => {}) => {
-            const div = document.querySelector(layer);
-            const html = localstate.createHTML(hTxt);
-            div.append(html);
-            Evt();
-        },
-    }
-
-    function sendData(obj) {
+    async function sendData(obj) {
         const sendObj = {...obj};
         
         delete sendObj.fl; //Удаление полей, которые не надо отправлять
@@ -100,8 +34,8 @@
             `;          
         })
 
-        //localstate.appendHtml("#tree_layer", catalog.join(""));
-        //localstate.appendHtml("#tree_layer", allItems.join(""));
+        state.appendHtml("#tree_layer", catalog.join(""));
+        state.appendHtml("#tree_layer", allItems.join(""));
         console.log("items: ", catalog.join(""), allItems.join(""))
 
         localStorage.getItem('tree_switch') == null ? localStorage.setItem('tree_switch', 'tree_button_list') : null;
@@ -109,11 +43,12 @@
         tree_switch(localStorage.getItem('tree_switch'));
         document.getElementById(localStorage.getItem('tree_switch')).classList.add('tree_menu_active');
 
-        $('.menuitem').click(function () {
-            $('.menuitem').removeClass('menuactive');
-            $(this).addClass('menuactive');
+        let close_catalog = document.querySelectorAll('.tree_catalog');
+        close_catalog.forEach(function(item) {
+            if(!localStorage.getItem(item.id)) item.classList.add('close_catalog');
+            if(localStorage.getItem(item.id)) item.classList.add(localStorage.getItem(item.id));
         });
-        
+       
     })
     
 
@@ -130,12 +65,7 @@
         edit_button.classList.toggle('tree_start_edit');
         h_button.classList.toggle('notshow_any');
 
-
         scrollbar_destroy();
-        //scrollbar_create();
-        //$(".tree_layer").mCustomScrollbar('destroy');
-        //let msc = document.querySelector('#menuframe');
-        //msc.style.overflow = null;
 
         document.getElementById('tree_edit_layer').classList.contains('tree_start_edit') ? none : document.getElementById('tree_edit_layer').style.display = 'none';
 
@@ -145,17 +75,17 @@
             edit_tree_fnc_list();
 
 
-            document.onkeydown = function() {
+            document.onkeydown = function(e) {
                 let all_cat = document.querySelectorAll('.tree_catalog');
-                if(event.ctrlKey) all_cat.forEach(function(itm){
+                if(e.ctrlKey) all_cat.forEach(function(itm){
                     itm.classList.add('tree_delete_cat');
                     tree.onclick = function(){
-                        if(event.target.localName == 'span' && event.target.parentElement.children.length == 1) {
+                        if(e.target.localName == 'span' && e.target.parentElement.children.length == 1) {
                             if(confirm('Удалить?')) {
                                 let data = new FormData();
                                 data.append('delete_item', true);
-                                data.append('id', event.target.parentElement.id.split('_')[0]);
-                                tree_save(data, event.target.parentElement.remove());
+                                data.append('id', e.target.parentElement.id.split('_')[0]);
+                                tree_save(data, e.target.parentElement.remove());
                                 all_cat.forEach(function(itm){itm.classList.remove('tree_delete_cat')}); //удалить метки для удаления каталогов
                             };
                             tree.onclick = tree_click;
@@ -167,9 +97,9 @@
                     };
                 });
             };
-            document.onkeyup = function() {
+            document.onkeyup = function(e) {
                 let all_cat = document.querySelectorAll('.tree_catalog');
-                if(event.key == 'Control') {
+                if(e.key == 'Control') {
                     all_cat.forEach(function(itm){itm.classList.remove('tree_delete_cat')});
                     tree.onclick = tree_click;
                 }
@@ -200,22 +130,18 @@
         data.append('value', span.innerText);
 
         let xhr = new XMLHttpRequest();
-         xhr.open('POST', 'sv.php', true);
-         xhr.send(data);
-         xhr.onload = function () {
+        xhr.open('POST', 'sv.php', true);
+        xhr.send(data);
+        xhr.onload = function () {
             div.id = xhr.responseText + '_name_catalog';
             tree.appendChild(div);
-         };  
+        };  
 
     };
 
 
     //Установка состояния каталогов
-    let catalog = document.querySelectorAll('.tree_catalog');
-    catalog.forEach(function(item) {
-        if(!localStorage.getItem(item.id)) item.classList.add('close_catalog');
-        if(localStorage.getItem(item.id)) item.classList.add(localStorage.getItem(item.id));
-    });
+
 
     function tree_catalog_create() {  //Распределение по каталогам в соотетствии с выведенными данными из БД
         let tree_item = document.querySelectorAll('.tree_item');  //Поиск всех строк и каталогов
@@ -312,18 +238,14 @@
         });
     };
 
-    function tree_save(data, exec)
-      {
-         //let data = new FormData();
-         //data.append(action, value);
-
-         let xhr = new XMLHttpRequest();
-         xhr.open('POST', 'sv.php', true);
-         xhr.send(data);
-         xhr.onload = function () {
+    function tree_save(data, exec) {
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', 'sv.php', true);
+        xhr.send(data);
+        xhr.onload = function () {
             exec;
-         };        
-      }
+        };        
+    }
 
 
     function evnt_limit(e, stop_list) //Ограничение на выбор точки события
@@ -379,16 +301,16 @@
         tree_sort();
     };
 
-    function tree_dragover() { //Свойства принимающего блока над которым находится перетаскиваемый элемент
-        event.preventDefault();
-        if(start_point != event.target) {
-            move_point = evnt_limit(event, ['tree_catalog']);
+    function tree_dragover(e) { //Свойства принимающего блока над которым находится перетаскиваемый элемент
+        e.preventDefault();
+        if(start_point != e.target) {
+            move_point = evnt_limit(e, ['tree_catalog']);
             move_point.children[0].style.color = 'lime';           
         }
     };
 
-    function tree_dragleave() { //Событие при покидании принимающего блока мышки с перетаскиваемым элементом
-        if(event.target != start_point) move_point.children[0].style.color = '';
+    function tree_dragleave(e) { //Событие при покидании принимающего блока мышки с перетаскиваемым элементом
+        if(e.target != start_point) move_point.children[0].style.color = '';
     };
 
     function tree_click(event) { //Функция открытия/закрытия каталогов
@@ -508,18 +430,13 @@
 
     function choise_tree_item_window () {
 
-        let div_max = document.createElement('div');
-        let div_content = document.createElement('div');
-        let div_header = document.createElement('div');
-        let div_box = document.createElement('div');
+        const div_max = /*html*/`
+            <div id="choise_layer"></div>
+        `;
 
-        div_max.style.width = '100%';
-        div_max.style.height = '100%';
-        div_max.style.zIndex = '100';
-        div_max.style.position = 'absolute';
-        div_max.id = 'choise_layer';
-        div_max.style.opacity = '0.5';
-        div_max.style.background = 'grey';
+        const div_content = document.createElement('div');
+        const div_header = document.createElement('div');
+        const div_box = document.createElement('div');
 
         div_box.style.left = '100px';
         div_box.style.right = '100px';
@@ -547,7 +464,9 @@
         div_content.style.flexDirection = 'column';
         div_content.style.flexWrap = 'wrap';
 
-        document.body.append(div_max);
+        //state.loadHtml("body", div_max);
+        
+        document.body.append(state.createHTML(div_max));
         document.body.append(div_box);
         div_box.append(div_header);
         div_box.append(div_content);
@@ -573,7 +492,7 @@
         };
 
         document.body.addEventListener('keydown', remove_fnc);
-        div_max.addEventListener('click', remove_fnc);
+        document.querySelector("#choise_layer").addEventListener('click', remove_fnc);
         div_content.addEventListener('click', function(event) {
             console.log(event.target.classList);
             if(event.target.classList.contains('tree_item')) {
@@ -648,12 +567,12 @@
 
     };
 
-    auto_find = function() { //Автопоиск
+    function auto_find() { //Автопоиск
 
-        let items = document.querySelectorAll('.menuitem'); //Выделить все изделия
+        const items = document.querySelectorAll('.menuitem'); //Выделить все изделия
         items.forEach(item => item.classList.add('hide_item'));//Скрыть все изделия
 
-        let catalog = document.querySelectorAll('.tree_catalog'); //Выделить все каталоги
+        const catalog = document.querySelectorAll('.tree_catalog'); //Выделить все каталоги
         catalog.forEach(item => item.classList.add('hide_item'));//Скрыть все каталоги
 
         items.forEach(function(item, i) {  //Отобразить изделия, удовлетворяющие значению поисковой строки
@@ -708,32 +627,18 @@
 
     });
     
-    document.addEventListener('keydown', function () {   //Событие по нажатию ctrl отображает-скрывает ключ для редактирования дерева
-        if(event.ctrlKey && localStorage.getItem('tree_switch') == 'tree_button_catalog') {
+    document.addEventListener('keydown', function (e) {   //Событие по нажатию ctrl отображает-скрывает ключ для редактирования дерева
+        if(e.ctrlKey && localStorage.getItem('tree_switch') == 'tree_button_catalog') {
             document.getElementById('tree_edit_layer').style.display = '';
         };
     }, false);
-    document.addEventListener('keyup', function () {
-        if(event.key == 'Control' && !document.getElementById('tree_edit').classList.contains('tree_start_edit')) {
+    document.addEventListener('keyup', function (e) {
+        if(e.key == 'Control' && !document.getElementById('tree_edit').classList.contains('tree_start_edit')) {
             document.getElementById('tree_edit_layer').style.display = 'none';
         };
     }, false);
 
     tree_input_find.addEventListener('keyup', auto_find); //Автопоиск изделий при вводе в строку поиска
     
-    //Загрузка
-    /*localStorage.getItem('tree_switch') == null ? localStorage.setItem('tree_switch', 'tree_button_list') : null;
-    tree_switch(localStorage.getItem('tree_switch'));
-    tree_switch(localStorage.getItem('tree_switch'));
-    document.getElementById(localStorage.getItem('tree_switch')).classList.add('tree_menu_active');
 
-    $('.menuitem').click(function () {
-		$('.menuitem').removeClass('menuactive');
-		$(this).addClass('menuactive');
-	});*/
-
-    console.log(document.getElementById('fgewrte'));
-</script>
-
-</body>
-</html>
+}

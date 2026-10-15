@@ -36,7 +36,6 @@ export function divtree() {
 
         state.appendHtml("#tree_layer", catalog.join(""));
         state.appendHtml("#tree_layer", allItems.join(""));
-        console.log("items: ", catalog.join(""), allItems.join(""))
 
         localStorage.getItem('tree_switch') == null ? localStorage.setItem('tree_switch', 'tree_button_list') : null;
         tree_switch(localStorage.getItem('tree_switch'));
@@ -601,30 +600,14 @@ export function divtree() {
     edit_button.addEventListener('click', edit_button_click);
     create_new_cat.addEventListener('click', create_new_catalog, false);
 
-    tree.addEventListener('click', function(event){ //Событие установки загрузчика выбранного пункта меню
-        if(event.target.dataset.izdnomer) menuchoice(event.target.dataset.izdnomer,'0');
-        //console.log(event.target.dataset.izdnomer);
-    });
-
-    tree_choice_layer = document.getElementById('tree_choice_layer');
-    let tree_choice;
-    tree_choice_layer.addEventListener('click', function (event) {  //Событие выбора отображения списка
+    const tree_choice_layer = document.getElementById('tree_choice_layer');
+    tree_choice_layer.addEventListener('click', (e) => {  //Событие выбора отображения списка
         
-        if(event.target.id == 'tree_choice_layer') return;
-        let elem = event.target;
-        let all_buttons = tree_choice_layer.querySelectorAll('.tree_select');
-        all_buttons.forEach(item => {item.classList.remove('tree_menu_active')});
-        
-        do {
-            if(elem.classList.contains('tree_select')) break;
-            elem = elem.parentElement;
-        } while (elem.id != 'tree_menu')
-
-        elem.classList.add('tree_menu_active');
-        tree_choice = elem.id;
-
-        tree_switch (tree_choice);
-
+        if(e.target.closest(".tree_select")) {
+            tree_choice_layer.querySelector(".tree_menu_active").classList.remove("tree_menu_active");
+            e.target.closest(".tree_select").classList.add("tree_menu_active")
+            tree_switch(e.target.closest(".tree_select").id)
+        }
     });
     
     document.addEventListener('keydown', function (e) {   //Событие по нажатию ctrl отображает-скрывает ключ для редактирования дерева

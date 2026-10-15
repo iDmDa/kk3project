@@ -405,7 +405,7 @@ u {
   text-decoration: underline;
 }
 
-.btnInnerMail {
+[data-menu=innermail] {
   color: #666666;
   color: white;
   font-weight: lighter;
@@ -611,6 +611,10 @@ u {
   font-weight: bold;
   vertical-align: top;
   background: linear-gradient(to top, #cbe2eb, #cbe2eb);
+}
+
+[data-menu=ctrl] {
+  color: red;
 }
 
 .docwork .colHeader .scan, .docwork .colHeader .chernovik {

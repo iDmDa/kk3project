@@ -405,7 +405,7 @@ u {
   text-decoration: underline;
 }
 
-[data-menu=innermail] {
+[data-section=innermail] {
   color: #666666;
   color: white;
   font-weight: lighter;
@@ -613,7 +613,7 @@ u {
   background: linear-gradient(to top, #cbe2eb, #cbe2eb);
 }
 
-[data-menu=ctrl] {
+[data-section=ctrl] {
   color: red;
 }
 

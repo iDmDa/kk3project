@@ -335,7 +335,7 @@ body.addEventListener("click", (e) => {
     if(e.target.closest("#tree_layer .menuitem") || e.target.closest("#topmenu_box .topmenuitem")) {
         const menu = document.querySelector("#tree_layer .menuactive")?.dataset.izdnomer;
         const section = document.querySelector("#topmenu_box .menuactive")?.dataset.section;
-        loadsection(menu, section);
+        menu && section && loadsection(menu, section);
     }
 })
 
